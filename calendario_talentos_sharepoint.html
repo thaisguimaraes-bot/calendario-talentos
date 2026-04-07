@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Planejamento Gestão de Talentos</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+html,body{background:#f0f0ec;width:100%}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:#fff;border-bottom:1px solid #e0e0da;gap:10px;flex-wrap:wrap}
+.topbar-left{display:flex;align-items:center;gap:10px}
+.logo-pill{background:#3C3489;color:#CECBF6;font-size:11px;font-weight:700;padding:4px 10px;border-radius:6px}
+.title h2{font-size:15px;font-weight:700;color:#111}
+.title p{font-size:11px;color:#999}
+.topbar-right{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.btn{font-size:12px;padding:6px 13px;border-radius:7px;border:1px solid #ccc;background:#fff;color:#333;cursor:pointer}
+.btn:hover{background:#f5f5f0}
+.btn-ai{background:#0C447C;color:#B5D4F4;border-color:#0C447C;font-weight:600;display:flex;align-items:center;gap:5px}
+.btn-ai:hover{background:#042C53}
+.btn-add{background:#3C3489;color:#CECBF6;border-color:#3C3489;font-weight:600}
+.btn-add:hover{background:#26215C}
+.nav{display:flex;align-items:center;gap:5px}
+.nav button{width:28px;height:28px;border:1px solid #ccc;border-radius:6px;background:#fff;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;color:#333}
+.nav button:hover{background:#f0f0ec}
+.nav span{font-size:13px;font-weight:700;color:#111;min-width:105px;text-align:center}
+.impact{background:#fff;border:1px solid #e0e0da;border-radius:7px;margin:10px 14px 6px;padding:7px 12px;font-size:11px;color:#555}
+.impact strong{color:#111;font-weight:700}
+.impact ul{padding-left:14px;margin-top:3px}
+.impact li{margin-bottom:1px}
+.layout{display:flex;width:100%}
+.cal-area{flex:1;overflow-x:auto;padding:10px 14px 14px;min-width:0}
+.cal-grid{min-width:680px}
+.week-block{margin-bottom:10px}
+.grid-row{display:grid;gap:2px;margin-bottom:2px}
+.cal-header-cell{font-size:10px;font-weight:700;color:#666;text-align:center;padding:6px 3px;background:#fff;border-radius:5px;border:1px solid #e5e5e0}
+.cal-header-cell.is-today{background:#EEEDFE;color:#3C3489;border-color:#AFA9EC}
+.row-label{display:flex;align-items:center;justify-content:center;color:#fff;font-size:9px;font-weight:700;text-align:center;padding:6px 3px;border-radius:5px;line-height:1.3;min-height:80px}
+.label-alta{background:#3C3489}
+.label-lider{background:#534AB7}
+.label-equipe{background:#185FA5}
+.label-todos{background:#0F6E56}
+.label-na{background:#ccc;color:#555}
+.cal-cell{background:#fff;border:1px solid #e5e5e0;border-radius:5px;padding:4px;min-height:80px}
+.cal-cell.is-today{border-color:#7F77DD;border-width:2px}
+.event-chip{display:block;font-size:10px;font-weight:600;padding:2px 5px;border-radius:3px;margin-bottom:2px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.event-chip:hover{opacity:.8}
+.chip-dac{background:#EEEDFE;color:#3C3489}
+.chip-cie{background:#0C447C;color:#B5D4F4}
+.chip-at{background:#7F77DD;color:#fff}
+.chip-nat{background:#FAC775;color:#633806}
+.chip-tbd{background:#f0f0ec;color:#888;font-style:italic}
+.chip-default{background:#e8e8e4;color:#555}
+.more{font-size:10px;color:#bbb;cursor:pointer;padding:1px 3px}
+.more:hover{color:#666}
+.chat-panel{width:0;overflow:hidden;transition:width .2s;border-left:1px solid #e0e0da;background:#fff;display:flex;flex-direction:column}
+.chat-panel.open{width:280px}
+.chat-head{padding:10px 12px;border-bottom:1px solid #e5e5e0;display:flex;align-items:center;gap:8px;flex-shrink:0}
+.chat-av{width:28px;height:28px;border-radius:50%;background:#0C447C;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#B5D4F4;flex-shrink:0}
+.chat-ht{font-size:12px;font-weight:700;color:#111}
+.chat-hs{font-size:10px;color:#bbb}
+.chat-msgs{overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:7px;min-height:150px;max-height:380px}
+.msg{max-width:90%;font-size:11px;line-height:1.5;padding:7px 10px;border-radius:10px}
+.msg-ai{background:#f4f4f0;color:#111;align-self:flex-start;border-bottom-left-radius:3px}
+.msg-user{background:#EEEDFE;color:#26215C;align-self:flex-end;border-bottom-right-radius:3px;font-weight:600}
+.loading{display:flex;gap:4px;padding:9px 12px;background:#f4f4f0;border-radius:10px;align-self:flex-start}
+.dot{width:5px;height:5px;border-radius:50%;background:#ccc;animation:blink 1.2s infinite}
+.dot:nth-child(2){animation-delay:.2s}.dot:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,80%,100%{opacity:.25}40%{opacity:1}}
+.chat-sugg{padding:0 10px 8px;display:flex;flex-direction:column;gap:3px;flex-shrink:0}
+.sugg-btn{font-size:10px;padding:5px 8px;border:1px solid #e5e5e0;border-radius:6px;background:#fff;color:#555;cursor:pointer;text-align:left}
+.sugg-btn:hover{background:#f4f4f0}
+.chat-inp-area{padding:8px;border-top:1px solid #e5e5e0;display:flex;gap:5px;flex-shrink:0}
+.chat-inp{flex:1;font-size:11px;padding:6px 9px;border:1px solid #ccc;border-radius:6px;resize:none;background:#fff;color:#111;outline:none;font-family:inherit}
+.chat-inp:focus{border-color:#7F77DD}
+.chat-send{width:28px;height:28px;background:#3C3489;border:none;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;align-self:flex-end}
+.chat-send:hover{background:#26215C}
+.legend{display:flex;align-items:center;gap:12px;padding:7px 14px;background:#fff;border-top:1px solid #e0e0da;flex-wrap:wrap}
+.leg-t{font-size:10px;font-weight:700;color:#999}
+.leg-item{display:flex;align-items:center;gap:4px;font-size:10px;color:#555}
+.leg-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+/* MODAL - position fixed funciona no body do iframe */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9999;overflow-y:auto;padding:40px 16px 20px}
+.modal-bg.open{display:block}
+.modal{background:#fff;border-radius:12px;padding:22px;width:100%;max-width:420px;margin:0 auto;position:relative}
+.modal h3{font-size:15px;font-weight:700;color:#111;margin-bottom:16px}
+.close-btn{position:absolute;top:14px;right:14px;width:26px;height:26px;border:1px solid #ccc;border-radius:6px;background:#fff;cursor:pointer;font-size:16px;color:#999;display:flex;align-items:center;justify-content:center}
+.close-btn:hover{background:#f0f0ec}
+.fg{margin-bottom:11px}
+.fl{font-size:11px;font-weight:700;color:#555;margin-bottom:4px;display:block}
+.fl em{color:#e24b4a;font-style:normal}
+.fi,.fs,.ft{width:100%;padding:7px 10px;border:1px solid #ccc;border-radius:6px;font-size:12px;color:#111;background:#fff;outline:none;font-family:inherit}
+.fi:focus,.fs:focus,.ft:focus{border-color:#7F77DD}
+.ft{resize:vertical}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.mfooter{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;padding-top:12px;border-top:1px solid #eee}
+.popup{position:fixed;z-index:8000;background:#fff;border:1px solid #ddd;border-radius:9px;padding:12px 14px;width:220px;display:none;box-shadow:0 4px 18px rgba(0,0,0,.13)}
+.popup.open{display:block}
+.pop-title{font-size:12px;font-weight:700;color:#111;margin-bottom:8px;padding-right:16px;line-height:1.3}
+.pop-row{display:flex;gap:5px;align-items:flex-start;margin-bottom:4px}
+.pop-l{font-size:10px;color:#bbb;min-width:42px;flex-shrink:0;padding-top:1px}
+.pop-v{font-size:10px;color:#333;line-height:1.4}
+.pop-close{position:absolute;top:8px;right:8px;background:none;border:none;cursor:pointer;color:#bbb;font-size:14px}
+.pop-close:hover{color:#333}
+.toast{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:#3C3489;color:#CECBF6;font-size:12px;padding:9px 18px;border-radius:8px;z-index:9998;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="logo-pill">Globo 100</div>
+    <div class="title">
+      <h2>Planejamento Gestão de Talentos</h2>
+      <p>1º semestre 2026</p>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <div class="nav">
+      <button onclick="changeMonth(-1)">&#8249;</button>
+      <span id="monthLabel">Abril 2026</span>
+      <button onclick="changeMonth(1)">&#8250;</button>
+    </div>
+    <button class="btn btn-ai" onclick="toggleChat()">
+      <svg width="13" height="13" viewBox="0 0 16 16" fill="#B5D4F4"><path d="M2 2h12a1 1 0 011 1v8a1 1 0 01-1 1H5l-3 3V3a1 1 0 011-1z"/></svg>
+      Chat IA
+    </button>
+    <button class="btn btn-add" onclick="openModal()">+ Adicionar evento</button>
+  </div>
+</div>
+
+<div class="impact">
+  <strong>Eventos de impacto:</strong>
+  <ul>
+    <li>Copa do Mundo: 11/6 a 19/7</li>
+    <li>Eleições: 4/10 (1º turno) e 25/10 (2º turno)</li>
+  </ul>
+</div>
+
+<div class="layout">
+  <div class="cal-area">
+    <div class="cal-grid" id="calGrid"></div>
+  </div>
+  <div class="chat-panel" id="chatPanel">
+    <div class="chat-head">
+      <div class="chat-av">IA</div>
+      <div>
+        <div class="chat-ht">Assistente de RH</div>
+        <div class="chat-hs">Powered by IA</div>
+      </div>
+    </div>
+    <div class="chat-msgs" id="chatMsgs">
+      <div class="msg msg-ai">Olá! Posso ajudar com planejamento de eventos, conflitos de agenda ou resumo do mês. Como posso ajudar?</div>
+    </div>
+    <div class="chat-sugg" id="chatSugg">
+      <button class="sugg-btn" onclick="sendSugg(this)">Quais eventos temos esta semana?</button>
+      <button class="sugg-btn" onclick="sendSugg(this)">Tem conflitos no calendário?</button>
+      <button class="sugg-btn" onclick="sendSugg(this)">Resumo dos eventos de Maio</button>
+      <button class="sugg-btn" onclick="sendSugg(this)">Quantos eventos por área?</button>
+    </div>
+    <div class="chat-inp-area">
+      <textarea class="chat-inp" id="chatInp" placeholder="Pergunte sobre os eventos..." rows="2" onkeydown="chatKey(event)"></textarea>
+      <button class="chat-send" onclick="sendChat()">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="#CECBF6"><path d="M2 2l12 6-12 6V9.5l8-1.5-8-1.5V2z"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="legend">
+  <span class="leg-t">Legenda:</span>
+  <div class="leg-item"><div class="leg-dot" style="background:#EEEDFE;border:1px solid #7F77DD"></div>D&amp;A e Cultura</div>
+  <div class="leg-item"><div class="leg-dot" style="background:#0C447C"></div>CIE</div>
+  <div class="leg-item"><div class="leg-dot" style="background:#7F77DD"></div>AT</div>
+  <div class="leg-item"><div class="leg-dot" style="background:#FAC775;border:1px solid #BA7517"></div>Presença da Nat</div>
+  <div class="leg-item"><div class="leg-dot" style="background:#f0f0ec;border:1px solid #ccc"></div>TBD</div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-bg" id="modalBg" onclick="bgClick(event)">
+  <div class="modal">
+    <button class="close-btn" onclick="closeModal()">&#215;</button>
+    <h3>Adicionar novo evento</h3>
+    <div class="fg"><label class="fl">Nome da ação <em>*</em></label><input type="text" class="fi" id="f-nome" placeholder="Ex: Roda de Conversa PDD"></div>
+    <div class="fg"><label class="fl">Nome do projeto</label><input type="text" class="fi" id="f-proj" placeholder="Ex: PDD, LinkedIn Day, Trainee..."></div>
+    <div class="fg">
+      <label class="fl">Área <em>*</em></label>
+      <select class="fs" id="f-area">
+        <option value="">Selecione a área</option>
+        <option>Alta Liderança</option><option>Liderança</option><option>Equipe</option><option>Todos</option><option>N/A</option>
+      </select>
+    </div>
+    <div class="frow">
+      <div class="fg"><label class="fl">Data início <em>*</em></label><input type="date" class="fi" id="f-ini"></div>
+      <div class="fg"><label class="fl">Data fim</label><input type="date" class="fi" id="f-fim"></div>
+    </div>
+    <div class="frow">
+      <div class="fg"><label class="fl">Hora início</label><input type="time" class="fi" id="f-hi"></div>
+      <div class="fg"><label class="fl">Hora fim</label><input type="time" class="fi" id="f-hf"></div>
+    </div>
+    <div class="fg">
+      <label class="fl">Categoria</label>
+      <select class="fs" id="f-tipo">
+        <option value="chip-dac">D&amp;A e Cultura</option>
+        <option value="chip-cie">CIE</option>
+        <option value="chip-at">AT</option>
+        <option value="chip-nat">Presença da Nat</option>
+        <option value="chip-tbd">TBD (a definir)</option>
+        <option value="chip-default">Outro</option>
+      </select>
+    </div>
+    <div class="fg">
+      <label class="fl">Local / Formato</label>
+      <select class="fs" id="f-local">
+        <option value="">Selecione</option>
+        <option>Presencial</option><option>Online</option><option>Híbrido</option><option>A definir</option>
+      </select>
+    </div>
+    <div class="fg"><label class="fl">Responsável</label><input type="text" class="fi" id="f-resp" placeholder="Nome do responsável"></div>
+    <div class="fg"><label class="fl">Observações</label><textarea class="ft" id="f-obs" rows="2" placeholder="Informações adicionais..."></textarea></div>
+    <div class="mfooter">
+      <button class="btn" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-add" onclick="saveEvent()">Salvar evento</button>
+    </div>
+  </div>
+</div>
+
+<!-- POPUP -->
+<div class="popup" id="popup">
+  <button class="pop-close" onclick="closePopup()">&#215;</button>
+  <div class="pop-title" id="popTitle"></div>
+  <div id="popBody"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var MONTHS=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+var AREAS=['Alta Liderança','Liderança','Equipe','Todos','N/A'];
+var ALABELS=['ALTA LIDERANÇA','LIDERANÇA','EQUIPE','TODOS','N/A'];
+var ACLASS=['label-alta','label-lider','label-equipe','label-todos','label-na'];
+var curM=3,curY=2026,nid=300,chatOpen=false;
+
+var events=[
+  {id:1,nome:'Aula inaugural PDD',proj:'PDD',area:'Alta Liderança',ini:'2026-04-02',fim:'2026-04-02',tipo:'chip-dac',local:'Presencial',resp:'',obs:''},
+  {id:2,nome:'PDD (turma 1)',proj:'PDD',area:'Alta Liderança',ini:'2026-04-14',fim:'2026-04-16',tipo:'chip-nat',local:'',resp:'',obs:''},
+  {id:3,nome:'Roda de Conversa PDD',proj:'PDD',area:'Alta Liderança',ini:'2026-05-05',fim:'2026-05-05',tipo:'chip-nat',local:'',resp:'',obs:'Turma 1'},
+  {id:4,nome:'Encontro Alta Liderança | Cultura',proj:'Cultura',area:'Alta Liderança',ini:'2026-05-06',fim:'2026-05-06',tipo:'chip-cie',local:'Presencial',resp:'',obs:''},
+  {id:5,nome:'1º encontro ESC | Cultura',proj:'ESC',area:'Alta Liderança',ini:'2026-05-08',fim:'2026-05-08',tipo:'chip-tbd',local:'',resp:'',obs:'TBD'},
+  {id:6,nome:'Trainee – Demoday',proj:'Trainee',area:'Alta Liderança',ini:'2026-05-14',fim:'2026-05-14',tipo:'chip-nat',local:'',resp:'',obs:''},
+  {id:7,nome:'PTC (turma 1)',proj:'PTC',area:'Liderança',ini:'2026-03-24',fim:'2026-03-24',tipo:'chip-dac',local:'',resp:'',obs:''},
+  {id:8,nome:'PDG + IA',proj:'PDG',area:'Liderança',ini:'2026-04-01',fim:'2026-04-01',tipo:'chip-nat',local:'Online',resp:'',obs:''},
+  {id:9,nome:'Carreira e MI – live liderança',proj:'Carreira e MI',area:'Liderança',ini:'2026-04-07',fim:'2026-04-14',tipo:'chip-nat',local:'Online',resp:'',obs:'Talks Tour Executivo'},
+  {id:10,nome:'Encontro Presencial Tour Executivo',proj:'Tour Executivo',area:'Liderança',ini:'2026-04-29',fim:'2026-04-29',tipo:'chip-cie',local:'Presencial',resp:'',obs:''},
+  {id:11,nome:'LinkedIn Day RJ',proj:'LinkedIn Day',area:'Liderança',ini:'2026-05-26',fim:'2026-05-26',tipo:'chip-dac',local:'Presencial',resp:'',obs:''},
+  {id:12,nome:'PTC (turma 2)',proj:'PTC',area:'Liderança',ini:'2026-06-01',fim:'2026-06-01',tipo:'chip-tbd',local:'',resp:'',obs:'TBD'},
+  {id:13,nome:'LinkedIn Day SP',proj:'LinkedIn Day',area:'Liderança',ini:'2026-06-02',fim:'2026-06-02',tipo:'chip-dac',local:'Presencial',resp:'',obs:''},
+  {id:14,nome:'Carreira e MI – Wksp PRHs',proj:'Carreira e MI',area:'Equipe',ini:'2026-02-10',fim:'2026-02-11',tipo:'chip-dac',local:'',resp:'',obs:''},
+  {id:15,nome:'Carreira e MI – live equipes',proj:'Carreira e MI',area:'Equipe',ini:'2026-04-08',fim:'2026-04-15',tipo:'chip-dac',local:'Online',resp:'',obs:''},
+  {id:16,nome:'Estagiar (admissão)',proj:'Estagiar',area:'Equipe',ini:'2026-05-14',fim:'2026-05-14',tipo:'chip-dac',local:'',resp:'',obs:''},
+  {id:17,nome:'Estagiar (admissão)',proj:'Estagiar',area:'Equipe',ini:'2026-06-12',fim:'2026-06-12',tipo:'chip-dac',local:'',resp:'',obs:''},
+  {id:18,nome:'BBB',proj:'',area:'Todos',ini:'2026-01-12',fim:'2026-01-12',tipo:'chip-cie',local:'',resp:'',obs:''},
+  {id:19,nome:'Coração Acelerado (NN 19h)',proj:'',area:'Todos',ini:'2026-01-12',fim:'2026-01-12',tipo:'chip-cie',local:'',resp:'',obs:''},
+  {id:20,nome:'Verão De Boa',proj:'',area:'Todos',ini:'2026-02-05',fim:'2026-02-05',tipo:'chip-dac',local:'',resp:'',obs:''},
+  {id:21,nome:'Semana Economia Circular',proj:'',area:'Todos',ini:'2026-02-01',fim:'2026-02-01',tipo:'chip-tbd',local:'',resp:'',obs:'TBD'},
+  {id:22,nome:'HH Carnaval',proj:'',area:'Todos',ini:'2026-03-12',fim:'2026-03-12',tipo:'chip-dac',local:'',resp:'',obs:''},
+  {id:23,nome:'Carreira e MI – lançamento',proj:'Carreira e MI',area:'Todos',ini:'2026-03-09',fim:'2026-03-09',tipo:'chip-dac',local:'',resp:'',obs:''},
+  {id:24,nome:'Nova novela 18h (TV Globo)',proj:'',area:'Todos',ini:'2026-03-16',fim:'2026-03-16',tipo:'chip-cie',local:'',resp:'',obs:''},
+  {id:25,nome:'HH Lollapalooza',proj:'',area:'Todos',ini:'2026-03-26',fim:'2026-03-26',tipo:'chip-dac',local:'',resp:'',obs:''},
+  {id:26,nome:'Live IA Em Pauta',proj:'IA',area:'Todos',ini:'2026-03-30',fim:'2026-03-30',tipo:'chip-cie',local:'Online',resp:'',obs:'Lançamento assistente'},
+  {id:27,nome:'Semana da Seg. da Informação',proj:'',area:'Todos',ini:'2026-04-06',fim:'2026-04-06',tipo:'chip-cie',local:'',resp:'',obs:''},
+  {id:28,nome:'Campanha Vacinação',proj:'',area:'Todos',ini:'2026-04-06',fim:'2026-04-06',tipo:'chip-dac',local:'',resp:'',obs:''},
+  {id:29,nome:'Ninar – De Boa',proj:'',area:'Todos',ini:'2026-04-07',fim:'2026-04-07',tipo:'chip-at',local:'',resp:'',obs:''},
+  {id:30,nome:'Movimento LED',proj:'LED',area:'Todos',ini:'2026-04-15',fim:'2026-04-16',tipo:'chip-dac',local:'',resp:'',obs:''},
+  {id:31,nome:'Live SXSW',proj:'',area:'Todos',ini:'2026-04-15',fim:'2026-04-15',tipo:'chip-cie',local:'Online',resp:'',obs:''},
+  {id:32,nome:'Pirataria',proj:'',area:'Todos',ini:'2026-04-20',fim:'2026-04-20',tipo:'chip-tbd',local:'',resp:'',obs:'TBD'},
+  {id:33,nome:'Evolução Estrat. Globo',proj:'',area:'Todos',ini:'2026-04-22',fim:'2026-04-22',tipo:'chip-nat',local:'',resp:'',obs:'TBD'},
+  {id:34,nome:'Ação Dia das Mães',proj:'',area:'Todos',ini:'2026-05-09',fim:'2026-05-09',tipo:'chip-dac',local:'',resp:'',obs:''},
+  {id:35,nome:'Festival Data Lab',proj:'Data Lab',area:'Todos',ini:'2026-05-11',fim:'2026-05-15',tipo:'chip-at',local:'',resp:'',obs:''},
+  {id:36,nome:'Novo relat. ESG',proj:'ESG',area:'Todos',ini:'2026-05-15',fim:'2026-05-15',tipo:'chip-dac',local:'',resp:'',obs:''},
+  {id:37,nome:'Festival LED',proj:'LED',area:'Todos',ini:'2026-05-15',fim:'2026-05-15',tipo:'chip-dac',local:'',resp:'',obs:''},
+  {id:38,nome:'Nova novela 21h (TV Globo)',proj:'',area:'Todos',ini:'2026-05-18',fim:'2026-05-18',tipo:'chip-cie',local:'',resp:'',obs:''},
+  {id:39,nome:'Live Paulo Marinho',proj:'',area:'Todos',ini:'2026-05-20',fim:'2026-05-20',tipo:'chip-nat',local:'Online',resp:'',obs:''},
+  {id:40,nome:'Live Copa (Lançam. DTV+)',proj:'Copa',area:'Todos',ini:'2026-05-26',fim:'2026-05-26',tipo:'chip-cie',local:'Online',resp:'',obs:''},
+  {id:41,nome:'Brasilidades',proj:'',area:'Todos',ini:'2026-05-27',fim:'2026-05-27',tipo:'chip-dac',local:'',resp:'',obs:''},
+  {id:42,nome:'Live Res. Fin. 1º tri 2026',proj:'',area:'Todos',ini:'2026-05-28',fim:'2026-05-28',tipo:'chip-nat',local:'Online',resp:'',obs:''},
+  {id:43,nome:'Pesq. Engaj e Cultura',proj:'',area:'Todos',ini:'2026-05-25',fim:'2026-05-29',tipo:'chip-nat',local:'',resp:'',obs:''},
+  {id:44,nome:'Negritudes',proj:'',area:'Todos',ini:'2026-05-29',fim:'2026-05-29',tipo:'chip-dac',local:'',resp:'',obs:''},
+  {id:45,nome:'Semana do Meio Ambiente',proj:'',area:'Todos',ini:'2026-06-01',fim:'2026-06-01',tipo:'chip-dac',local:'',resp:'',obs:''},
+  {id:46,nome:'Jantar Dia dos Namorados',proj:'',area:'Todos',ini:'2026-06-11',fim:'2026-06-11',tipo:'chip-dac',local:'',resp:'',obs:''},
+  {id:47,nome:'Abertura Copa do Mundo',proj:'Copa',area:'Todos',ini:'2026-06-11',fim:'2026-06-11',tipo:'chip-at',local:'',resp:'',obs:''},
+  {id:48,nome:'Mês do Orgulho',proj:'',area:'Todos',ini:'2026-06-28',fim:'2026-06-28',tipo:'chip-dac',local:'',resp:'',obs:''},
+  {id:49,nome:'Fórmula 1',proj:'',area:'Todos',ini:'2026-06-30',fim:'2026-06-30',tipo:'chip-tbd',local:'',resp:'',obs:'TBD'},
+  {id:50,nome:'Convenção NIP',proj:'NIP',area:'N/A',ini:'2026-03-03',fim:'2026-03-05',tipo:'chip-cie',local:'',resp:'',obs:''},
+  {id:51,nome:'Mentoria',proj:'',area:'N/A',ini:'2026-04-27',fim:'2026-04-30',tipo:'chip-nat',local:'',resp:'',obs:''},
+  {id:52,nome:'Divulgação desafio LED IA',proj:'LED',area:'N/A',ini:'2026-06-09',fim:'2026-06-09',tipo:'chip-at',local:'',resp:'',obs:''}
+];
+
+function p2(n){return String(n).padStart(2,'0')}
+function ds(y,m,d){return y+'-'+p2(m+1)+'-'+p2(d)}
+function fmt(s){if(!s)return '';var p=s.split('-');return p[2]+'/'+p[1]+'/'+p[0]}
+function daysIn(y,m){return new Date(y,m+1,0).getDate()}
+function todayS(){var t=new Date();return ds(t.getFullYear(),t.getMonth(),t.getDate())}
+function cellEvts(area,day){return events.filter(function(e){return e.area===area&&day>=e.ini&&day<=(e.fim||e.ini)})}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+function renderCalendar(){
+  var g=document.getElementById('calGrid');
+  if(!g){return}
+  var days=daysIn(curY,curM);
+  var today=todayS();
+  var dw=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+  var all=[];for(var d=1;d<=days;d++)all.push(d);
+  var weeks=[];while(all.length){weeks.push(all.splice(0,7))}
+  var html='';
+
+  weeks.forEach(function(wk){
+    var gc='100px repeat('+wk.length+',1fr)';
+    html+='<div class="week-block">';
+    // header row
+    html+='<div class="grid-row" style="grid-template-columns:'+gc+'">';
+    html+='<div class="cal-header-cell" style="font-size:9px;color:#ccc">'+MONTHS[curM].substring(0,3).toUpperCase()+'</div>';
+    wk.forEach(function(d){
+      var day=ds(curY,curM,d);
+      var date=new Date(curY,curM,d);
+      var isT=(day===today);
+      html+='<div class="cal-header-cell'+(isT?' is-today':'')+'">'+dw[date.getDay()]+'<br><strong style="font-size:12px">'+d+'</strong></div>';
+    });
+    html+='</div>';
+    // area rows
+    AREAS.forEach(function(area,ai){
+      html+='<div class="grid-row" style="grid-template-columns:'+gc+'">';
+      html+='<div class="row-label '+ACLASS[ai]+'">'+ALABELS[ai]+'</div>';
+      wk.forEach(function(d){
+        var day=ds(curY,curM,d);
+        var isT=(day===today);
+        var evts=cellEvts(area,day);
+        html+='<div class="cal-cell'+(isT?' is-today':'')+'">';
+        evts.slice(0,2).forEach(function(ev){
+          html+='<span class="event-chip '+ev.tipo+'" onclick="showPop(event,'+ev.id+')" title="'+esc(ev.nome)+'">'+esc(ev.nome)+'</span>';
+        });
+        if(evts.length>2)html+='<span class="more" onclick="showPop(event,'+evts[2].id+')">+'+(evts.length-2)+' mais</span>';
+        html+='</div>';
+      });
+      html+='</div>';
+    });
+    html+='</div>';
+  });
+
+  g.innerHTML=html;
+}
+
+function changeMonth(dir){
+  curM+=dir;
+  if(curM<0){curM=11;curY--}
+  if(curM>11){curM=0;curY++}
+  document.getElementById('monthLabel').textContent=MONTHS[curM]+' '+curY;
+  renderCalendar();
+}
+
+function toggleChat(){
+  chatOpen=!chatOpen;
+  document.getElementById('chatPanel').className='chat-panel'+(chatOpen?' open':'');
+}
+function chatKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChat()}}
+function sendSugg(btn){
+  document.getElementById('chatInp').value=btn.textContent;
+  document.getElementById('chatSugg').style.display='none';
+  sendChat();
+}
+function sendChat(){
+  var inp=document.getElementById('chatInp');
+  var txt=inp.value.trim();if(!txt)return;
+  inp.value='';
+  var msgs=document.getElementById('chatMsgs');
+  msgs.innerHTML+='<div class="msg msg-user">'+esc(txt)+'</div>';
+  msgs.innerHTML+='<div class="loading" id="ld"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>';
+  msgs.scrollTop=msgs.scrollHeight;
+  setTimeout(function(){
+    var ld=document.getElementById('ld');if(ld)ld.remove();
+    msgs.innerHTML+='<div class="msg msg-ai">'+aiResp(txt.toLowerCase())+'</div>';
+    msgs.scrollTop=msgs.scrollHeight;
+  },800);
+}
+function aiResp(q){
+  var today=todayS();
+  if(q.includes('semana')||q.includes('hoje')){
+    var et=events.filter(function(e){return e.ini<=today&&(e.fim||e.ini)>=today});
+    if(!et.length)return 'Não encontrei eventos para hoje. Use "+ Adicionar evento" para criar um!';
+    return 'Hoje temos <strong>'+et.length+'</strong> evento(s): '+et.map(function(e){return e.nome}).join(', ')+'.';
+  }
+  if(q.includes('conflito'))return 'Analisei o calendário e não há conflitos críticos no mês atual ✓';
+  if(q.includes('maio')||q.includes('resumo')){
+    var m=events.filter(function(e){return e.ini.startsWith('2026-05')});
+    return 'Em Maio temos <strong>'+m.length+' eventos</strong>: '+m.slice(0,5).map(function(e){return e.nome}).join(', ')+(m.length>5?'...':'')+'.';
+  }
+  if(q.includes('quantos')||q.includes('área')||q.includes('area')){
+    var mes=events.filter(function(e){return e.ini.startsWith(curY+'-'+p2(curM+1))});
+    var r=AREAS.map(function(a){return '• '+a+': '+mes.filter(function(e){return e.area===a}).length}).join('<br>');
+    return 'Em '+MONTHS[curM]+' temos <strong>'+mes.length+' eventos</strong>:<br>'+r;
+  }
+  if(q.includes('copa'))return 'Copa do Mundo: <strong>11/6 a 19/7</strong>. Eventos já planejados: "Abertura Copa do Mundo" (11/6) e "Live Copa DTV+" (26/5).';
+  return 'Posso ajudar com: resumo por mês, eventos de hoje, conflitos ou contagem por área. Tente uma dessas!';
+}
+
+function openModal(){
+  var today=new Date().toISOString().split('T')[0];
+  document.getElementById('f-ini').value=today;
+  document.getElementById('f-fim').value=today;
+  document.getElementById('modalBg').className='modal-bg open';
+  setTimeout(function(){document.getElementById('f-nome').focus()},50);
+}
+function closeModal(){document.getElementById('modalBg').className='modal-bg'}
+function bgClick(e){if(e.target.id==='modalBg')closeModal()}
+function saveEvent(){
+  var nome=document.getElementById('f-nome').value.trim();
+  var area=document.getElementById('f-area').value;
+  var ini=document.getElementById('f-ini').value;
+  if(!nome){showToast('Preencha o nome da ação.');return}
+  if(!area){showToast('Selecione a área.');return}
+  if(!ini){showToast('Informe a data início.');return}
+  var ev={id:nid++,nome:nome,proj:document.getElementById('f-proj').value.trim(),area:area,ini:ini,fim:document.getElementById('f-fim').value||ini,tipo:document.getElementById('f-tipo').value,local:document.getElementById('f-local').value,resp:document.getElementById('f-resp').value.trim(),obs:document.getElementById('f-obs').value.trim(),hi:document.getElementById('f-hi').value,hf:document.getElementById('f-hf').value};
+  events.push(ev);
+  var parts=ini.split('-');curY=parseInt(parts[0]);curM=parseInt(parts[1])-1;
+  document.getElementById('monthLabel').textContent=MONTHS[curM]+' '+curY;
+  closeModal();renderCalendar();showToast('Evento salvo com sucesso!');
+  ['f-nome','f-proj','f-obs','f-resp','f-hi','f-hf'].forEach(function(id){document.getElementById(id).value=''});
+  document.getElementById('f-area').value='';document.getElementById('f-tipo').value='chip-dac';document.getElementById('f-local').value='';
+}
+
+function showPop(e,id){
+  e.stopPropagation();
+  var ev=events.find(function(x){return x.id===id});if(!ev)return;
+  document.getElementById('popTitle').textContent=ev.nome;
+  var d='';
+  if(ev.proj)d+=prow('Projeto',ev.proj);
+  d+=prow('Área',ev.area);
+  d+=prow('Data',fmt(ev.ini)+(ev.fim&&ev.fim!==ev.ini?' → '+fmt(ev.fim):''));
+  if(ev.hi)d+=prow('Hora',ev.hi+(ev.hf?' – '+ev.hf:''));
+  if(ev.local)d+=prow('Local',ev.local);
+  if(ev.resp)d+=prow('Resp.',ev.resp);
+  if(ev.obs)d+=prow('Obs.',ev.obs);
+  document.getElementById('popBody').innerHTML=d;
+  var x=Math.min(e.clientX+8,window.innerWidth-230),y2=Math.min(e.clientY+8,window.innerHeight-220);
+  var p=document.getElementById('popup');
+  p.style.left=x+'px';p.style.top=y2+'px';p.className='popup open';
+}
+function prow(l,v){return '<div class="pop-row"><span class="pop-l">'+esc(l)+'</span><span class="pop-v">'+esc(v)+'</span></div>'}
+function closePopup(){document.getElementById('popup').className='popup'}
+document.addEventListener('click',function(e){var p=document.getElementById('popup');if(p.className.includes('open')&&!p.contains(e.target))closePopup()});
+function showToast(msg){var t=document.getElementById('toast');t.textContent=msg;t.className='toast show';setTimeout(function(){t.className='toast'},2600)}
+
+// INIT
+document.getElementById('monthLabel').textContent=MONTHS[curM]+' '+curY;
+window.addEventListener('load',function(){renderCalendar()});
+renderCalendar();
+</script>
+</body>
+</html>
