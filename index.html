@@ -101,6 +101,15 @@ html,body{background:#f0f0ec;width:100%}
 .pop-v{font-size:10px;color:#333;line-height:1.4}
 .pop-close{position:absolute;top:8px;right:8px;background:none;border:none;cursor:pointer;color:#bbb;font-size:14px}
 .pop-close:hover{color:#333}
+.pop-actions{display:flex;gap:6px;margin-top:10px;padding-top:8px;border-top:1px solid #eee}
+.pop-btn{flex:1;font-size:11px;padding:5px 8px;border-radius:6px;border:1px solid #ddd;background:#fff;cursor:pointer;font-weight:600}
+.pop-btn-edit{color:#3C3489;border-color:#AFA9EC;background:#EEEDFE}
+.pop-btn-edit:hover{background:#CECBF6}
+.pop-btn-del{color:#A32D2D;border-color:#F7C1C1;background:#FCEBEB}
+.pop-btn-del:hover{background:#F7C1C1}
+.confirm-del{display:none;margin-top:8px;padding:8px;background:#FCEBEB;border-radius:6px;font-size:11px;color:#A32D2D;text-align:center}
+.confirm-del.show{display:block}
+.confirm-del-btns{display:flex;gap:6px;margin-top:6px}
 .toast{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:#3C3489;color:#CECBF6;font-size:12px;padding:9px 18px;border-radius:8px;z-index:9998;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap}
 .toast.show{opacity:1}
 </style>
@@ -230,6 +239,17 @@ html,body{background:#f0f0ec;width:100%}
   <button class="pop-close" onclick="closePopup()">&#215;</button>
   <div class="pop-title" id="popTitle"></div>
   <div id="popBody"></div>
+  <div class="pop-actions">
+    <button class="pop-btn pop-btn-edit" onclick="editEvent()">✏️ Editar</button>
+    <button class="pop-btn pop-btn-del" onclick="showConfirmDel()">🗑️ Excluir</button>
+  </div>
+  <div class="confirm-del" id="confirmDel">
+    Confirmar exclusão?
+    <div class="confirm-del-btns">
+      <button class="pop-btn pop-btn-del" style="flex:1" onclick="deleteEvent()">Sim, excluir</button>
+      <button class="pop-btn" style="flex:1" onclick="hideConfirmDel()">Cancelar</button>
+    </div>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -239,7 +259,7 @@ var MONTHS=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agost
 var AREAS=['Alta Liderança','Liderança','Equipe','Todos','N/A'];
 var ALABELS=['ALTA LIDERANÇA','LIDERANÇA','EQUIPE','TODOS','N/A'];
 var ACLASS=['label-alta','label-lider','label-equipe','label-todos','label-na'];
-var curM=3,curY=2026,nid=300,chatOpen=false;
+var curM=3,curY=2026,nid=300,chatOpen=false,currentPopId=null,editMode=false;
 
 var events=[
   {id:1,nome:'Aula inaugural PDD',proj:'PDD',area:'Alta Liderança',ini:'2026-04-02',fim:'2026-04-02',tipo:'chip-dac',local:'Presencial',resp:'',obs:''},
@@ -403,7 +423,34 @@ function aiResp(q){
   return 'Posso ajudar com: resumo por mês, eventos de hoje, conflitos ou contagem por área. Tente uma dessas!';
 }
 
+function showConfirmDel(){document.getElementById('confirmDel').className='confirm-del show'}
+function hideConfirmDel(){document.getElementById('confirmDel').className='confirm-del'}
+function deleteEvent(){
+  events=events.filter(function(e){return e.id!==currentPopId});
+  closePopup();renderCalendar();showToast('Evento excluído!');
+}
+function editEvent(){
+  var ev=events.find(function(x){return x.id===currentPopId});if(!ev)return;
+  editMode=true;
+  closePopup();
+  document.querySelector('#modalBg .modal h3').textContent='Editar evento';
+  document.getElementById('f-nome').value=ev.nome;
+  document.getElementById('f-proj').value=ev.proj||'';
+  document.getElementById('f-area').value=ev.area;
+  document.getElementById('f-ini').value=ev.ini;
+  document.getElementById('f-fim').value=ev.fim||ev.ini;
+  document.getElementById('f-hi').value=ev.hi||'';
+  document.getElementById('f-hf').value=ev.hf||'';
+  document.getElementById('f-tipo').value=ev.tipo;
+  document.getElementById('f-local').value=ev.local||'';
+  document.getElementById('f-resp').value=ev.resp||'';
+  document.getElementById('f-obs').value=ev.obs||'';
+  document.getElementById('modalBg').className='modal-bg open';
+  setTimeout(function(){document.getElementById('f-nome').focus()},50);
+}
 function openModal(){
+  editMode=false;
+  document.querySelector('#modalBg .modal h3').textContent='Adicionar novo evento';
   var today=new Date().toISOString().split('T')[0];
   document.getElementById('f-ini').value=today;
   document.getElementById('f-fim').value=today;
@@ -419,18 +466,36 @@ function saveEvent(){
   if(!nome){showToast('Preencha o nome da ação.');return}
   if(!area){showToast('Selecione a área.');return}
   if(!ini){showToast('Informe a data início.');return}
-  var ev={id:nid++,nome:nome,proj:document.getElementById('f-proj').value.trim(),area:area,ini:ini,fim:document.getElementById('f-fim').value||ini,tipo:document.getElementById('f-tipo').value,local:document.getElementById('f-local').value,resp:document.getElementById('f-resp').value.trim(),obs:document.getElementById('f-obs').value.trim(),hi:document.getElementById('f-hi').value,hf:document.getElementById('f-hf').value};
-  events.push(ev);
-  var parts=ini.split('-');curY=parseInt(parts[0]);curM=parseInt(parts[1])-1;
-  document.getElementById('monthLabel').textContent=MONTHS[curM]+' '+curY;
-  closeModal();renderCalendar();showToast('Evento salvo com sucesso!');
+
+  if(editMode && currentPopId){
+    var idx=events.findIndex(function(e){return e.id===currentPopId});
+    if(idx>=0){
+      events[idx].nome=nome;events[idx].proj=document.getElementById('f-proj').value.trim();
+      events[idx].area=area;events[idx].ini=ini;events[idx].fim=document.getElementById('f-fim').value||ini;
+      events[idx].tipo=document.getElementById('f-tipo').value;events[idx].local=document.getElementById('f-local').value;
+      events[idx].resp=document.getElementById('f-resp').value.trim();events[idx].obs=document.getElementById('f-obs').value.trim();
+      events[idx].hi=document.getElementById('f-hi').value;events[idx].hf=document.getElementById('f-hf').value;
+    }
+    var parts=ini.split('-');curY=parseInt(parts[0]);curM=parseInt(parts[1])-1;
+    document.getElementById('monthLabel').textContent=MONTHS[curM]+' '+curY;
+    closeModal();renderCalendar();showToast('Evento atualizado!');
+  } else {
+    var ev={id:nid++,nome:nome,proj:document.getElementById('f-proj').value.trim(),area:area,ini:ini,fim:document.getElementById('f-fim').value||ini,tipo:document.getElementById('f-tipo').value,local:document.getElementById('f-local').value,resp:document.getElementById('f-resp').value.trim(),obs:document.getElementById('f-obs').value.trim(),hi:document.getElementById('f-hi').value,hf:document.getElementById('f-hf').value};
+    events.push(ev);
+    var parts=ini.split('-');curY=parseInt(parts[0]);curM=parseInt(parts[1])-1;
+    document.getElementById('monthLabel').textContent=MONTHS[curM]+' '+curY;
+    closeModal();renderCalendar();showToast('Evento salvo com sucesso!');
+  }
   ['f-nome','f-proj','f-obs','f-resp','f-hi','f-hf'].forEach(function(id){document.getElementById(id).value=''});
   document.getElementById('f-area').value='';document.getElementById('f-tipo').value='chip-dac';document.getElementById('f-local').value='';
+  editMode=false;
 }
 
 function showPop(e,id){
   e.stopPropagation();
   var ev=events.find(function(x){return x.id===id});if(!ev)return;
+  currentPopId=id;
+  document.getElementById('confirmDel').className='confirm-del';
   document.getElementById('popTitle').textContent=ev.nome;
   var d='';
   if(ev.proj)d+=prow('Projeto',ev.proj);
