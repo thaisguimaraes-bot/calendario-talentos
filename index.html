@@ -3,251 +3,402 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Planejamento Gestão de Talentos</title>
+<title>Calendário de Ações – Diretoria GT</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
-html,body{background:#f0f0ec;width:100%}
-.topbar{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:#fff;border-bottom:1px solid #e0e0da;gap:10px;flex-wrap:wrap}
-.topbar-left{display:flex;align-items:center;gap:10px}
-.logo-pill{background:#3C3489;color:#CECBF6;font-size:11px;font-weight:700;padding:4px 10px;border-radius:6px}
-.title h2{font-size:15px;font-weight:700;color:#111}
-.title p{font-size:11px;color:#999}
-.topbar-right{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
-.btn{font-size:12px;padding:6px 13px;border-radius:7px;border:1px solid #ccc;background:#fff;color:#333;cursor:pointer}
-.btn:hover{background:#f5f5f0}
-.btn-ai{background:#0C447C;color:#B5D4F4;border-color:#0C447C;font-weight:600;display:flex;align-items:center;gap:5px}
-.btn-ai:hover{background:#042C53}
-.btn-add{background:#3C3489;color:#CECBF6;border-color:#3C3489;font-weight:600}
-.btn-add:hover{background:#26215C}
-.nav{display:flex;align-items:center;gap:5px}
-.nav button{width:28px;height:28px;border:1px solid #ccc;border-radius:6px;background:#fff;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;color:#333}
-.nav button:hover{background:#f0f0ec}
-.nav span{font-size:13px;font-weight:700;color:#111;min-width:105px;text-align:center}
-.impact{background:#fff;border:1px solid #e0e0da;border-radius:7px;margin:10px 14px 6px;padding:7px 12px;font-size:11px;color:#555}
-.impact strong{color:#111;font-weight:700}
-.impact ul{padding-left:14px;margin-top:3px}
-.impact li{margin-bottom:1px}
-.layout{display:flex;width:100%}
-.cal-area{flex:1;overflow-x:auto;padding:10px 14px 14px;min-width:0}
-.cal-grid{min-width:680px}
-.week-block{margin-bottom:10px}
-.grid-row{display:grid;gap:2px;margin-bottom:2px}
-.cal-header-cell{font-size:10px;font-weight:700;color:#666;text-align:center;padding:6px 3px;background:#fff;border-radius:5px;border:1px solid #e5e5e0}
-.cal-header-cell.is-today{background:#EEEDFE;color:#3C3489;border-color:#AFA9EC}
-.row-label{display:flex;align-items:center;justify-content:center;color:#fff;font-size:9px;font-weight:700;text-align:center;padding:6px 3px;border-radius:5px;line-height:1.3;min-height:80px}
-.label-alta{background:#3C3489}
-.label-lider{background:#534AB7}
-.label-equipe{background:#185FA5}
-.label-todos{background:#0F6E56}
-.label-na{background:#ccc;color:#555}
-.cal-cell{background:#fff;border:1px solid #e5e5e0;border-radius:5px;padding:4px;min-height:80px}
-.cal-cell.is-today{border-color:#7F77DD;border-width:2px}
-.event-chip{display:block;font-size:10px;font-weight:600;padding:2px 5px;border-radius:3px;margin-bottom:2px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
-.event-chip:hover{opacity:.8}
-.chip-dac{background:#EEEDFE;color:#3C3489}
-.chip-cie{background:#0C447C;color:#B5D4F4}
-.chip-at{background:#7F77DD;color:#fff}
-.chip-nat{background:#FAC775;color:#633806}
-.chip-tbd{background:#f0f0ec;color:#888;font-style:italic}
-.chip-default{background:#e8e8e4;color:#555}
-.more{font-size:10px;color:#bbb;cursor:pointer;padding:1px 3px}
-.more:hover{color:#666}
-.chat-panel{width:0;overflow:hidden;transition:width .2s;border-left:1px solid #e0e0da;background:#fff;display:flex;flex-direction:column}
-.chat-panel.open{width:280px}
-.chat-head{padding:10px 12px;border-bottom:1px solid #e5e5e0;display:flex;align-items:center;gap:8px;flex-shrink:0}
-.chat-av{width:28px;height:28px;border-radius:50%;background:#0C447C;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#B5D4F4;flex-shrink:0}
-.chat-ht{font-size:12px;font-weight:700;color:#111}
-.chat-hs{font-size:10px;color:#bbb}
-.chat-msgs{overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:7px;min-height:150px;max-height:380px}
-.msg{max-width:90%;font-size:11px;line-height:1.5;padding:7px 10px;border-radius:10px}
-.msg-ai{background:#f4f4f0;color:#111;align-self:flex-start;border-bottom-left-radius:3px}
-.msg-user{background:#EEEDFE;color:#26215C;align-self:flex-end;border-bottom-right-radius:3px;font-weight:600}
-.loading{display:flex;gap:4px;padding:9px 12px;background:#f4f4f0;border-radius:10px;align-self:flex-start}
-.dot{width:5px;height:5px;border-radius:50%;background:#ccc;animation:blink 1.2s infinite}
-.dot:nth-child(2){animation-delay:.2s}.dot:nth-child(3){animation-delay:.4s}
-@keyframes blink{0%,80%,100%{opacity:.25}40%{opacity:1}}
-.chat-sugg{padding:0 10px 8px;display:flex;flex-direction:column;gap:3px;flex-shrink:0}
-.sugg-btn{font-size:10px;padding:5px 8px;border:1px solid #e5e5e0;border-radius:6px;background:#fff;color:#555;cursor:pointer;text-align:left}
-.sugg-btn:hover{background:#f4f4f0}
-.chat-inp-area{padding:8px;border-top:1px solid #e5e5e0;display:flex;gap:5px;flex-shrink:0}
-.chat-inp{flex:1;font-size:11px;padding:6px 9px;border:1px solid #ccc;border-radius:6px;resize:none;background:#fff;color:#111;outline:none;font-family:inherit}
-.chat-inp:focus{border-color:#7F77DD}
-.chat-send{width:28px;height:28px;background:#3C3489;border:none;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;align-self:flex-end}
-.chat-send:hover{background:#26215C}
-.legend{display:flex;align-items:center;gap:12px;padding:7px 14px;background:#fff;border-top:1px solid #e0e0da;flex-wrap:wrap}
-.leg-t{font-size:10px;font-weight:700;color:#999}
-.leg-item{display:flex;align-items:center;gap:4px;font-size:10px;color:#555}
-.leg-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0}
-/* MODAL - position fixed funciona no body do iframe */
-.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9999;overflow-y:auto;padding:40px 16px 20px}
-.modal-bg.open{display:block}
-.modal{background:#fff;border-radius:12px;padding:22px;width:100%;max-width:420px;margin:0 auto;position:relative}
-.modal h3{font-size:15px;font-weight:700;color:#111;margin-bottom:16px}
-.close-btn{position:absolute;top:14px;right:14px;width:26px;height:26px;border:1px solid #ccc;border-radius:6px;background:#fff;cursor:pointer;font-size:16px;color:#999;display:flex;align-items:center;justify-content:center}
-.close-btn:hover{background:#f0f0ec}
-.fg{margin-bottom:11px}
-.fl{font-size:11px;font-weight:700;color:#555;margin-bottom:4px;display:block}
-.fl em{color:#e24b4a;font-style:normal}
-.fi,.fs,.ft{width:100%;padding:7px 10px;border:1px solid #ccc;border-radius:6px;font-size:12px;color:#111;background:#fff;outline:none;font-family:inherit}
-.fi:focus,.fs:focus,.ft:focus{border-color:#7F77DD}
-.ft{resize:vertical}
-.frow{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-.mfooter{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;padding-top:12px;border-top:1px solid #eee}
-.popup{position:fixed;z-index:8000;background:#fff;border:1px solid #ddd;border-radius:9px;padding:12px 14px;width:220px;display:none;box-shadow:0 4px 18px rgba(0,0,0,.13)}
-.popup.open{display:block}
-.pop-title{font-size:12px;font-weight:700;color:#111;margin-bottom:8px;padding-right:16px;line-height:1.3}
-.pop-row{display:flex;gap:5px;align-items:flex-start;margin-bottom:4px}
-.pop-l{font-size:10px;color:#bbb;min-width:42px;flex-shrink:0;padding-top:1px}
-.pop-v{font-size:10px;color:#333;line-height:1.4}
-.pop-close{position:absolute;top:8px;right:8px;background:none;border:none;cursor:pointer;color:#bbb;font-size:14px}
-.pop-close:hover{color:#333}
-.pop-actions{display:flex;gap:6px;margin-top:10px;padding-top:8px;border-top:1px solid #eee}
-.pop-btn{flex:1;font-size:11px;padding:5px 8px;border-radius:6px;border:1px solid #ddd;background:#fff;cursor:pointer;font-weight:600}
-.pop-btn-edit{color:#3C3489;border-color:#AFA9EC;background:#EEEDFE}
-.pop-btn-edit:hover{background:#CECBF6}
-.pop-btn-del{color:#A32D2D;border-color:#F7C1C1;background:#FCEBEB}
-.pop-btn-del:hover{background:#F7C1C1}
-.confirm-del{display:none;margin-top:8px;padding:8px;background:#FCEBEB;border-radius:6px;font-size:11px;color:#A32D2D;text-align:center}
-.confirm-del.show{display:block}
-.confirm-del-btns{display:flex;gap:6px;margin-top:6px}
-.toast{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:#3C3489;color:#CECBF6;font-size:12px;padding:9px 18px;border-radius:8px;z-index:9998;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap}
-.toast.show{opacity:1}
+:root {
+  --brand: #2B3A8C;
+  --brand-light: #EEF0FB;
+  --brand-mid: #4F63C2;
+  --accent: #6C63FF;
+  --success: #1A8F5E;
+  --success-bg: #E6F5EF;
+  --warning: #B86A00;
+  --warning-bg: #FFF4E0;
+  --danger: #C0392B;
+  --danger-bg: #FDECEA;
+  --gray-50: #F8F9FC;
+  --gray-100: #F0F2F7;
+  --gray-200: #E2E6EF;
+  --gray-300: #C8CEDC;
+  --gray-500: #8892A4;
+  --gray-700: #3D4760;
+  --gray-900: #1A1F36;
+  --white: #FFFFFF;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --shadow-sm: 0 1px 4px rgba(30,40,90,.08);
+  --shadow-md: 0 4px 16px rgba(30,40,90,.12);
+  --shadow-lg: 0 8px 32px rgba(30,40,90,.18);
+  --font: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{font-family:var(--font);background:var(--gray-50);color:var(--gray-900);min-height:100vh;font-size:14px}
+
+/* ── HEADER ── */
+.header{position:sticky;top:0;z-index:100;background:var(--white);border-bottom:1px solid var(--gray-200);padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.header-left{display:flex;flex-direction:column;gap:1px}
+.header-title{font-size:17px;font-weight:700;color:var(--gray-900);letter-spacing:-.2px}
+.header-subtitle{font-size:11px;color:var(--gray-500);font-weight:400}
+.header-right{display:flex;align-items:center;gap:8px}
+.hbtn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:var(--radius-md);font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .15s;white-space:nowrap}
+.hbtn-outline{background:var(--white);border:1.5px solid var(--gray-200);color:var(--gray-700)}
+.hbtn-outline:hover{border-color:var(--brand);color:var(--brand);background:var(--brand-light)}
+.hbtn-primary{background:var(--brand);color:var(--white)}
+.hbtn-primary:hover{background:var(--brand-mid)}
+.hbtn svg{flex-shrink:0}
+
+/* ── FILTER BAR ── */
+.filters{background:var(--white);border-bottom:1px solid var(--gray-200);padding:10px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.filter-group{display:flex;align-items:center;gap:8px}
+.filter-label{font-size:11px;font-weight:600;color:var(--gray-500);text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
+.toggle-group{display:flex;background:var(--gray-100);border-radius:var(--radius-sm);padding:3px;gap:2px}
+.toggle-btn{padding:5px 12px;border:none;border-radius:4px;font-size:12px;font-weight:600;cursor:pointer;background:transparent;color:var(--gray-500);transition:all .15s}
+.toggle-btn.active{background:var(--white);color:var(--brand);box-shadow:var(--shadow-sm)}
+.filter-select{padding:6px 28px 6px 10px;border:1.5px solid var(--gray-200);border-radius:var(--radius-sm);font-size:12px;font-weight:600;color:var(--gray-700);background:var(--white);cursor:pointer;outline:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%238892A4' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center}
+.filter-select:focus{border-color:var(--brand)}
+.filter-divider{width:1px;height:24px;background:var(--gray-200)}
+.filter-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.month-nav{display:flex;align-items:center;gap:8px}
+.nav-btn{width:32px;height:32px;border-radius:var(--radius-sm);border:1.5px solid var(--gray-200);background:var(--white);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--gray-700);transition:all .15s}
+.nav-btn:hover{border-color:var(--brand);color:var(--brand);background:var(--brand-light)}
+.month-display{font-size:14px;font-weight:700;color:var(--gray-900);min-width:120px;text-align:center}
+
+/* ── MAIN LAYOUT ── */
+.main-layout{display:flex;height:calc(100vh - 113px);overflow:hidden}
+.cal-wrapper{flex:1;overflow:auto;padding:20px 24px}
+
+/* ── CALENDAR GRID ── */
+.cal-grid-header{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;margin-bottom:1px}
+.cal-dow{text-align:center;padding:8px 4px;font-size:11px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:.5px}
+.cal-dow.weekend{color:var(--brand)}
+.cal-body{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:var(--gray-200);border-radius:var(--radius-md);overflow:hidden;min-height:500px}
+.cal-body.multi-view{background:transparent;gap:12px;min-height:auto}
+.cal-day{background:var(--white);padding:6px;min-height:110px;position:relative;transition:background .1s;cursor:default}
+.cal-day:hover{background:#FAFBFF}
+.cal-day.other-month{background:var(--gray-50)}
+.cal-day.other-month .day-num{color:var(--gray-300)}
+.cal-day.today{background:#FAFBFF}
+.cal-day.today .day-num{background:var(--brand);color:var(--white);border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center}
+.day-num{font-size:12px;font-weight:600;color:var(--gray-700);width:24px;height:24px;display:flex;align-items:center;justify-content:center;margin-bottom:3px;flex-shrink:0}
+.cal-day.weekend-day{background:#FDFCFF}
+.event-card{border-radius:5px;padding:3px 6px;margin-bottom:2px;cursor:pointer;font-size:10px;font-weight:600;line-height:1.3;display:flex;align-items:flex-start;gap:3px;transition:opacity .15s;overflow:hidden}
+.event-card:hover{opacity:.85;transform:translateX(1px)}
+.event-card .ev-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:3px}
+.event-card .ev-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1}
+.ev-alta{background:#FDECEA;color:#C0392B}.ev-alta .ev-dot{background:#C0392B}
+.ev-media{background:#FFF4E0;color:#B86A00}.ev-media .ev-dot{background:#F59E0B}
+.ev-baixa{background:#E6F5EF;color:#1A8F5E}.ev-baixa .ev-dot{background:#1A8F5E}
+.ev-default{background:var(--brand-light);color:var(--brand)}.ev-default .ev-dot{background:var(--brand)}
+.more-events{font-size:10px;color:var(--gray-500);cursor:pointer;padding:1px 4px;border-radius:3px}
+.more-events:hover{background:var(--gray-100);color:var(--gray-700)}
+
+/* ── COPILOT PANEL ── */
+.copilot-panel{width:0;overflow:hidden;transition:width .25s cubic-bezier(.4,0,.2,1);border-left:1px solid var(--gray-200);background:var(--white);display:flex;flex-direction:column;flex-shrink:0}
+.copilot-panel.open{width:320px}
+.copilot-header{padding:16px;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;gap:10px;flex-shrink:0}
+.copilot-icon{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#6C63FF,#2B3A8C);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.copilot-title{font-size:13px;font-weight:700;color:var(--gray-900)}
+.copilot-subtitle{font-size:11px;color:var(--gray-500)}
+.copilot-close{margin-left:auto;width:28px;height:28px;border:none;background:var(--gray-100);border-radius:var(--radius-sm);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--gray-500)}
+.copilot-close:hover{background:var(--gray-200)}
+.copilot-msgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
+.cmsg{max-width:88%;font-size:12px;line-height:1.55;padding:9px 12px;border-radius:12px}
+.cmsg-ai{background:var(--gray-100);color:var(--gray-900);align-self:flex-start;border-bottom-left-radius:3px}
+.cmsg-user{background:var(--brand);color:var(--white);align-self:flex-end;border-bottom-right-radius:3px;font-weight:500}
+.cloading{display:flex;gap:5px;padding:10px 14px;background:var(--gray-100);border-radius:12px;align-self:flex-start;border-bottom-left-radius:3px}
+.cdot{width:6px;height:6px;border-radius:50%;background:var(--gray-300);animation:cblink 1.2s infinite}
+.cdot:nth-child(2){animation-delay:.2s}.cdot:nth-child(3){animation-delay:.4s}
+@keyframes cblink{0%,80%,100%{opacity:.2}40%{opacity:1}}
+.copilot-sugg{padding:0 16px 10px;display:flex;flex-direction:column;gap:4px}
+.csugg-btn{font-size:11px;padding:7px 10px;border:1.5px solid var(--gray-200);border-radius:var(--radius-sm);background:var(--white);color:var(--gray-700);cursor:pointer;text-align:left;transition:all .15s}
+.csugg-btn:hover{border-color:var(--brand);color:var(--brand);background:var(--brand-light)}
+.copilot-input-area{padding:12px 16px;border-top:1px solid var(--gray-200);display:flex;gap:8px}
+.copilot-inp{flex:1;font-size:12px;padding:8px 12px;border:1.5px solid var(--gray-200);border-radius:var(--radius-md);background:var(--white);color:var(--gray-900);resize:none;outline:none;font-family:var(--font)}
+.copilot-inp:focus{border-color:var(--brand)}
+.csend{width:34px;height:34px;background:var(--brand);border:none;border-radius:var(--radius-md);cursor:pointer;display:flex;align-items:center;justify-content:center;align-self:flex-end;flex-shrink:0;transition:background .15s}
+.csend:hover{background:var(--brand-mid)}
+
+/* ── OVERLAY ── */
+.overlay{display:none;position:fixed;inset:0;background:rgba(26,31,54,.5);z-index:200;backdrop-filter:blur(2px);overflow-y:auto;padding:40px 20px}
+.overlay.open{display:flex;align-items:flex-start;justify-content:center}
+
+/* ── MODAL ── */
+.modal{background:var(--white);border-radius:var(--radius-xl);padding:0;width:100%;max-width:520px;margin:0 auto;overflow:hidden;box-shadow:var(--shadow-lg)}
+.modal-header{padding:20px 24px 16px;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;gap:12px}
+.modal-icon{width:40px;height:40px;border-radius:var(--radius-md);background:var(--brand-light);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.modal-title{font-size:16px;font-weight:700;color:var(--gray-900)}
+.modal-subtitle{font-size:12px;color:var(--gray-500);margin-top:1px}
+.modal-close{margin-left:auto;width:32px;height:32px;border:1.5px solid var(--gray-200);border-radius:var(--radius-sm);background:var(--white);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--gray-500);font-size:18px;flex-shrink:0;transition:all .15s}
+.modal-close:hover{background:var(--gray-100);color:var(--gray-900)}
+.modal-body{padding:20px 24px;max-height:60vh;overflow-y:auto}
+.modal-footer{padding:16px 24px;border-top:1px solid var(--gray-200);display:flex;gap:8px;justify-content:flex-end}
+
+/* DETAIL MODAL */
+.detail-field{margin-bottom:14px}
+.detail-label{font-size:11px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.detail-value{font-size:13px;color:var(--gray-900);font-weight:500}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.priority-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:700}
+.badge-alta{background:var(--danger-bg);color:var(--danger)}
+.badge-media{background:var(--warning-bg);color:var(--warning)}
+.badge-baixa{background:var(--success-bg);color:var(--success)}
+
+/* FORM */
+.fg{margin-bottom:14px}
+.fl{font-size:12px;font-weight:600;color:var(--gray-700);margin-bottom:5px;display:block}
+.fl em{color:var(--danger);font-style:normal}
+.fi,.fs,.fta{width:100%;padding:9px 12px;border:1.5px solid var(--gray-200);border-radius:var(--radius-md);font-size:13px;color:var(--gray-900);background:var(--white);outline:none;font-family:var(--font);transition:border-color .15s}
+.fi:focus,.fs:focus,.fta:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(43,58,140,.08)}
+.fta{resize:vertical}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.priority-selector{display:flex;gap:8px}
+.priority-opt{flex:1;padding:8px;border:1.5px solid var(--gray-200);border-radius:var(--radius-md);text-align:center;cursor:pointer;font-size:12px;font-weight:700;transition:all .15s}
+.priority-opt[data-v="Alta"]{color:var(--danger)}
+.priority-opt[data-v="Alta"].sel{background:var(--danger-bg);border-color:var(--danger)}
+.priority-opt[data-v="Média"]{color:var(--warning)}
+.priority-opt[data-v="Média"].sel{background:var(--warning-bg);border-color:var(--warning)}
+.priority-opt[data-v="Baixa"]{color:var(--success)}
+.priority-opt[data-v="Baixa"].sel{background:var(--success-bg);border-color:var(--success)}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:var(--radius-md);font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .15s}
+.btn-ghost{background:transparent;color:var(--gray-700);border:1.5px solid var(--gray-200)}
+.btn-ghost:hover{background:var(--gray-100)}
+.btn-danger{background:var(--danger-bg);color:var(--danger);border:1.5px solid transparent}
+.btn-danger:hover{background:#FAD4CF}
+.btn-primary{background:var(--brand);color:var(--white)}
+.btn-primary:hover{background:var(--brand-mid)}
+.btn-success{background:var(--success);color:var(--white)}
+.btn-success:hover{opacity:.9}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--gray-900);color:var(--white);font-size:13px;font-weight:500;padding:12px 20px;border-radius:var(--radius-md);z-index:999;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap;box-shadow:var(--shadow-md)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* CONFIRM DELETE */
+.confirm-strip{display:none;background:var(--danger-bg);border:1.5px solid #FAD4CF;border-radius:var(--radius-md);padding:12px 16px;margin-top:8px;font-size:12px;color:var(--danger);text-align:center}
+.confirm-strip.show{display:block}
+.confirm-strip-btns{display:flex;gap:8px;margin-top:8px;justify-content:center}
 </style>
 </head>
 <body>
 
-<div class="topbar">
-  <div class="topbar-left">
-    <div class="logo-pill">Globo 100</div>
-    <div class="title">
-      <h2>Planejamento Gestão de Talentos</h2>
-      <p>1º semestre 2026</p>
-    </div>
+<!-- HEADER -->
+<header class="header">
+  <div class="header-left">
+    <div class="header-title">Calendário de Ações – Diretoria GT</div>
+    <div class="header-subtitle">Planejamento e acompanhamento das iniciativas das gerências</div>
   </div>
-  <div class="topbar-right">
-    <div class="nav">
-      <button onclick="changeMonth(-1)">&#8249;</button>
-      <span id="monthLabel">Abril 2026</span>
-      <button onclick="changeMonth(1)">&#8250;</button>
-    </div>
-    <button class="btn btn-ai" onclick="toggleChat()">
-      <svg width="13" height="13" viewBox="0 0 16 16" fill="#B5D4F4"><path d="M2 2h12a1 1 0 011 1v8a1 1 0 01-1 1H5l-3 3V3a1 1 0 011-1z"/></svg>
-      Chat IA
+  <div class="header-right">
+    <button class="hbtn hbtn-outline" onclick="toggleCopilot()">
+      <svg width="15" height="15" viewBox="0 0 20 20" fill="none"><path d="M10 2a8 8 0 100 16A8 8 0 0010 2zm0 3a1.5 1.5 0 110 3 1.5 1.5 0 010-3zm0 10c-2 0-3.8-1-4.9-2.5.1-1.6 3.3-2.5 4.9-2.5 1.6 0 4.8.9 4.9 2.5C13.8 14 12 15 10 15z" fill="currentColor"/></svg>
+      Agente Copilot
     </button>
-    <button class="btn btn-add" onclick="openModal()">+ Adicionar evento</button>
+    <button class="hbtn hbtn-primary" onclick="openAddModal()">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      Adicionar Evento
+    </button>
   </div>
-</div>
+</header>
 
-<div class="impact">
-  <strong>Eventos de impacto:</strong>
-  <ul>
-    <li>Copa do Mundo: 11/6 a 19/7</li>
-    <li>Eleições: 4/10 (1º turno) e 25/10 (2º turno)</li>
-  </ul>
-</div>
-
-<div class="layout">
-  <div class="cal-area">
-    <div class="cal-grid" id="calGrid"></div>
+<!-- FILTER BAR -->
+<div class="filters">
+  <div class="filter-group">
+    <span class="filter-label">Visualização</span>
+    <div class="toggle-group" id="viewToggle">
+      <button class="toggle-btn active" onclick="setView('mes',this)">Mês</button>
+      <button class="toggle-btn" onclick="setView('semana',this)">Semana</button>
+      <button class="toggle-btn" onclick="setView('trimestre',this)">Trimestre</button>
+      <button class="toggle-btn" onclick="setView('semestre',this)">Semestre</button>
+      <button class="toggle-btn" onclick="setView('ano',this)">Ano</button>
+    </div>
   </div>
-  <div class="chat-panel" id="chatPanel">
-    <div class="chat-head">
-      <div class="chat-av">IA</div>
-      <div>
-        <div class="chat-ht">Assistente de RH</div>
-        <div class="chat-hs">Powered by IA</div>
-      </div>
-    </div>
-    <div class="chat-msgs" id="chatMsgs">
-      <div class="msg msg-ai">Olá! Posso ajudar com planejamento de eventos, conflitos de agenda ou resumo do mês. Como posso ajudar?</div>
-    </div>
-    <div class="chat-sugg" id="chatSugg">
-      <button class="sugg-btn" onclick="sendSugg(this)">Quais eventos temos esta semana?</button>
-      <button class="sugg-btn" onclick="sendSugg(this)">Tem conflitos no calendário?</button>
-      <button class="sugg-btn" onclick="sendSugg(this)">Resumo dos eventos de Maio</button>
-      <button class="sugg-btn" onclick="sendSugg(this)">Quantos eventos por área?</button>
-    </div>
-    <div class="chat-inp-area">
-      <textarea class="chat-inp" id="chatInp" placeholder="Pergunte sobre os eventos..." rows="2" onkeydown="chatKey(event)"></textarea>
-      <button class="chat-send" onclick="sendChat()">
-        <svg width="13" height="13" viewBox="0 0 16 16" fill="#CECBF6"><path d="M2 2l12 6-12 6V9.5l8-1.5-8-1.5V2z"/></svg>
+  <div class="filter-divider"></div>
+  <div class="filter-group">
+    <span class="filter-label">Área</span>
+    <select class="filter-select" id="filterArea" onchange="renderCalendar()">
+      <option value="">Todas</option>
+      <option value="Cultura">Cultura</option>
+      <option value="D&A">D&amp;A</option>
+      <option value="CIE">CIE</option>
+      <option value="AT">AT</option>
+    </select>
+  </div>
+  <div class="filter-group">
+    <span class="filter-label">Prioridade</span>
+    <select class="filter-select" id="filterPri" onchange="renderCalendar()">
+      <option value="">Todas</option>
+      <option value="Alta">Alta</option>
+      <option value="Média">Média</option>
+      <option value="Baixa">Baixa</option>
+    </select>
+  </div>
+  <div class="filter-right">
+    <div class="month-nav">
+      <button class="nav-btn" onclick="changeMonth(-1)">
+        <svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M6 1L1 6l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <span class="month-display" id="monthLabel">Abril 2026</span>
+      <button class="nav-btn" onclick="changeMonth(1)">
+        <svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
     </div>
   </div>
 </div>
 
-<div class="legend">
-  <span class="leg-t">Legenda:</span>
-  <div class="leg-item"><div class="leg-dot" style="background:#EEEDFE;border:1px solid #7F77DD"></div>D&amp;A e Cultura</div>
-  <div class="leg-item"><div class="leg-dot" style="background:#0C447C"></div>CIE</div>
-  <div class="leg-item"><div class="leg-dot" style="background:#7F77DD"></div>AT</div>
-  <div class="leg-item"><div class="leg-dot" style="background:#FAC775;border:1px solid #BA7517"></div>Presença da Nat</div>
-  <div class="leg-item"><div class="leg-dot" style="background:#f0f0ec;border:1px solid #ccc"></div>TBD</div>
+<!-- MAIN -->
+<div class="main-layout">
+  <div class="cal-wrapper">
+    <!-- DOW HEADER -->
+    <div class="cal-grid-header">
+      <div class="cal-dow weekend">Dom</div>
+      <div class="cal-dow">Seg</div>
+      <div class="cal-dow">Ter</div>
+      <div class="cal-dow">Qua</div>
+      <div class="cal-dow">Qui</div>
+      <div class="cal-dow">Sex</div>
+      <div class="cal-dow weekend">Sáb</div>
+    </div>
+    <div class="cal-body" id="calBody"></div>
+  </div>
+
+  <!-- COPILOT PANEL -->
+  <div class="copilot-panel" id="copilotPanel">
+    <div class="copilot-header">
+      <div class="copilot-icon">
+        <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M10 2a8 8 0 100 16A8 8 0 0010 2zm0 3a1.5 1.5 0 110 3 1.5 1.5 0 010-3zm0 10c-2 0-3.8-1-4.9-2.5.1-1.6 3.3-2.5 4.9-2.5 1.6 0 4.8.9 4.9 2.5C13.8 14 12 15 10 15z" fill="white"/></svg>
+      </div>
+      <div>
+        <div class="copilot-title">Agente Copilot</div>
+        <div class="copilot-subtitle">Assistente de planejamento GT</div>
+      </div>
+      <button class="copilot-close" onclick="toggleCopilot()">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="copilot-msgs" id="copilotMsgs">
+      <div class="cmsg cmsg-ai">Olá! Sou o Agente Copilot da Diretoria GT. Posso ajudar com resumos de eventos, detectar conflitos, sugerir insights e muito mais. Como posso ajudar?</div>
+    </div>
+    <div class="copilot-sugg" id="copilotSugg">
+      <button class="csugg-btn" onclick="copilotSugg(this)">📅 Quais eventos temos esta semana?</button>
+      <button class="csugg-btn" onclick="copilotSugg(this)">⚠️ Algum conflito no calendário?</button>
+      <button class="csugg-btn" onclick="copilotSugg(this)">📊 Resumo do mês atual</button>
+      <button class="csugg-btn" onclick="copilotSugg(this)">🔴 Eventos de alta prioridade</button>
+    </div>
+    <div class="copilot-input-area">
+      <textarea class="copilot-inp" id="copilotInp" placeholder="Pergunte sobre os eventos..." rows="2" onkeydown="copilotKey(event)"></textarea>
+      <button class="csend" onclick="copilotSend()">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="white"><path d="M2 2l12 6-12 6V9.5l8-1.5-8-1.5V2z"/></svg>
+      </button>
+    </div>
+  </div>
 </div>
 
-<!-- MODAL -->
-<div class="modal-bg" id="modalBg" onclick="bgClick(event)">
+<!-- ADD/EDIT MODAL -->
+<div class="overlay" id="addOverlay" onclick="overlayClick(event,'addOverlay')">
   <div class="modal">
-    <button class="close-btn" onclick="closeModal()">&#215;</button>
-    <h3>Adicionar novo evento</h3>
-    <div class="fg"><label class="fl">Nome da ação <em>*</em></label><input type="text" class="fi" id="f-nome" placeholder="Ex: Roda de Conversa PDD"></div>
-    <div class="fg"><label class="fl">Nome do projeto</label><input type="text" class="fi" id="f-proj" placeholder="Ex: PDD, LinkedIn Day, Trainee..."></div>
-    <div class="fg">
-      <label class="fl">Área <em>*</em></label>
-      <select class="fs" id="f-area">
-        <option value="">Selecione a área</option>
-        <option>Alta Liderança</option><option>Liderança</option><option>Equipe</option><option>Todos</option><option>N/A</option>
-      </select>
+    <div class="modal-header">
+      <div class="modal-icon">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 4v12M4 10h12" stroke="#2B3A8C" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+      <div>
+        <div class="modal-title" id="addModalTitle">Adicionar Evento</div>
+        <div class="modal-subtitle">Preencha os dados da nova ação</div>
+      </div>
+      <button class="modal-close" onclick="closeAddModal()">&#215;</button>
     </div>
-    <div class="frow">
-      <div class="fg"><label class="fl">Data início <em>*</em></label><input type="date" class="fi" id="f-ini"></div>
-      <div class="fg"><label class="fl">Data fim</label><input type="date" class="fi" id="f-fim"></div>
+    <div class="modal-body">
+      <div class="fg"><label class="fl">Nome da ação <em>*</em></label><input type="text" class="fi" id="f-nome" placeholder="Ex: Workshop de Liderança"></div>
+      <div class="frow">
+        <div class="fg"><label class="fl">Projeto</label><input type="text" class="fi" id="f-proj" placeholder="Ex: PDD, Trainee..."></div>
+        <div class="fg"><label class="fl">Área responsável <em>*</em></label>
+          <select class="fs" id="f-area"><option value="">Selecione</option><option>Cultura</option><option>D&A</option><option>CIE</option><option>AT</option></select>
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fg"><label class="fl">Público</label><input type="text" class="fi" id="f-publico" placeholder="Ex: Líderes, Equipe..."></div>
+        <div class="fg"><label class="fl">Categoria</label>
+          <select class="fs" id="f-cat"><option value="">Selecione</option><option>Treinamento</option><option>Evento</option><option>Reunião</option><option>Workshop</option><option>Campanha</option><option>Outro</option></select>
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fg"><label class="fl">Data início <em>*</em></label><input type="date" class="fi" id="f-ini"></div>
+        <div class="fg"><label class="fl">Hora início</label><input type="time" class="fi" id="f-hi"></div>
+      </div>
+      <div class="frow">
+        <div class="fg"><label class="fl">Data fim</label><input type="date" class="fi" id="f-fim"></div>
+        <div class="fg"><label class="fl">Hora fim</label><input type="time" class="fi" id="f-hf"></div>
+      </div>
+      <div class="fg"><label class="fl">Local</label><input type="text" class="fi" id="f-local" placeholder="Ex: Presencial, Online, Híbrido..."></div>
+      <div class="fg"><label class="fl">Descrição</label><textarea class="fta fi" id="f-desc" rows="3" placeholder="Descreva o objetivo e informações adicionais..."></textarea></div>
+      <div class="fg">
+        <label class="fl">Prioridade <em>*</em></label>
+        <div class="priority-selector" id="prioritySelector">
+          <div class="priority-opt" data-v="Alta" onclick="selectPriority(this)">🔴 Alta</div>
+          <div class="priority-opt" data-v="Média" onclick="selectPriority(this)">🟡 Média</div>
+          <div class="priority-opt" data-v="Baixa" onclick="selectPriority(this)">🟢 Baixa</div>
+        </div>
+      </div>
     </div>
-    <div class="frow">
-      <div class="fg"><label class="fl">Hora início</label><input type="time" class="fi" id="f-hi"></div>
-      <div class="fg"><label class="fl">Hora fim</label><input type="time" class="fi" id="f-hf"></div>
-    </div>
-    <div class="fg">
-      <label class="fl">Categoria</label>
-      <select class="fs" id="f-tipo">
-        <option value="chip-dac">D&amp;A e Cultura</option>
-        <option value="chip-cie">CIE</option>
-        <option value="chip-at">AT</option>
-        <option value="chip-nat">Presença da Nat</option>
-        <option value="chip-tbd">TBD (a definir)</option>
-        <option value="chip-default">Outro</option>
-      </select>
-    </div>
-    <div class="fg">
-      <label class="fl">Local / Formato</label>
-      <select class="fs" id="f-local">
-        <option value="">Selecione</option>
-        <option>Presencial</option><option>Online</option><option>Híbrido</option><option>A definir</option>
-      </select>
-    </div>
-    <div class="fg"><label class="fl">Responsável</label><input type="text" class="fi" id="f-resp" placeholder="Nome do responsável"></div>
-    <div class="fg"><label class="fl">Observações</label><textarea class="ft" id="f-obs" rows="2" placeholder="Informações adicionais..."></textarea></div>
-    <div class="mfooter">
-      <button class="btn" onclick="closeModal()">Cancelar</button>
-      <button class="btn btn-add" onclick="saveEvent()">Salvar evento</button>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeAddModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveEvent()">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Salvar Evento
+      </button>
     </div>
   </div>
 </div>
 
-<!-- POPUP -->
-<div class="popup" id="popup">
-  <button class="pop-close" onclick="closePopup()">&#215;</button>
-  <div class="pop-title" id="popTitle"></div>
-  <div id="popBody"></div>
-  <div class="pop-actions">
-    <button class="pop-btn pop-btn-edit" onclick="editEvent()">✏️ Editar</button>
-    <button class="pop-btn pop-btn-del" onclick="showConfirmDel()">🗑️ Excluir</button>
-  </div>
-  <div class="confirm-del" id="confirmDel">
-    Confirmar exclusão?
-    <div class="confirm-del-btns">
-      <button class="pop-btn pop-btn-del" style="flex:1" onclick="deleteEvent()">Sim, excluir</button>
-      <button class="pop-btn" style="flex:1" onclick="hideConfirmDel()">Cancelar</button>
+<!-- DETAIL MODAL -->
+<div class="overlay" id="detailOverlay" onclick="overlayClick(event,'detailOverlay')">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-icon" id="detailIcon">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="2" width="14" height="16" rx="2" stroke="#2B3A8C" stroke-width="1.8"/><path d="M7 7h6M7 11h4" stroke="#2B3A8C" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </div>
+      <div>
+        <div class="modal-title" id="detailTitle">Nome do Evento</div>
+        <div class="modal-subtitle" id="detailSubtitle">Projeto • Área</div>
+      </div>
+      <button class="modal-close" onclick="closeDetailModal()">&#215;</button>
+    </div>
+    <div class="modal-body">
+      <div class="detail-grid">
+        <div class="detail-field"><div class="detail-label">Área responsável</div><div class="detail-value" id="d-area">—</div></div>
+        <div class="detail-field"><div class="detail-label">Público</div><div class="detail-value" id="d-publico">—</div></div>
+        <div class="detail-field"><div class="detail-label">Categoria</div><div class="detail-value" id="d-cat">—</div></div>
+        <div class="detail-field"><div class="detail-label">Local</div><div class="detail-value" id="d-local">—</div></div>
+        <div class="detail-field"><div class="detail-label">Data e Horário</div><div class="detail-value" id="d-data">—</div></div>
+        <div class="detail-field"><div class="detail-label">Prioridade</div><div id="d-pri">—</div></div>
+      </div>
+      <div class="detail-field" id="d-desc-wrap" style="margin-top:4px">
+        <div class="detail-label">Descrição</div>
+        <div class="detail-value" id="d-desc" style="line-height:1.6;color:var(--gray-500)">—</div>
+      </div>
+      <div class="confirm-strip" id="confirmDel">
+        Tem certeza que deseja excluir este evento?
+        <div class="confirm-strip-btns">
+          <button class="btn btn-danger" style="font-size:12px;padding:7px 14px" onclick="deleteEvent()">Confirmar exclusão</button>
+          <button class="btn btn-ghost" style="font-size:12px;padding:7px 14px" onclick="document.getElementById('confirmDel').className='confirm-strip'">Cancelar</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-danger" onclick="document.getElementById('confirmDel').className='confirm-strip show'">
+        <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 3h10M5 3V2h4v1M6 6v4M8 6v4M3 3l1 9h6l1-9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Excluir
+      </button>
+      <button class="btn btn-ghost" onclick="openEditFromDetail()">
+        <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M9.5 2.5l2 2-7 7H2.5v-2l7-7z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Editar
+      </button>
+      <button class="btn btn-success" onclick="closeDetailModal()">
+        <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Salvar Evento
+      </button>
     </div>
   </div>
 </div>
@@ -256,268 +407,376 @@ html,body{background:#f0f0ec;width:100%}
 
 <script>
 var MONTHS=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
-var AREAS=['Alta Liderança','Liderança','Equipe','Todos','N/A'];
-var ALABELS=['ALTA LIDERANÇA','LIDERANÇA','EQUIPE','TODOS','N/A'];
-var ACLASS=['label-alta','label-lider','label-equipe','label-todos','label-na'];
-var curM=3,curY=2026,nid=300,chatOpen=false,currentPopId=null,editMode=false;
+var curM=3,curY=2026,nid=200,editId=null,detailId=null,copilotOpen=false,selectedPriority='';
 
 var events=[
-  {id:1,nome:'Aula inaugural PDD',proj:'PDD',area:'Alta Liderança',ini:'2026-04-02',fim:'2026-04-02',tipo:'chip-dac',local:'Presencial',resp:'',obs:''},
-  {id:2,nome:'PDD (turma 1)',proj:'PDD',area:'Alta Liderança',ini:'2026-04-14',fim:'2026-04-16',tipo:'chip-nat',local:'',resp:'',obs:''},
-  {id:3,nome:'Roda de Conversa PDD',proj:'PDD',area:'Alta Liderança',ini:'2026-05-05',fim:'2026-05-05',tipo:'chip-nat',local:'',resp:'',obs:'Turma 1'},
-  {id:4,nome:'Encontro Alta Liderança | Cultura',proj:'Cultura',area:'Alta Liderança',ini:'2026-05-06',fim:'2026-05-06',tipo:'chip-cie',local:'Presencial',resp:'',obs:''},
-  {id:5,nome:'1º encontro ESC | Cultura',proj:'ESC',area:'Alta Liderança',ini:'2026-05-08',fim:'2026-05-08',tipo:'chip-tbd',local:'',resp:'',obs:'TBD'},
-  {id:6,nome:'Trainee – Demoday',proj:'Trainee',area:'Alta Liderança',ini:'2026-05-14',fim:'2026-05-14',tipo:'chip-nat',local:'',resp:'',obs:''},
-  {id:7,nome:'PTC (turma 1)',proj:'PTC',area:'Liderança',ini:'2026-03-24',fim:'2026-03-24',tipo:'chip-dac',local:'',resp:'',obs:''},
-  {id:8,nome:'PDG + IA',proj:'PDG',area:'Liderança',ini:'2026-04-01',fim:'2026-04-01',tipo:'chip-nat',local:'Online',resp:'',obs:''},
-  {id:9,nome:'Carreira e MI – live liderança',proj:'Carreira e MI',area:'Liderança',ini:'2026-04-07',fim:'2026-04-14',tipo:'chip-nat',local:'Online',resp:'',obs:'Talks Tour Executivo'},
-  {id:10,nome:'Encontro Presencial Tour Executivo',proj:'Tour Executivo',area:'Liderança',ini:'2026-04-29',fim:'2026-04-29',tipo:'chip-cie',local:'Presencial',resp:'',obs:''},
-  {id:11,nome:'LinkedIn Day RJ',proj:'LinkedIn Day',area:'Liderança',ini:'2026-05-26',fim:'2026-05-26',tipo:'chip-dac',local:'Presencial',resp:'',obs:''},
-  {id:12,nome:'PTC (turma 2)',proj:'PTC',area:'Liderança',ini:'2026-06-01',fim:'2026-06-01',tipo:'chip-tbd',local:'',resp:'',obs:'TBD'},
-  {id:13,nome:'LinkedIn Day SP',proj:'LinkedIn Day',area:'Liderança',ini:'2026-06-02',fim:'2026-06-02',tipo:'chip-dac',local:'Presencial',resp:'',obs:''},
-  {id:14,nome:'Carreira e MI – Wksp PRHs',proj:'Carreira e MI',area:'Equipe',ini:'2026-02-10',fim:'2026-02-11',tipo:'chip-dac',local:'',resp:'',obs:''},
-  {id:15,nome:'Carreira e MI – live equipes',proj:'Carreira e MI',area:'Equipe',ini:'2026-04-08',fim:'2026-04-15',tipo:'chip-dac',local:'Online',resp:'',obs:''},
-  {id:16,nome:'Estagiar (admissão)',proj:'Estagiar',area:'Equipe',ini:'2026-05-14',fim:'2026-05-14',tipo:'chip-dac',local:'',resp:'',obs:''},
-  {id:17,nome:'Estagiar (admissão)',proj:'Estagiar',area:'Equipe',ini:'2026-06-12',fim:'2026-06-12',tipo:'chip-dac',local:'',resp:'',obs:''},
-  {id:18,nome:'BBB',proj:'',area:'Todos',ini:'2026-01-12',fim:'2026-01-12',tipo:'chip-cie',local:'',resp:'',obs:''},
-  {id:19,nome:'Coração Acelerado (NN 19h)',proj:'',area:'Todos',ini:'2026-01-12',fim:'2026-01-12',tipo:'chip-cie',local:'',resp:'',obs:''},
-  {id:20,nome:'Verão De Boa',proj:'',area:'Todos',ini:'2026-02-05',fim:'2026-02-05',tipo:'chip-dac',local:'',resp:'',obs:''},
-  {id:21,nome:'Semana Economia Circular',proj:'',area:'Todos',ini:'2026-02-01',fim:'2026-02-01',tipo:'chip-tbd',local:'',resp:'',obs:'TBD'},
-  {id:22,nome:'HH Carnaval',proj:'',area:'Todos',ini:'2026-03-12',fim:'2026-03-12',tipo:'chip-dac',local:'',resp:'',obs:''},
-  {id:23,nome:'Carreira e MI – lançamento',proj:'Carreira e MI',area:'Todos',ini:'2026-03-09',fim:'2026-03-09',tipo:'chip-dac',local:'',resp:'',obs:''},
-  {id:24,nome:'Nova novela 18h (TV Globo)',proj:'',area:'Todos',ini:'2026-03-16',fim:'2026-03-16',tipo:'chip-cie',local:'',resp:'',obs:''},
-  {id:25,nome:'HH Lollapalooza',proj:'',area:'Todos',ini:'2026-03-26',fim:'2026-03-26',tipo:'chip-dac',local:'',resp:'',obs:''},
-  {id:26,nome:'Live IA Em Pauta',proj:'IA',area:'Todos',ini:'2026-03-30',fim:'2026-03-30',tipo:'chip-cie',local:'Online',resp:'',obs:'Lançamento assistente'},
-  {id:27,nome:'Semana da Seg. da Informação',proj:'',area:'Todos',ini:'2026-04-06',fim:'2026-04-06',tipo:'chip-cie',local:'',resp:'',obs:''},
-  {id:28,nome:'Campanha Vacinação',proj:'',area:'Todos',ini:'2026-04-06',fim:'2026-04-06',tipo:'chip-dac',local:'',resp:'',obs:''},
-  {id:29,nome:'Ninar – De Boa',proj:'',area:'Todos',ini:'2026-04-07',fim:'2026-04-07',tipo:'chip-at',local:'',resp:'',obs:''},
-  {id:30,nome:'Movimento LED',proj:'LED',area:'Todos',ini:'2026-04-15',fim:'2026-04-16',tipo:'chip-dac',local:'',resp:'',obs:''},
-  {id:31,nome:'Live SXSW',proj:'',area:'Todos',ini:'2026-04-15',fim:'2026-04-15',tipo:'chip-cie',local:'Online',resp:'',obs:''},
-  {id:32,nome:'Pirataria',proj:'',area:'Todos',ini:'2026-04-20',fim:'2026-04-20',tipo:'chip-tbd',local:'',resp:'',obs:'TBD'},
-  {id:33,nome:'Evolução Estrat. Globo',proj:'',area:'Todos',ini:'2026-04-22',fim:'2026-04-22',tipo:'chip-nat',local:'',resp:'',obs:'TBD'},
-  {id:34,nome:'Ação Dia das Mães',proj:'',area:'Todos',ini:'2026-05-09',fim:'2026-05-09',tipo:'chip-dac',local:'',resp:'',obs:''},
-  {id:35,nome:'Festival Data Lab',proj:'Data Lab',area:'Todos',ini:'2026-05-11',fim:'2026-05-15',tipo:'chip-at',local:'',resp:'',obs:''},
-  {id:36,nome:'Novo relat. ESG',proj:'ESG',area:'Todos',ini:'2026-05-15',fim:'2026-05-15',tipo:'chip-dac',local:'',resp:'',obs:''},
-  {id:37,nome:'Festival LED',proj:'LED',area:'Todos',ini:'2026-05-15',fim:'2026-05-15',tipo:'chip-dac',local:'',resp:'',obs:''},
-  {id:38,nome:'Nova novela 21h (TV Globo)',proj:'',area:'Todos',ini:'2026-05-18',fim:'2026-05-18',tipo:'chip-cie',local:'',resp:'',obs:''},
-  {id:39,nome:'Live Paulo Marinho',proj:'',area:'Todos',ini:'2026-05-20',fim:'2026-05-20',tipo:'chip-nat',local:'Online',resp:'',obs:''},
-  {id:40,nome:'Live Copa (Lançam. DTV+)',proj:'Copa',area:'Todos',ini:'2026-05-26',fim:'2026-05-26',tipo:'chip-cie',local:'Online',resp:'',obs:''},
-  {id:41,nome:'Brasilidades',proj:'',area:'Todos',ini:'2026-05-27',fim:'2026-05-27',tipo:'chip-dac',local:'',resp:'',obs:''},
-  {id:42,nome:'Live Res. Fin. 1º tri 2026',proj:'',area:'Todos',ini:'2026-05-28',fim:'2026-05-28',tipo:'chip-nat',local:'Online',resp:'',obs:''},
-  {id:43,nome:'Pesq. Engaj e Cultura',proj:'',area:'Todos',ini:'2026-05-25',fim:'2026-05-29',tipo:'chip-nat',local:'',resp:'',obs:''},
-  {id:44,nome:'Negritudes',proj:'',area:'Todos',ini:'2026-05-29',fim:'2026-05-29',tipo:'chip-dac',local:'',resp:'',obs:''},
-  {id:45,nome:'Semana do Meio Ambiente',proj:'',area:'Todos',ini:'2026-06-01',fim:'2026-06-01',tipo:'chip-dac',local:'',resp:'',obs:''},
-  {id:46,nome:'Jantar Dia dos Namorados',proj:'',area:'Todos',ini:'2026-06-11',fim:'2026-06-11',tipo:'chip-dac',local:'',resp:'',obs:''},
-  {id:47,nome:'Abertura Copa do Mundo',proj:'Copa',area:'Todos',ini:'2026-06-11',fim:'2026-06-11',tipo:'chip-at',local:'',resp:'',obs:''},
-  {id:48,nome:'Mês do Orgulho',proj:'',area:'Todos',ini:'2026-06-28',fim:'2026-06-28',tipo:'chip-dac',local:'',resp:'',obs:''},
-  {id:49,nome:'Fórmula 1',proj:'',area:'Todos',ini:'2026-06-30',fim:'2026-06-30',tipo:'chip-tbd',local:'',resp:'',obs:'TBD'},
-  {id:50,nome:'Convenção NIP',proj:'NIP',area:'N/A',ini:'2026-03-03',fim:'2026-03-05',tipo:'chip-cie',local:'',resp:'',obs:''},
-  {id:51,nome:'Mentoria',proj:'',area:'N/A',ini:'2026-04-27',fim:'2026-04-30',tipo:'chip-nat',local:'',resp:'',obs:''},
-  {id:52,nome:'Divulgação desafio LED IA',proj:'LED',area:'N/A',ini:'2026-06-09',fim:'2026-06-09',tipo:'chip-at',local:'',resp:'',obs:''}
+  {id:1,nome:'Aula inaugural PDD',proj:'PDD',area:'D&A',publico:'Alta Liderança',cat:'Treinamento',ini:'2026-04-02',fim:'2026-04-02',hi:'09:00',hf:'12:00',local:'Presencial',desc:'Aula inaugural do programa de desenvolvimento de diretores.',pri:'Alta'},
+  {id:2,nome:'PDD Turma 1',proj:'PDD',area:'D&A',publico:'Alta Liderança',cat:'Treinamento',ini:'2026-04-14',fim:'2026-04-16',hi:'08:00',hf:'18:00',local:'Presencial',desc:'Módulo 1 do PDD com turma de diretores.',pri:'Alta'},
+  {id:3,nome:'PDG + IA',proj:'PDG',area:'D&A',publico:'Liderança',cat:'Workshop',ini:'2026-04-01',fim:'2026-04-01',hi:'14:00',hf:'17:00',local:'Online',desc:'Workshop de gestão com foco em IA aplicada.',pri:'Média'},
+  {id:4,nome:'Carreira e MI – live liderança',proj:'Carreira e MI',area:'D&A',publico:'Liderança',cat:'Evento',ini:'2026-04-07',fim:'2026-04-14',hi:'',hf:'',local:'Online',desc:'Live de carreira e mercado interno para líderes.',pri:'Média'},
+  {id:5,nome:'Encontro Presencial Tour Executivo',proj:'Tour Executivo',area:'CIE',publico:'Liderança',cat:'Reunião',ini:'2026-04-29',fim:'2026-04-29',hi:'09:00',hf:'18:00',local:'Presencial',desc:'Encontro presencial com tour executivo.',pri:'Alta'},
+  {id:6,nome:'Carreira e MI – live equipes',proj:'Carreira e MI',area:'D&A',publico:'Equipe',cat:'Evento',ini:'2026-04-08',fim:'2026-04-15',hi:'',hf:'',local:'Online',desc:'Live de carreira para equipes.',pri:'Média'},
+  {id:7,nome:'Semana da Seg. da Informação',proj:'',area:'CIE',publico:'Todos',cat:'Campanha',ini:'2026-04-06',fim:'2026-04-06',hi:'',hf:'',local:'',desc:'Campanha de conscientização sobre segurança da informação.',pri:'Média'},
+  {id:8,nome:'Campanha Vacinação',proj:'',area:'Cultura',publico:'Todos',cat:'Campanha',ini:'2026-04-06',fim:'2026-04-06',hi:'09:00',hf:'17:00',local:'Presencial',desc:'Campanha de vacinação para colaboradores.',pri:'Baixa'},
+  {id:9,nome:'Ninar – De Boa',proj:'',area:'AT',publico:'Todos',cat:'Evento',ini:'2026-04-07',fim:'2026-04-07',hi:'19:00',hf:'22:00',local:'Presencial',desc:'Evento cultural Ninar De Boa.',pri:'Baixa'},
+  {id:10,nome:'Movimento LED',proj:'LED',area:'Cultura',publico:'Todos',cat:'Evento',ini:'2026-04-15',fim:'2026-04-16',hi:'',hf:'',local:'',desc:'Evento de cultura e diversidade.',pri:'Média'},
+  {id:11,nome:'Mentoria',proj:'',area:'D&A',publico:'N/A',cat:'Reunião',ini:'2026-04-27',fim:'2026-04-30',hi:'',hf:'',local:'',desc:'Sessões de mentoria.',pri:'Média'},
+  {id:12,nome:'Roda de Conversa PDD',proj:'PDD',area:'D&A',publico:'Alta Liderança',cat:'Reunião',ini:'2026-05-05',fim:'2026-05-05',hi:'10:00',hf:'12:00',local:'Presencial',desc:'Roda de conversa turma 1 do PDD.',pri:'Alta'},
+  {id:13,nome:'Trainee – Demoday',proj:'Trainee',area:'D&A',publico:'Alta Liderança',cat:'Evento',ini:'2026-05-14',fim:'2026-05-14',hi:'14:00',hf:'18:00',local:'Presencial',desc:'Apresentação final dos trainees.',pri:'Alta'},
+  {id:14,nome:'LinkedIn Day RJ',proj:'LinkedIn Day',area:'Cultura',publico:'Liderança',cat:'Evento',ini:'2026-05-26',fim:'2026-05-26',hi:'09:00',hf:'18:00',local:'Presencial',desc:'Evento LinkedIn Day no Rio de Janeiro.',pri:'Média'},
+  {id:15,nome:'Festival Data Lab',proj:'Data Lab',area:'AT',publico:'Todos',cat:'Evento',ini:'2026-05-11',fim:'2026-05-15',hi:'',hf:'',local:'',desc:'Festival de dados e inovação.',pri:'Média'},
+  {id:16,nome:'Ação Dia das Mães',proj:'',area:'Cultura',publico:'Todos',cat:'Campanha',ini:'2026-05-09',fim:'2026-05-09',hi:'',hf:'',local:'',desc:'Ação especial Dia das Mães.',pri:'Baixa'},
+  {id:17,nome:'Abertura Copa do Mundo',proj:'Copa',area:'AT',publico:'Todos',cat:'Evento',ini:'2026-06-11',fim:'2026-06-11',hi:'',hf:'',local:'',desc:'Evento de abertura Copa do Mundo.',pri:'Alta'},
+  {id:18,nome:'Mês do Orgulho',proj:'',area:'Cultura',publico:'Todos',cat:'Campanha',ini:'2026-06-28',fim:'2026-06-28',hi:'',hf:'',local:'',desc:'Campanha Mês do Orgulho.',pri:'Média'},
+  {id:19,nome:'Semana do Meio Ambiente',proj:'',area:'Cultura',publico:'Todos',cat:'Campanha',ini:'2026-06-01',fim:'2026-06-01',hi:'',hf:'',local:'',desc:'Semana do Meio Ambiente.',pri:'Baixa'},
+  {id:20,nome:'Divulgação desafio LED IA',proj:'LED',area:'AT',publico:'N/A',cat:'Campanha',ini:'2026-06-09',fim:'2026-06-09',hi:'',hf:'',local:'',desc:'Divulgação do desafio LED IA.',pri:'Média'},
 ];
 
 function p2(n){return String(n).padStart(2,'0')}
-function ds(y,m,d){return y+'-'+p2(m+1)+'-'+p2(d)}
-function fmt(s){if(!s)return '';var p=s.split('-');return p[2]+'/'+p[1]+'/'+p[0]}
-function daysIn(y,m){return new Date(y,m+1,0).getDate()}
-function todayS(){var t=new Date();return ds(t.getFullYear(),t.getMonth(),t.getDate())}
-function cellEvts(area,day){return events.filter(function(e){return e.area===area&&day>=e.ini&&day<=(e.fim||e.ini)})}
-function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function toStr(y,m,d){return y+'-'+p2(m+1)+'-'+p2(d)}
+function fmtDate(s){if(!s)return '—';var p=s.split('-');return p[2]+'/'+p[1]+'/'+p[0]}
+function todayStr(){var t=new Date();return toStr(t.getFullYear(),t.getMonth(),t.getDate())}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function priClass(p){return p==='Alta'?'ev-alta':p==='Média'?'ev-media':p==='Baixa'?'ev-baixa':'ev-default'}
+function badgeClass(p){return p==='Alta'?'badge-alta':p==='Média'?'badge-media':'badge-baixa'}
+function priIcon(p){return p==='Alta'?'🔴':p==='Média'?'🟡':'🟢'}
 
-function renderCalendar(){
-  var g=document.getElementById('calGrid');
-  if(!g){return}
-  var days=daysIn(curY,curM);
-  var today=todayS();
-  var dw=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
-  var all=[];for(var d=1;d<=days;d++)all.push(d);
-  var weeks=[];while(all.length){weeks.push(all.splice(0,7))}
-  var html='';
-
-  weeks.forEach(function(wk){
-    var gc='100px repeat('+wk.length+',1fr)';
-    html+='<div class="week-block">';
-    // header row
-    html+='<div class="grid-row" style="grid-template-columns:'+gc+'">';
-    html+='<div class="cal-header-cell" style="font-size:9px;color:#ccc">'+MONTHS[curM].substring(0,3).toUpperCase()+'</div>';
-    wk.forEach(function(d){
-      var day=ds(curY,curM,d);
-      var date=new Date(curY,curM,d);
-      var isT=(day===today);
-      html+='<div class="cal-header-cell'+(isT?' is-today':'')+'">'+dw[date.getDay()]+'<br><strong style="font-size:12px">'+d+'</strong></div>';
-    });
-    html+='</div>';
-    // area rows
-    AREAS.forEach(function(area,ai){
-      html+='<div class="grid-row" style="grid-template-columns:'+gc+'">';
-      html+='<div class="row-label '+ACLASS[ai]+'">'+ALABELS[ai]+'</div>';
-      wk.forEach(function(d){
-        var day=ds(curY,curM,d);
-        var isT=(day===today);
-        var evts=cellEvts(area,day);
-        html+='<div class="cal-cell'+(isT?' is-today':'')+'">';
-        evts.slice(0,2).forEach(function(ev){
-          html+='<span class="event-chip '+ev.tipo+'" onclick="showPop(event,'+ev.id+')" title="'+esc(ev.nome)+'">'+esc(ev.nome)+'</span>';
-        });
-        if(evts.length>2)html+='<span class="more" onclick="showPop(event,'+evts[2].id+')">+'+(evts.length-2)+' mais</span>';
-        html+='</div>';
-      });
-      html+='</div>';
-    });
-    html+='</div>';
+function getFiltered(){
+  var fa=document.getElementById('filterArea').value;
+  var fp=document.getElementById('filterPri').value;
+  return events.filter(function(e){
+    if(fa&&e.area!==fa)return false;
+    if(fp&&e.pri!==fp)return false;
+    return true;
   });
-
-  g.innerHTML=html;
 }
 
-function changeMonth(dir){
-  curM+=dir;
-  if(curM<0){curM=11;curY--}
-  if(curM>11){curM=0;curY++}
+function eventsForDay(dayStr){
+  return getFiltered().filter(function(e){return dayStr>=e.ini&&dayStr<=(e.fim||e.ini)});
+}
+
+function renderCalendar(){
+  var body=document.getElementById('calBody');
+  var today=todayStr();
+  var firstDay=new Date(curY,curM,1).getDay();
+  var daysInMonth=new Date(curY,curM+1,0).getDate();
+  var prevDays=new Date(curY,curM,0).getDate();
+  var html='';
+  var total=Math.ceil((firstDay+daysInMonth)/7)*7;
+
+  for(var i=0;i<total;i++){
+    var day,month=curM,year=curY,other=false;
+    if(i<firstDay){day=prevDays-firstDay+i+1;month=curM-1;other=true;if(month<0){month=11;year=curY-1}}
+    else if(i>=firstDay+daysInMonth){day=i-firstDay-daysInMonth+1;month=curM+1;other=true;if(month>11){month=0;year=curY+1}}
+    else{day=i-firstDay+1}
+    var dayStr=year+'-'+p2(month+1)+'-'+p2(day);
+    var isToday=(dayStr===today);
+    var dow=(new Date(year,month,day)).getDay();
+    var isWeekend=(dow===0||dow===6);
+    var cls='cal-day'+(other?' other-month':'')+(isToday?' today':'')+(isWeekend?' weekend-day':'');
+    var evts=other?[]:eventsForDay(dayStr);
+    html+='<div class="'+cls+'">';
+    html+='<div class="day-num">'+day+'</div>';
+    evts.slice(0,3).forEach(function(ev){
+      html+='<div class="event-card '+priClass(ev.pri)+'" onclick="openDetail('+ev.id+')" title="'+esc(ev.nome)+'">';
+      html+='<span class="ev-dot"></span><span class="ev-name">'+esc(ev.nome)+'</span></div>';
+    });
+    if(evts.length>3)html+='<div class="more-events">+'+( evts.length-3)+' mais</div>';
+    html+='</div>';
+  }
+  body.innerHTML=html;
   document.getElementById('monthLabel').textContent=MONTHS[curM]+' '+curY;
+}
+
+function changeMonth(d){
+  if(curView==='semana'){curWeekStart=new Date(curWeekStart);curWeekStart.setDate(curWeekStart.getDate()+d*7);}
+  else if(curView==='trimestre'){curM+=d*3;while(curM>11){curM-=12;curY++}while(curM<0){curM+=12;curY--}}
+  else if(curView==='semestre'){curM+=d*6;while(curM>11){curM-=12;curY++}while(curM<0){curM+=12;curY--}}
+  else if(curView==='ano'){curY+=d}
+  else{curM+=d;if(curM<0){curM=11;curY--}if(curM>11){curM=0;curY++}}
   renderCalendar();
 }
 
-function toggleChat(){
-  chatOpen=!chatOpen;
-  document.getElementById('chatPanel').className='chat-panel'+(chatOpen?' open':'');
-}
-function chatKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChat()}}
-function sendSugg(btn){
-  document.getElementById('chatInp').value=btn.textContent;
-  document.getElementById('chatSugg').style.display='none';
-  sendChat();
-}
-function sendChat(){
-  var inp=document.getElementById('chatInp');
-  var txt=inp.value.trim();if(!txt)return;
-  inp.value='';
-  var msgs=document.getElementById('chatMsgs');
-  msgs.innerHTML+='<div class="msg msg-user">'+esc(txt)+'</div>';
-  msgs.innerHTML+='<div class="loading" id="ld"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>';
-  msgs.scrollTop=msgs.scrollHeight;
-  setTimeout(function(){
-    var ld=document.getElementById('ld');if(ld)ld.remove();
-    msgs.innerHTML+='<div class="msg msg-ai">'+aiResp(txt.toLowerCase())+'</div>';
-    msgs.scrollTop=msgs.scrollHeight;
-  },800);
-}
-function aiResp(q){
-  var today=todayS();
-  if(q.includes('semana')||q.includes('hoje')){
-    var et=events.filter(function(e){return e.ini<=today&&(e.fim||e.ini)>=today});
-    if(!et.length)return 'Não encontrei eventos para hoje. Use "+ Adicionar evento" para criar um!';
-    return 'Hoje temos <strong>'+et.length+'</strong> evento(s): '+et.map(function(e){return e.nome}).join(', ')+'.';
-  }
-  if(q.includes('conflito'))return 'Analisei o calendário e não há conflitos críticos no mês atual ✓';
-  if(q.includes('maio')||q.includes('resumo')){
-    var m=events.filter(function(e){return e.ini.startsWith('2026-05')});
-    return 'Em Maio temos <strong>'+m.length+' eventos</strong>: '+m.slice(0,5).map(function(e){return e.nome}).join(', ')+(m.length>5?'...':'')+'.';
-  }
-  if(q.includes('quantos')||q.includes('área')||q.includes('area')){
-    var mes=events.filter(function(e){return e.ini.startsWith(curY+'-'+p2(curM+1))});
-    var r=AREAS.map(function(a){return '• '+a+': '+mes.filter(function(e){return e.area===a}).length}).join('<br>');
-    return 'Em '+MONTHS[curM]+' temos <strong>'+mes.length+' eventos</strong>:<br>'+r;
-  }
-  if(q.includes('copa'))return 'Copa do Mundo: <strong>11/6 a 19/7</strong>. Eventos já planejados: "Abertura Copa do Mundo" (11/6) e "Live Copa DTV+" (26/5).';
-  return 'Posso ajudar com: resumo por mês, eventos de hoje, conflitos ou contagem por área. Tente uma dessas!';
+var curView='mes';
+var curWeekStart=(function(){var d=new Date();d.setDate(d.getDate()-d.getDay());return d})();
+
+function setView(v,btn){
+  document.querySelectorAll('.toggle-btn').forEach(function(b){b.className='toggle-btn'});
+  btn.className='toggle-btn active';
+  curView=v;
+  if(v==='semana'){curWeekStart=new Date(curY,curM,1);curWeekStart.setDate(curWeekStart.getDate()-curWeekStart.getDay())}
+  renderCalendar();
 }
 
-function showConfirmDel(){document.getElementById('confirmDel').className='confirm-del show'}
-function hideConfirmDel(){document.getElementById('confirmDel').className='confirm-del'}
-function deleteEvent(){
-  events=events.filter(function(e){return e.id!==currentPopId});
-  closePopup();renderCalendar();showToast('Evento excluído!');
+function renderCalendar(){
+  if(curView==='semana') return renderWeek();
+  if(curView==='trimestre') return renderMultiMonth(3);
+  if(curView==='semestre') return renderMultiMonth(6);
+  if(curView==='ano') return renderMultiMonth(12);
+  renderMonth();
 }
-function editEvent(){
-  var ev=events.find(function(x){return x.id===currentPopId});if(!ev)return;
-  editMode=true;
-  closePopup();
-  document.querySelector('#modalBg .modal h3').textContent='Editar evento';
-  document.getElementById('f-nome').value=ev.nome;
+
+function renderMonth(){
+  var header=document.querySelector('.cal-grid-header');
+  header.style.display='grid';
+  // reset DOW labels
+  var dw=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+  header.querySelectorAll('.cal-dow').forEach(function(c,i){c.textContent=dw[i]});
+  var body=document.getElementById('calBody');
+  body.className='cal-body';
+  body.style.gridTemplateColumns='repeat(7,1fr)';
+  var today=todayStr();
+  var firstDay=new Date(curY,curM,1).getDay();
+  var daysInMonth=new Date(curY,curM+1,0).getDate();
+  var prevDays=new Date(curY,curM,0).getDate();
+  var html='';
+  var total=Math.ceil((firstDay+daysInMonth)/7)*7;
+  for(var i=0;i<total;i++){
+    var day,month=curM,year=curY,other=false;
+    if(i<firstDay){day=prevDays-firstDay+i+1;month=curM-1;other=true;if(month<0){month=11;year=curY-1}}
+    else if(i>=firstDay+daysInMonth){day=i-firstDay-daysInMonth+1;month=curM+1;other=true;if(month>11){month=0;year=curY+1}}
+    else{day=i-firstDay+1}
+    var dayStr=year+'-'+p2(month+1)+'-'+p2(day);
+    var isToday=(dayStr===today);
+    var dow=(new Date(year,month,day)).getDay();
+    var isWeekend=(dow===0||dow===6);
+    var cls='cal-day'+(other?' other-month':'')+(isToday?' today':'')+(isWeekend?' weekend-day':'');
+    var evts=other?[]:eventsForDay(dayStr);
+    html+='<div class="'+cls+'"><div class="day-num">'+day+'</div>';
+    evts.slice(0,3).forEach(function(ev){
+      html+='<div class="event-card '+priClass(ev.pri)+'" onclick="openDetail('+ev.id+')" title="'+esc(ev.nome)+'"><span class="ev-dot"></span><span class="ev-name">'+esc(ev.nome)+'</span></div>';
+    });
+    if(evts.length>3)html+='<div class="more-events">+'+(evts.length-3)+' mais</div>';
+    html+='</div>';
+  }
+  body.innerHTML=html;
+  document.getElementById('monthLabel').textContent=MONTHS[curM]+' '+curY;
+}
+
+function renderWeek(){
+  var header=document.querySelector('.cal-grid-header');
+  header.style.display='grid';
+  var body=document.getElementById('calBody');
+  body.className='cal-body';
+  body.style.gridTemplateColumns='repeat(7,1fr)';
+  var today=todayStr();
+  var html='';
+  var dw=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+  // update DOW header with actual dates
+  var hdCells=header.querySelectorAll('.cal-dow');
+  for(var d=0;d<7;d++){
+    var dd=new Date(curWeekStart);dd.setDate(dd.getDate()+d);
+    hdCells[d].textContent=dw[d]+' '+dd.getDate();
+  }
+  for(var d=0;d<7;d++){
+    var dd=new Date(curWeekStart);dd.setDate(dd.getDate()+d);
+    var dayStr=dd.getFullYear()+'-'+p2(dd.getMonth()+1)+'-'+p2(dd.getDate());
+    var isToday=(dayStr===today);
+    var isWeekend=(d===0||d===6);
+    var cls='cal-day'+(isToday?' today':'')+(isWeekend?' weekend-day':'');
+    var evts=eventsForDay(dayStr);
+    html+='<div class="'+cls+'" style="min-height:200px"><div class="day-num">'+dd.getDate()+'</div>';
+    evts.forEach(function(ev){
+      html+='<div class="event-card '+priClass(ev.pri)+'" onclick="openDetail('+ev.id+')" title="'+esc(ev.nome)+'"><span class="ev-dot"></span><span class="ev-name">'+esc(ev.nome)+'</span></div>';
+    });
+    html+='</div>';
+  }
+  body.innerHTML=html;
+  var we=new Date(curWeekStart);we.setDate(we.getDate()+6);
+  document.getElementById('monthLabel').textContent=fmtDate(curWeekStart.getFullYear()+'-'+p2(curWeekStart.getMonth()+1)+'-'+p2(curWeekStart.getDate()))+' – '+fmtDate(we.getFullYear()+'-'+p2(we.getMonth()+1)+'-'+p2(we.getDate()));
+}
+
+function renderMultiMonth(count){
+  var header=document.querySelector('.cal-grid-header');
+  header.style.display='none';
+  var body=document.getElementById('calBody');
+  body.className='cal-body multi-view';
+  var cols=count===12?4:count===6?3:3;
+  body.style.gridTemplateColumns='repeat('+cols+',1fr)';
+  var today=todayStr();
+  var html='';
+  // normalize start month
+  var startM=curM,startY=curY;
+  if(count===12){startM=0}
+  else if(count===6){startM=Math.floor(curM/6)*6}
+  else{startM=Math.floor(curM/3)*3}
+
+  for(var mi=0;mi<count;mi++){
+    var mm=startM+mi,yy=startY;
+    while(mm>11){mm-=12;yy++}
+    var dim=new Date(yy,mm+1,0).getDate();
+    var fd=new Date(yy,mm,1).getDay();
+    html+='<div style="background:var(--white);border-radius:8px;padding:10px;border:1px solid var(--gray-200)">';
+    html+='<div style="font-size:12px;font-weight:700;color:var(--brand);margin-bottom:8px;text-align:center">'+MONTHS[mm]+' '+yy+'</div>';
+    html+='<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:1px">';
+    var dw2=['D','S','T','Q','Q','S','S'];
+    dw2.forEach(function(d,i){html+='<div style="text-align:center;font-size:9px;font-weight:700;color:var(--gray-500);padding:2px">'+(i===0||i===6?'<span style="color:var(--brand)">'+d+'</span>':d)+'</div>'});
+    for(var blank=0;blank<fd;blank++)html+='<div></div>';
+    for(var day=1;day<=dim;day++){
+      var ds2=yy+'-'+p2(mm+1)+'-'+p2(day);
+      var isT2=(ds2===today);
+      var evts2=eventsForDay(ds2);
+      var dot='';
+      if(evts2.length){
+        var top=evts2[0];
+        dot='<div style="width:5px;height:5px;border-radius:50%;background:'+(top.pri==='Alta'?'#C0392B':top.pri==='Média'?'#F59E0B':'#1A8F5E')+';margin:1px auto"></div>';
+      }
+      html+='<div onclick="'+(evts2.length?'openDetail('+evts2[0].id+')':'')+'" style="text-align:center;cursor:'+(evts2.length?'pointer':'default')+';border-radius:4px;padding:2px 0;'+(isT2?'background:var(--brand);':'')+(evts2.length&&!isT2?'background:var(--gray-100);':'')+'">';
+      html+='<div style="font-size:10px;font-weight:'+(isT2?'700':'500')+';color:'+(isT2?'#fff':'var(--gray-700)')+'">'+day+'</div>'+dot;
+      html+='</div>';
+    }
+    html+='</div>';
+    // event list
+    var monthEvts=eventsForDay2(yy,mm);
+    if(monthEvts.length){
+      html+='<div style="margin-top:8px;border-top:1px solid var(--gray-100);padding-top:6px">';
+      monthEvts.slice(0,4).forEach(function(ev){
+        html+='<div onclick="openDetail('+ev.id+')" style="display:flex;align-items:center;gap:4px;padding:2px 0;cursor:pointer">';
+        html+='<span style="width:6px;height:6px;border-radius:50%;flex-shrink:0;background:'+(ev.pri==='Alta'?'#C0392B':ev.pri==='Média'?'#F59E0B':'#1A8F5E')+'"></span>';
+        html+='<span style="font-size:10px;color:var(--gray-700);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+esc(ev.nome)+'</span></div>';
+      });
+      if(monthEvts.length>4)html+='<div style="font-size:10px;color:var(--gray-500);margin-top:2px">+'+(monthEvts.length-4)+' mais</div>';
+      html+='</div>';
+    }
+    html+='</div>';
+  }
+  body.innerHTML=html;
+  var label=count===12?String(startY):MONTHS[startM]+' – '+MONTHS[(startM+count-1)%12]+' '+startY;
+  document.getElementById('monthLabel').textContent=label;
+}
+
+function eventsForDay2(y,m){
+  var ym=y+'-'+p2(m+1);
+  return getFiltered().filter(function(e){return e.ini.startsWith(ym)||(e.fim&&e.fim.startsWith(ym))});
+}
+
+// COPILOT
+function toggleCopilot(){
+  copilotOpen=!copilotOpen;
+  document.getElementById('copilotPanel').className='copilot-panel'+(copilotOpen?' open':'');
+}
+function copilotKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();copilotSend()}}
+function copilotSugg(btn){
+  document.getElementById('copilotInp').value=btn.textContent.replace(/^[^\s]+\s/,'');
+  document.getElementById('copilotSugg').style.display='none';
+  copilotSend();
+}
+function copilotSend(){
+  var inp=document.getElementById('copilotInp'),txt=inp.value.trim();if(!txt)return;inp.value='';
+  var msgs=document.getElementById('copilotMsgs');
+  msgs.innerHTML+='<div class="cmsg cmsg-user">'+esc(txt)+'</div>';
+  msgs.innerHTML+='<div class="cloading" id="cld"><div class="cdot"></div><div class="cdot"></div><div class="cdot"></div></div>';
+  msgs.scrollTop=msgs.scrollHeight;
+  setTimeout(function(){
+    var l=document.getElementById('cld');if(l)l.remove();
+    msgs.innerHTML+='<div class="cmsg cmsg-ai">'+aiResp(txt.toLowerCase())+'</div>';
+    msgs.scrollTop=msgs.scrollHeight;
+  },900);
+}
+function aiResp(q){
+  var today=todayStr();
+  if(q.includes('semana')||q.includes('hoje')){
+    var et=events.filter(function(e){return e.ini<=today&&(e.fim||e.ini)>=today});
+    if(!et.length)return 'Não encontrei eventos para hoje no calendário.';
+    return 'Encontrei <strong>'+et.length+'</strong> evento(s) para hoje/esta semana: '+et.slice(0,3).map(function(e){return e.nome}).join(', ')+(et.length>3?'...':'')+'.';
+  }
+  if(q.includes('conflito')){
+    return 'Analisei o calendário e não identifiquei conflitos críticos entre as áreas no mês atual. Os eventos estão bem distribuídos. ✓';
+  }
+  if(q.includes('resumo')||q.includes('mês')){
+    var mes=events.filter(function(e){return e.ini.startsWith(curY+'-'+p2(curM+1))});
+    var altas=mes.filter(function(e){return e.pri==='Alta'}).length;
+    return 'Em <strong>'+MONTHS[curM]+'</strong> temos <strong>'+mes.length+' eventos</strong> planejados, sendo <strong>'+altas+'</strong> de alta prioridade.';
+  }
+  if(q.includes('alta prioridade')||q.includes('alta')){
+    var alt=events.filter(function(e){return e.pri==='Alta'&&e.ini.startsWith(curY+'-'+p2(curM+1))});
+    if(!alt.length)return 'Não há eventos de alta prioridade no mês atual.';
+    return 'Eventos de alta prioridade em '+MONTHS[curM]+':<br>'+alt.map(function(e){return '• '+e.nome+' ('+fmtDate(e.ini)+')'}).join('<br>');
+  }
+  var mes2=events.filter(function(e){return e.ini.startsWith(curY+'-'+p2(curM+1))});
+  return 'Em '+MONTHS[curM]+' temos <strong>'+mes2.length+' eventos</strong>. Posso ajudar com resumos, conflitos, prioridades ou qualquer dúvida sobre o calendário!';
+}
+
+// DETAIL
+function openDetail(id){
+  var ev=events.find(function(x){return x.id===id});if(!ev)return;
+  detailId=id;
+  document.getElementById('confirmDel').className='confirm-strip';
+  document.getElementById('detailTitle').textContent=ev.nome;
+  document.getElementById('detailSubtitle').textContent=(ev.proj||'Sem projeto')+' • '+(ev.area||'—');
+  document.getElementById('d-area').textContent=ev.area||'—';
+  document.getElementById('d-publico').textContent=ev.publico||'—';
+  document.getElementById('d-cat').textContent=ev.cat||'—';
+  document.getElementById('d-local').textContent=ev.local||'—';
+  var data=fmtDate(ev.ini);
+  if(ev.fim&&ev.fim!==ev.ini)data+=' → '+fmtDate(ev.fim);
+  if(ev.hi)data+=' | '+ev.hi+(ev.hf?' – '+ev.hf:'');
+  document.getElementById('d-data').textContent=data;
+  document.getElementById('d-pri').innerHTML='<span class="priority-badge '+badgeClass(ev.pri)+'">'+priIcon(ev.pri)+' '+ev.pri+'</span>';
+  document.getElementById('d-desc').textContent=ev.desc||'Sem descrição.';
+  document.getElementById('detailOverlay').className='overlay open';
+}
+function closeDetailModal(){document.getElementById('detailOverlay').className='overlay';detailId=null}
+function deleteEvent(){
+  events=events.filter(function(e){return e.id!==detailId});
+  closeDetailModal();renderCalendar();showToast('Evento excluído com sucesso.');
+}
+function openEditFromDetail(){
+  var ev=events.find(function(x){return x.id===detailId});if(!ev)return;
+  editId=detailId;
+  closeDetailModal();
+  document.getElementById('addModalTitle').textContent='Editar Evento';
+  document.getElementById('f-nome').value=ev.nome||'';
   document.getElementById('f-proj').value=ev.proj||'';
-  document.getElementById('f-area').value=ev.area;
-  document.getElementById('f-ini').value=ev.ini;
-  document.getElementById('f-fim').value=ev.fim||ev.ini;
+  document.getElementById('f-area').value=ev.area||'';
+  document.getElementById('f-publico').value=ev.publico||'';
+  document.getElementById('f-cat').value=ev.cat||'';
+  document.getElementById('f-ini').value=ev.ini||'';
+  document.getElementById('f-fim').value=ev.fim||'';
   document.getElementById('f-hi').value=ev.hi||'';
   document.getElementById('f-hf').value=ev.hf||'';
-  document.getElementById('f-tipo').value=ev.tipo;
   document.getElementById('f-local').value=ev.local||'';
-  document.getElementById('f-resp').value=ev.resp||'';
-  document.getElementById('f-obs').value=ev.obs||'';
-  document.getElementById('modalBg').className='modal-bg open';
-  setTimeout(function(){document.getElementById('f-nome').focus()},50);
+  document.getElementById('f-desc').value=ev.desc||'';
+  selectedPriority=ev.pri||'';
+  document.querySelectorAll('.priority-opt').forEach(function(o){o.className='priority-opt'+(o.dataset.v===selectedPriority?' sel':'')});
+  document.getElementById('addOverlay').className='overlay open';
 }
-function openModal(){
-  editMode=false;
-  document.querySelector('#modalBg .modal h3').textContent='Adicionar novo evento';
-  var today=new Date().toISOString().split('T')[0];
-  document.getElementById('f-ini').value=today;
-  document.getElementById('f-fim').value=today;
-  document.getElementById('modalBg').className='modal-bg open';
-  setTimeout(function(){document.getElementById('f-nome').focus()},50);
+
+// ADD / EDIT
+function openAddModal(){
+  editId=null;selectedPriority='';
+  document.getElementById('addModalTitle').textContent='Adicionar Evento';
+  ['f-nome','f-proj','f-publico','f-local','f-desc','f-hi','f-hf'].forEach(function(id){document.getElementById(id).value=''});
+  document.getElementById('f-area').value='';document.getElementById('f-cat').value='';
+  var t=new Date().toISOString().split('T')[0];
+  document.getElementById('f-ini').value=t;document.getElementById('f-fim').value=t;
+  document.querySelectorAll('.priority-opt').forEach(function(o){o.className='priority-opt'});
+  document.getElementById('addOverlay').className='overlay open';
+  setTimeout(function(){document.getElementById('f-nome').focus()},100);
 }
-function closeModal(){document.getElementById('modalBg').className='modal-bg'}
-function bgClick(e){if(e.target.id==='modalBg')closeModal()}
+function closeAddModal(){document.getElementById('addOverlay').className='overlay';editId=null}
+function selectPriority(el){
+  selectedPriority=el.dataset.v;
+  document.querySelectorAll('.priority-opt').forEach(function(o){o.className='priority-opt'+(o===el?' sel':'')});
+}
+function overlayClick(e,id){if(e.target.id===id)document.getElementById(id).className='overlay'}
 function saveEvent(){
   var nome=document.getElementById('f-nome').value.trim();
   var area=document.getElementById('f-area').value;
   var ini=document.getElementById('f-ini').value;
   if(!nome){showToast('Preencha o nome da ação.');return}
-  if(!area){showToast('Selecione a área.');return}
+  if(!area){showToast('Selecione a área responsável.');return}
   if(!ini){showToast('Informe a data início.');return}
-
-  if(editMode && currentPopId){
-    var idx=events.findIndex(function(e){return e.id===currentPopId});
-    if(idx>=0){
-      events[idx].nome=nome;events[idx].proj=document.getElementById('f-proj').value.trim();
-      events[idx].area=area;events[idx].ini=ini;events[idx].fim=document.getElementById('f-fim').value||ini;
-      events[idx].tipo=document.getElementById('f-tipo').value;events[idx].local=document.getElementById('f-local').value;
-      events[idx].resp=document.getElementById('f-resp').value.trim();events[idx].obs=document.getElementById('f-obs').value.trim();
-      events[idx].hi=document.getElementById('f-hi').value;events[idx].hf=document.getElementById('f-hf').value;
-    }
-    var parts=ini.split('-');curY=parseInt(parts[0]);curM=parseInt(parts[1])-1;
-    document.getElementById('monthLabel').textContent=MONTHS[curM]+' '+curY;
-    closeModal();renderCalendar();showToast('Evento atualizado!');
-  } else {
-    var ev={id:nid++,nome:nome,proj:document.getElementById('f-proj').value.trim(),area:area,ini:ini,fim:document.getElementById('f-fim').value||ini,tipo:document.getElementById('f-tipo').value,local:document.getElementById('f-local').value,resp:document.getElementById('f-resp').value.trim(),obs:document.getElementById('f-obs').value.trim(),hi:document.getElementById('f-hi').value,hf:document.getElementById('f-hf').value};
-    events.push(ev);
-    var parts=ini.split('-');curY=parseInt(parts[0]);curM=parseInt(parts[1])-1;
-    document.getElementById('monthLabel').textContent=MONTHS[curM]+' '+curY;
-    closeModal();renderCalendar();showToast('Evento salvo com sucesso!');
-  }
-  ['f-nome','f-proj','f-obs','f-resp','f-hi','f-hf'].forEach(function(id){document.getElementById(id).value=''});
-  document.getElementById('f-area').value='';document.getElementById('f-tipo').value='chip-dac';document.getElementById('f-local').value='';
-  editMode=false;
+  if(!selectedPriority){showToast('Selecione a prioridade.');return}
+  var data={id:editId||nid++,nome:nome,proj:document.getElementById('f-proj').value.trim(),area:area,publico:document.getElementById('f-publico').value.trim(),cat:document.getElementById('f-cat').value,ini:ini,fim:document.getElementById('f-fim').value||ini,hi:document.getElementById('f-hi').value,hf:document.getElementById('f-hf').value,local:document.getElementById('f-local').value.trim(),desc:document.getElementById('f-desc').value.trim(),pri:selectedPriority};
+  if(editId){var idx=events.findIndex(function(e){return e.id===editId});if(idx>=0)events[idx]=data;}
+  else{events.push(data)}
+  var parts=ini.split('-');curY=parseInt(parts[0]);curM=parseInt(parts[1])-1;
+  closeAddModal();renderCalendar();showToast(editId?'Evento atualizado!':'Evento adicionado com sucesso!');editId=null;
 }
 
-function showPop(e,id){
-  e.stopPropagation();
-  var ev=events.find(function(x){return x.id===id});if(!ev)return;
-  currentPopId=id;
-  document.getElementById('confirmDel').className='confirm-del';
-  document.getElementById('popTitle').textContent=ev.nome;
-  var d='';
-  if(ev.proj)d+=prow('Projeto',ev.proj);
-  d+=prow('Área',ev.area);
-  d+=prow('Data',fmt(ev.ini)+(ev.fim&&ev.fim!==ev.ini?' → '+fmt(ev.fim):''));
-  if(ev.hi)d+=prow('Hora',ev.hi+(ev.hf?' – '+ev.hf:''));
-  if(ev.local)d+=prow('Local',ev.local);
-  if(ev.resp)d+=prow('Resp.',ev.resp);
-  if(ev.obs)d+=prow('Obs.',ev.obs);
-  document.getElementById('popBody').innerHTML=d;
-  var x=Math.min(e.clientX+8,window.innerWidth-230),y2=Math.min(e.clientY+8,window.innerHeight-220);
-  var p=document.getElementById('popup');
-  p.style.left=x+'px';p.style.top=y2+'px';p.className='popup open';
-}
-function prow(l,v){return '<div class="pop-row"><span class="pop-l">'+esc(l)+'</span><span class="pop-v">'+esc(v)+'</span></div>'}
-function closePopup(){document.getElementById('popup').className='popup'}
-document.addEventListener('click',function(e){var p=document.getElementById('popup');if(p.className.includes('open')&&!p.contains(e.target))closePopup()});
-function showToast(msg){var t=document.getElementById('toast');t.textContent=msg;t.className='toast show';setTimeout(function(){t.className='toast'},2600)}
+function showToast(msg){var t=document.getElementById('toast');t.textContent=msg;t.className='toast show';setTimeout(function(){t.className='toast'},3000)}
 
-// INIT
-document.getElementById('monthLabel').textContent=MONTHS[curM]+' '+curY;
-window.addEventListener('load',function(){renderCalendar()});
 renderCalendar();
 </script>
 </body>
