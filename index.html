@@ -407,7 +407,53 @@ html,body{font-family:var(--font);background:var(--gray-50);color:var(--gray-900
 
 <script>
 var MONTHS=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
-var curM=3,curY=2026,nid=200,editId=null,detailId=null,copilotOpen=false,selectedPriority='';
+var curM=3,curY=2026,nid=300,editId=null,detailId=null,copilotOpen=false,selectedPriority='';
+
+// ── GITHUB PERSISTENCE ──────────────────────────────────────────────────────
+var GH_USER='thaisguimaraes-bot';
+var GH_REPO='calendario-talentos';
+var GH_FILE='events.json';
+var GH_TOKEN='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'; // Cole seu token aqui: 'ghp_...'
+var ghFileSha=null;
+
+function ghHeaders(){
+  var h={'Content-Type':'application/json','Accept':'application/vnd.github+json'};
+  if(GH_TOKEN)h['Authorization']='Bearer '+GH_TOKEN;
+  return h;
+}
+
+function loadEventsFromGitHub(cb){
+  var url='https://api.github.com/repos/'+GH_USER+'/'+GH_REPO+'/contents/'+GH_FILE;
+  fetch(url,{headers:ghHeaders()})
+    .then(function(r){return r.json()})
+    .then(function(data){
+      if(data.content){
+        ghFileSha=data.sha;
+        var decoded=JSON.parse(atob(data.content.replace(/\n/g,'')));
+        events=decoded.events||decoded;
+        nid=Math.max.apply(null,events.map(function(e){return e.id||0}))+1;
+      }
+      if(cb)cb();
+    })
+    .catch(function(){if(cb)cb()});
+}
+
+function saveEventsToGitHub(msg){
+  if(!GH_TOKEN){showToast(msg||'Evento salvo (sessão apenas — configure o token para persistir).');renderCalendar();return;}
+  showToast('Salvando...');
+  var url='https://api.github.com/repos/'+GH_USER+'/'+GH_REPO+'/contents/'+GH_FILE;
+  var body={message:'Atualiza eventos: '+(new Date().toLocaleString('pt-BR')),content:btoa(unescape(encodeURIComponent(JSON.stringify({events:events},null,2))))};
+  if(ghFileSha)body.sha=ghFileSha;
+  fetch(url,{method:'PUT',headers:ghHeaders(),body:JSON.stringify(body)})
+    .then(function(r){return r.json()})
+    .then(function(data){
+      if(data.content)ghFileSha=data.content.sha;
+      showToast(msg||'Salvo no GitHub com sucesso! ✓');
+      renderCalendar();
+    })
+    .catch(function(){showToast('Erro ao salvar. Verifique o token.');renderCalendar()});
+}
+// ────────────────────────────────────────────────────────────────────────────
 
 var events=[
   {id:1,nome:'Aula inaugural PDD',proj:'PDD',area:'D&A',publico:'Alta Liderança',cat:'Treinamento',ini:'2026-04-02',fim:'2026-04-02',hi:'09:00',hf:'12:00',local:'Presencial',desc:'Aula inaugural do programa de desenvolvimento de diretores.',pri:'Alta'},
@@ -719,7 +765,8 @@ function openDetail(id){
 function closeDetailModal(){document.getElementById('detailOverlay').className='overlay';detailId=null}
 function deleteEvent(){
   events=events.filter(function(e){return e.id!==detailId});
-  closeDetailModal();renderCalendar();showToast('Evento excluído com sucesso.');
+  closeDetailModal();
+  saveEventsToGitHub('Evento excluído com sucesso.');
 }
 function openEditFromDetail(){
   var ev=events.find(function(x){return x.id===detailId});if(!ev)return;
@@ -772,12 +819,15 @@ function saveEvent(){
   if(editId){var idx=events.findIndex(function(e){return e.id===editId});if(idx>=0)events[idx]=data;}
   else{events.push(data)}
   var parts=ini.split('-');curY=parseInt(parts[0]);curM=parseInt(parts[1])-1;
-  closeAddModal();renderCalendar();showToast(editId?'Evento atualizado!':'Evento adicionado com sucesso!');editId=null;
+  closeAddModal();
+  saveEventsToGitHub(editId?'Evento atualizado!':'Evento adicionado com sucesso!');
+  editId=null;
 }
 
 function showToast(msg){var t=document.getElementById('toast');t.textContent=msg;t.className='toast show';setTimeout(function(){t.className='toast'},3000)}
 
-renderCalendar();
+// Init — tenta carregar eventos salvos do GitHub, senão usa os eventos padrão
+loadEventsFromGitHub(function(){renderCalendar()});
 </script>
 </body>
 </html>
