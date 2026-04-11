@@ -179,11 +179,7 @@ html,body{font-family:var(--font);background:var(--gray-50);color:var(--gray-900
     <div class="header-subtitle">Planejamento e acompanhamento das iniciativas das gerências</div>
   </div>
   <div class="header-right">
-    <!-- FIX #TOKEN: botão para salvar token no localStorage sem expor no código -->
-    <button class="hbtn hbtn-outline" onclick="promptToken()" title="Configurar token GitHub">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="5" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M2 13c0-2.8 2.2-5 5-5s5 2.2 5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-      Token
-    </button>
+    <!-- Supabase: sem token necessário -->
     <button class="hbtn hbtn-primary" onclick="openAddModal()">
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
       Adicionar Evento
@@ -488,112 +484,59 @@ html,body{font-family:var(--font);background:var(--gray-50);color:var(--gray-900
 var MONTHS=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 var curM=3,curY=2026,nid=300,editId=null,detailId=null,selectedPriority='';
 
-// ── FIX #1: TOKEN VIA localStorage — nunca exposto no código/repositório ────
-var GH_USER='thaisguimaraes-bot';
-var GH_REPO='calendario-talentos';
-var GH_FILE='events.json';
-var GH_TOKEN=localStorage.getItem('gh_token')||'';
-var ghFileSha=null;
+// ── SUPABASE CONFIG — sem token, funciona para todos ─────────────────────────
+var SB_URL = 'https://gwzumvcydqbjwkcidlnp.supabase.co';
+var SB_KEY = 'sb_publishable_cqxBfs_IhRqSqvw8clBkZg_eD9hXTFL';
+var _saving = false;
 
-// FIX #7: flag para evitar duplo clique em salvar
-var _saving=false;
-
-function promptToken(){
-  var t=prompt('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',localStorage.getItem('gh_token')||'');
-  if(t!==null){
-    t=t.trim();
-    localStorage.setItem('gh_token',t);
-    GH_TOKEN=t;
-    showToast(GH_TOKEN?'Token salvo com sucesso! ✓':'Token removido.');
-  }
-}
-
-function ghHeaders(){
-  var h={'Content-Type':'application/json','Accept':'application/vnd.github+json'};
-  if(GH_TOKEN)h['Authorization']='Bearer '+GH_TOKEN;
-  return h;
-}
-
-// FIX #2: URL com ?ref=main para evitar erro 409 e branch errada
-function ghUrl(){
-  return 'https://api.github.com/repos/'+GH_USER+'/'+GH_REPO+'/contents/'+GH_FILE+'?ref=main';
-}
-
-function loadEventsFromGitHub(cb){
-  fetch(ghUrl()+'&t='+Date.now(),{headers:ghHeaders(),cache:'no-store'})
-    .then(function(r){return r.json()})
-    .then(function(data){
-      if(data.content){
-        ghFileSha=data.sha;
-        var decoded=JSON.parse(decodeURIComponent(escape(atob(data.content.replace(/\n/g,'')))));
-        var loaded=Array.isArray(decoded)?decoded:(decoded.events||decoded);
-        if(loaded&&loaded.length>0){
-          events=loaded;
-          nid=Math.max.apply(null,events.map(function(e){return e.id||0}))+1;
-        }
-      }
-      if(cb)cb();
-    })
-    .catch(function(e){
-      // FIX #4: avisa o usuário em caso de falha no carregamento
-      console.error('Erro ao carregar do GitHub:',e);
-      showToast('Erro ao carregar dados — usando versão local');
-      if(cb)cb();
-    });
-}
-
-async function saveEventsToGitHub(msg){
-  // FIX #7: previne duplo clique
-  if(_saving){showToast('Aguarde, salvando...');return;}
-  _saving=true;
-
-  if(!GH_TOKEN){
-    showToast('Configure o token primeiro (botão "Token" no topo).');
-    renderCalendar();
-    _saving=false;
-    return;
-  }
-
-  showToast('Salvando...');
-
-  // FIX #8: recarrega SHA atualizado antes de salvar para evitar conflito entre usuários
-  try{
-    var shaRes=await fetch(ghUrl()+'&t='+Date.now(),{headers:ghHeaders(),cache:'no-store'});
-    var shaData=await shaRes.json();
-    if(shaData.sha) ghFileSha=shaData.sha;
-  }catch(e){
-    console.warn('Erro ao obter SHA atualizado:',e);
-  }
-
-  // FIX #2: URL de escrita também com ?ref=main (branch explícita no PUT)
-  var putUrl='https://api.github.com/repos/'+GH_USER+'/'+GH_REPO+'/contents/'+GH_FILE;
-  var body={
-    message:'Atualiza eventos: '+(new Date().toLocaleString('pt-BR')),
-    content:btoa(unescape(encodeURIComponent(JSON.stringify({events:events},null,2)))),
-    branch:'main'
+function sbHeaders(){
+  return {
+    'Content-Type': 'application/json',
+    'apikey': SB_KEY,
+    'Authorization': 'Bearer ' + SB_KEY
   };
-  if(ghFileSha)body.sha=ghFileSha;
+}
 
-  fetch(putUrl,{method:'PUT',headers:ghHeaders(),body:JSON.stringify(body)})
-    .then(function(r){return r.json()})
+function loadEventsFromGitHub(cb){ // nome mantido para não quebrar a chamada no final
+  fetch(SB_URL + '/rest/v1/events?id=eq.1', { headers: sbHeaders() })
+    .then(function(r){ return r.json() })
     .then(function(data){
-      if(data.content){
-        // FIX #3: atualiza ghFileSha após salvar para evitar conflito na próxima operação
-        ghFileSha=data.content.sha;
-        showToast(msg||'Salvo no GitHub com sucesso! ✓');
-      } else {
-        var errMsg=data.message||JSON.stringify(data);
-        showToast('Erro GitHub: '+errMsg);
-        console.error('GitHub save error:',data);
+      if(data && data[0] && data[0].data && data[0].data.length > 0){
+        events = data[0].data;
+        nid = Math.max.apply(null, events.map(function(e){ return e.id||0 })) + 1;
       }
-      renderCalendar();
-      _saving=false;
+      if(cb) cb();
     })
     .catch(function(e){
-      showToast('Erro ao salvar: '+e.message);
-      renderCalendar();
-      _saving=false;
+      showToast('Erro ao carregar — usando dados locais');
+      console.error(e);
+      if(cb) cb();
     });
+}
+
+function saveEventsToGitHub(msg){ // nome mantido para não quebrar chamadas existentes
+  if(_saving){ showToast('Aguarde...'); return; }
+  _saving = true;
+  showToast('Salvando...');
+  fetch(SB_URL + '/rest/v1/events?id=eq.1', {
+    method: 'PATCH',
+    headers: Object.assign({}, sbHeaders(), { 'Prefer': 'return=minimal' }),
+    body: JSON.stringify({ data: events })
+  })
+  .then(function(r){
+    if(r.ok){
+      showToast(msg || 'Salvo com sucesso! ✓');
+    } else {
+      return r.text().then(function(t){ showToast('Erro: ' + t); });
+    }
+    renderCalendar();
+    _saving = false;
+  })
+  .catch(function(e){
+    showToast('Erro ao salvar: ' + e.message);
+    renderCalendar();
+    _saving = false;
+  });
 }
 // ─────────────────────────────────────────────────────────────────────────────
 
