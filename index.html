@@ -66,15 +66,18 @@ html,body{font-family:var(--font);background:var(--gray-50);color:var(--gray-900
 .month-display{font-size:14px;font-weight:700;color:var(--gray-900);min-width:120px;text-align:center}
 
 /* ── MAIN LAYOUT ── */
-.main-layout{display:flex;height:calc(100vh - 113px);overflow:hidden}
-.cal-wrapper{flex:1;overflow:auto;padding:20px 24px}
+.main-layout{display:flex;min-height:calc(100vh - 170px);overflow:visible}
+.cal-wrapper{flex:1;overflow-x:auto;overflow-y:visible;padding:16px 24px 24px}
 
 /* ── CALENDAR GRID ── */
-.cal-grid-header{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;margin-bottom:1px}
-.cal-dow{text-align:center;padding:8px 4px;font-size:11px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:.5px}
+/* ── SINGLE MASTER GRID: header + days in one grid ── */
+.cal-master{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:1px;background:var(--gray-200);border-radius:var(--radius-md);overflow:hidden;min-width:700px}
+.cal-dow{text-align:center;padding:8px 4px;font-size:11px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:.5px;background:var(--white)}
 .cal-dow.weekend{color:var(--brand)}
-.cal-body{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:var(--gray-200);border-radius:var(--radius-md);overflow:hidden;min-height:500px}
-.cal-body.multi-view{background:transparent;gap:12px;min-height:auto}
+/* keep these for multi-view compatibility */
+.cal-grid-header{display:none}
+.cal-body{display:contents}
+.cal-body.multi-view{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;background:transparent;border-radius:0}
 .cal-day{background:var(--white);padding:6px;min-height:110px;position:relative;transition:background .1s;cursor:default;overflow:visible}
 .cal-day:hover{background:#FAFBFF}
 .cal-day.other-month{background:var(--gray-50)}
@@ -343,8 +346,8 @@ html,body{font-family:var(--font);background:var(--gray-50);color:var(--gray-900
 <!-- MAIN -->
 <div class="main-layout">
   <div class="cal-wrapper">
-    <!-- DOW HEADER -->
-    <div class="cal-grid-header">
+    <!-- MASTER GRID: DOW headers + day cells in ONE grid -->
+    <div class="cal-master" id="calMaster">
       <div class="cal-dow weekend">Dom</div>
       <div class="cal-dow">Seg</div>
       <div class="cal-dow">Ter</div>
@@ -352,8 +355,8 @@ html,body{font-family:var(--font);background:var(--gray-50);color:var(--gray-900
       <div class="cal-dow">Qui</div>
       <div class="cal-dow">Sex</div>
       <div class="cal-dow weekend">Sáb</div>
+      <!-- day cells injected here by JS -->
     </div>
-    <div class="cal-body" id="calBody"></div>
   </div>
 
   <!-- COPILOT PANEL -->
@@ -583,10 +586,13 @@ function loadEventsFromGitHub(cb){
       if(data.content){
         ghFileSha=data.sha;
         var decoded=JSON.parse(atob(data.content.replace(/\n/g,'')));
-        if(Array.isArray(decoded)) events=decoded;
-        else if(decoded.events) events=decoded.events;
-        else events=decoded;
-        nid=Math.max.apply(null,events.map(function(e){return e.id||0}))+1;
+        var loaded=Array.isArray(decoded)?decoded:(decoded.events||decoded);
+        // Only use GitHub data if it has events (not empty)
+        if(loaded&&loaded.length>0){
+          events=loaded;
+          nid=Math.max.apply(null,events.map(function(e){return e.id||0}))+1;
+        }
+        // else: keep hardcoded seed events
       }
       if(cb)cb();
     })
@@ -839,14 +845,20 @@ function renderCalendar(){
 }
 
 function renderMonth(){
-  var header=document.querySelector('.cal-grid-header');
-  header.style.display='grid';
-  // reset DOW labels
+  var master=document.getElementById('calMaster');
+  // Restore DOW headers (first 7 children)
   var dw=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
-  header.querySelectorAll('.cal-dow').forEach(function(c,i){c.textContent=dw[i]});
-  var body=document.getElementById('calBody');
-  body.className='cal-body';
-  body.style.gridTemplateColumns='repeat(7,1fr)';
+  var hdCells=master.querySelectorAll('.cal-dow');
+  hdCells.forEach(function(c,i){
+    c.textContent=dw[i];
+    c.style.display='';
+    c.className='cal-dow'+(i===0||i===6?' weekend':'');
+  });
+  master.className='cal-master';
+  master.style.gridTemplateColumns='repeat(7,minmax(0,1fr))';
+  master.style.background='var(--gray-200)';
+  master.style.borderRadius='var(--radius-md)';
+  var body=master; // inject directly into master
   var today=todayStr();
   var firstDay=new Date(curY,curM,1).getDay();
   var daysInMonth=new Date(curY,curM+1,0).getDate();
@@ -876,25 +888,30 @@ function renderMonth(){
     if(evts.length>3)html+='<div class="more-events" data-day="'+dayStr+'" onclick="openDayPopup(event)">+'+(evts.length-3)+' mais</div>';
     html+='</div>';
   }
-  body.innerHTML=html;
+  // Remove old day cells (keep first 7 DOW headers)
+  var master=document.getElementById('calMaster');
+  while(master.children.length>7) master.removeChild(master.lastChild);
+  master.insertAdjacentHTML('beforeend',html);
   document.getElementById('monthLabel').textContent=MONTHS[curM]+' '+curY;
   renderTbdPanel();
 }
 
 function renderWeek(){
-  var header=document.querySelector('.cal-grid-header');
-  header.style.display='grid';
-  var body=document.getElementById('calBody');
-  body.className='cal-body';
-  body.style.gridTemplateColumns='repeat(7,1fr)';
+  var master=document.getElementById('calMaster');
+  master.className='cal-master';
+  master.style.gridTemplateColumns='repeat(7,minmax(0,1fr))';
+  master.style.background='var(--gray-200)';
+  master.style.borderRadius='var(--radius-md)';
+  master.querySelectorAll('.cal-dow').forEach(function(c){c.style.display=''});
   var today=todayStr();
   var html='';
   var dw=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
-  // update DOW header with actual dates
-  var hdCells=header.querySelectorAll('.cal-dow');
+  // Update DOW headers with actual dates
+  var hdCells=master.querySelectorAll('.cal-dow');
   for(var d=0;d<7;d++){
     var dd=new Date(curWeekStart);dd.setDate(dd.getDate()+d);
     hdCells[d].textContent=dw[d]+' '+dd.getDate();
+    hdCells[d].style.display='';
   }
   for(var d=0;d<7;d++){
     var dd=new Date(curWeekStart);dd.setDate(dd.getDate()+d);
@@ -914,19 +931,23 @@ function renderWeek(){
     });
     html+='</div>';
   }
-  body.innerHTML=html;
+  var master=document.getElementById('calMaster');
+  while(master.children.length>7) master.removeChild(master.lastChild);
+  master.insertAdjacentHTML('beforeend',html);
   var we=new Date(curWeekStart);we.setDate(we.getDate()+6);
   document.getElementById('monthLabel').textContent=fmtDate(curWeekStart.getFullYear()+'-'+p2(curWeekStart.getMonth()+1)+'-'+p2(curWeekStart.getDate()))+' – '+fmtDate(we.getFullYear()+'-'+p2(we.getMonth()+1)+'-'+p2(we.getDate()));
   renderTbdPanel();
 }
 
 function renderMultiMonth(count){
-  var header=document.querySelector('.cal-grid-header');
-  header.style.display='none';
-  var body=document.getElementById('calBody');
-  body.className='cal-body multi-view';
+  var master=document.getElementById('calMaster');
+  // Hide DOW headers for multi-view
+  master.querySelectorAll('.cal-dow').forEach(function(c){c.style.display='none'});
   var cols=count===12?4:count===6?3:3;
-  body.style.gridTemplateColumns='repeat('+cols+',1fr)';
+  master.className='cal-master';
+  master.style.gridTemplateColumns='repeat('+cols+',minmax(0,1fr))';
+  master.style.background='transparent';
+  master.style.borderRadius='0';
   var today=todayStr();
   var html='';
   // normalize start month
@@ -974,7 +995,9 @@ function renderMultiMonth(count){
     }
     html+='</div>';
   }
-  body.innerHTML=html;
+  var master=document.getElementById('calMaster');
+  while(master.children.length>7) master.removeChild(master.lastChild);
+  master.insertAdjacentHTML('beforeend',html);
   var label=count===12?String(startY):MONTHS[startM]+' – '+MONTHS[(startM+count-1)%12]+' '+startY;
   document.getElementById('monthLabel').textContent=label;
   renderTbdPanel();
