@@ -516,8 +516,15 @@ var GH_TOKEN='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'; // Cole seu novo token 
 var ghFileSha=null;
 
 function ghHeaders(){
-  var h={'Content-Type':'application/json','Accept':'application/vnd.github+json'};
-  if(GH_TOKEN)h['Authorization']='Bearer '+GH_TOKEN;
+  var h = {
+    'Content-Type': 'application/json',
+    'Accept': 'application/vnd.github+json'
+  };
+
+  if(GH_TOKEN){
+    h['Authorization'] = 'token ' + GH_TOKEN;
+  }
+
   return h;
 }
 
