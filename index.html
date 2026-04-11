@@ -75,7 +75,7 @@ html,body{font-family:var(--font);background:var(--gray-50);color:var(--gray-900
 .cal-dow.weekend{color:var(--brand)}
 .cal-body{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:var(--gray-200);border-radius:var(--radius-md);overflow:hidden;min-height:500px}
 .cal-body.multi-view{background:transparent;gap:12px;min-height:auto}
-.cal-day{background:var(--white);padding:6px;min-height:110px;position:relative;transition:background .1s;cursor:default}
+.cal-day{background:var(--white);padding:6px;min-height:110px;position:relative;transition:background .1s;cursor:default;overflow:visible}
 .cal-day:hover{background:#FAFBFF}
 .cal-day.other-month{background:var(--gray-50)}
 .cal-day.other-month .day-num{color:var(--gray-300)}
@@ -87,6 +87,7 @@ html,body{font-family:var(--font);background:var(--gray-50);color:var(--gray-900
 .event-card:hover{opacity:.85;transform:translateX(1px)}
 .event-card .ev-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:3px}
 .event-card .ev-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1}
+.ev-tag{font-size:8px;opacity:.75;margin-left:3px;flex-shrink:0;white-space:nowrap}
 .ev-alta{background:#FDECEA;color:#C0392B}.ev-alta .ev-dot{background:#C0392B}
 .ev-media{background:#FFF4E0;color:#B86A00}.ev-media .ev-dot{background:#F59E0B}
 .ev-baixa{background:#E6F5EF;color:#1A8F5E}.ev-baixa .ev-dot{background:#1A8F5E}
@@ -110,6 +111,19 @@ html,body{font-family:var(--font);background:var(--gray-50);color:var(--gray-900
 .tbd-chip:hover{border-color:var(--brand);color:var(--brand);background:var(--brand-light)}
 .tbd-chip .tbd-month{font-size:10px;color:var(--gray-500)}
 .tbd-collapsed .tbd-grid{display:none}
+/* Legend */
+.cal-legend{display:flex;align-items:center;gap:12px;padding:6px 24px;background:var(--white);border-bottom:1px solid var(--gray-200);flex-wrap:wrap}
+.cal-legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--gray-700)}
+.cal-legend-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+/* Day popup */
+.day-popup{display:none;position:fixed;inset:0;background:rgba(26,31,54,.4);z-index:400;align-items:center;justify-content:center}
+.day-popup.open{display:flex}
+.day-popup-inner{background:var(--white);border-radius:var(--radius-lg);padding:20px;width:320px;max-width:90vw;box-shadow:var(--shadow-lg)}
+.day-popup-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.day-popup-title{font-size:14px;font-weight:700;color:var(--gray-900)}
+.day-popup-close{background:none;border:1px solid var(--gray-200);border-radius:var(--radius-sm);cursor:pointer;color:var(--gray-500);font-size:16px;width:28px;height:28px;display:flex;align-items:center;justify-content:center}
+.day-popup-close:hover{background:var(--gray-100)}
+.day-popup-list{display:flex;flex-direction:column;gap:5px;max-height:320px;overflow-y:auto}
 
 /* ── COPILOT PANEL ── */
 .copilot-panel{width:0;overflow:hidden;transition:width .25s cubic-bezier(.4,0,.2,1);border-left:1px solid var(--gray-200);background:var(--white);display:flex;flex-direction:column;flex-shrink:0}
@@ -301,6 +315,28 @@ html,body{font-family:var(--font);background:var(--gray-50);color:var(--gray-900
         <svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
     </div>
+  </div>
+</div>
+
+<!-- LEGEND -->
+<div class="cal-legend">
+  <span style="font-size:11px;font-weight:700;color:var(--gray-500)">Status:</span>
+  <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#EEEDFE;border:1.5px solid #2B3A8C"></div>Confirmado</div>
+  <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#E6F5EF;border:1.5px solid #1A8F5E"></div>Em andamento</div>
+  <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#FFF4E0;border:1.5px solid #B86A00"></div>A iniciar</div>
+  <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#F0F2F7;border:1.5px dashed #C8CEDC"></div>TBD / Sem data</div>
+  <span style="font-size:11px;font-weight:700;color:var(--gray-500);margin-left:8px">Nat:</span>
+  <div class="cal-legend-item">⭐ Presença da Nat confirmada</div>
+</div>
+
+<!-- DAY POPUP -->
+<div class="day-popup" id="dayPopup" onclick="if(event.target===this)closeDayPopup()">
+  <div class="day-popup-inner">
+    <div class="day-popup-header">
+      <span class="day-popup-title" id="dayPopupTitle"></span>
+      <button class="day-popup-close" onclick="closeDayPopup()">&#215;</button>
+    </div>
+    <div class="day-popup-list" id="dayPopupList"></div>
   </div>
 </div>
 
@@ -530,7 +566,7 @@ var curM=3,curY=2026,nid=300,editId=null,detailId=null,copilotOpen=false,selecte
 var GH_USER='thaisguimaraes-bot';
 var GH_REPO='calendario-talentos';
 var GH_FILE='events.json';
-var GH_TOKEN='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'; //  'ghp_...'
+var GH_TOKEN='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'; // Cole seu token aqui: 'ghp_...'
 var ghFileSha=null;
 
 function ghHeaders(){
@@ -547,7 +583,9 @@ function loadEventsFromGitHub(cb){
       if(data.content){
         ghFileSha=data.sha;
         var decoded=JSON.parse(atob(data.content.replace(/\n/g,'')));
-        events=decoded.events||decoded;
+        if(Array.isArray(decoded)) events=decoded;
+        else if(decoded.events) events=decoded.events;
+        else events=decoded;
         nid=Math.max.apply(null,events.map(function(e){return e.id||0}))+1;
       }
       if(cb)cb();
@@ -772,41 +810,6 @@ function eventsForDay(dayStr){
   });
 }
 
-function renderCalendar(){
-  var body=document.getElementById('calBody');
-  var today=todayStr();
-  var firstDay=new Date(curY,curM,1).getDay();
-  var daysInMonth=new Date(curY,curM+1,0).getDate();
-  var prevDays=new Date(curY,curM,0).getDate();
-  var html='';
-  var total=Math.ceil((firstDay+daysInMonth)/7)*7;
-
-  for(var i=0;i<total;i++){
-    var day,month=curM,year=curY,other=false;
-    if(i<firstDay){day=prevDays-firstDay+i+1;month=curM-1;other=true;if(month<0){month=11;year=curY-1}}
-    else if(i>=firstDay+daysInMonth){day=i-firstDay-daysInMonth+1;month=curM+1;other=true;if(month>11){month=0;year=curY+1}}
-    else{day=i-firstDay+1}
-    var dayStr=year+'-'+p2(month+1)+'-'+p2(day);
-    var isToday=(dayStr===today);
-    var dow=(new Date(year,month,day)).getDay();
-    var isWeekend=(dow===0||dow===6);
-    var cls='cal-day'+(other?' other-month':'')+(isToday?' today':'')+(isWeekend?' weekend-day':'');
-    var evts=other?[]:eventsForDay(dayStr);
-    html+='<div class="'+cls+'">';
-    html+='<div class="day-num">'+day+'</div>';
-    evts.slice(0,3).forEach(function(ev){
-      var isNd=ev.noDate||false;
-      var extraStyle=isNd?'border:1px dashed #C8CEDC;':'';
-      html+='<div class="event-card '+statusClass(ev)+'" onclick="openDetail('+ev.id+')" title="'+esc(ev.nome)+'" style="'+extraStyle+'">';
-      html+='<span class="ev-dot"></span><span class="ev-name">'+(isNd?'📅 ':'')+esc(ev.nome)+(ev.nat?'<span class="nat-star">⭐</span>':'')+'</span></div>';
-    });
-    if(evts.length>3)html+='<div class="more-events">+'+( evts.length-3)+' mais</div>';
-    html+='</div>';
-  }
-  body.innerHTML=html;
-  document.getElementById('monthLabel').textContent=MONTHS[curM]+' '+curY;
-}
-
 function changeMonth(d){
   if(curView==='semana'){curWeekStart=new Date(curWeekStart);curWeekStart.setDate(curWeekStart.getDate()+d*7);}
   else if(curView==='trimestre'){curM+=d*3;while(curM>11){curM-=12;curY++}while(curM<0){curM+=12;curY--}}
@@ -863,9 +866,14 @@ function renderMonth(){
     var evts=other?[]:eventsForDay(dayStr);
     html+='<div class="'+cls+'"><div class="day-num">'+day+'</div>';
     evts.slice(0,3).forEach(function(ev){
-      html+='<div class="event-card '+priClass(ev.pri)+'" onclick="openDetail('+ev.id+')" title="'+esc(ev.nome)+'"><span class="ev-dot"></span><span class="ev-name">'+esc(ev.nome)+'</span></div>';
+      var isNd=ev.noDate||false;
+      var st=isNd?'border:1px dashed #C8CEDC;':'';
+      html+='<div class="event-card '+statusClass(ev)+'" onclick="openDetail('+ev.id+')" title="'+esc(ev.nome)+'" style="'+st+'">';
+      html+='<span class="ev-dot"></span><span class="ev-name">'+(isNd?'📅 ':'')+esc(ev.nome)+(ev.nat?' ⭐':'')+'</span>';
+      if(ev.area)html+='<span class="ev-tag">'+esc(ev.area)+'</span>';
+      html+='</div>';
     });
-    if(evts.length>3)html+='<div class="more-events">+'+(evts.length-3)+' mais</div>';
+    if(evts.length>3)html+='<div class="more-events" data-day="'+dayStr+'" onclick="openDayPopup(event)">+'+(evts.length-3)+' mais</div>';
     html+='</div>';
   }
   body.innerHTML=html;
@@ -897,7 +905,12 @@ function renderWeek(){
     var evts=eventsForDay(dayStr);
     html+='<div class="'+cls+'" style="min-height:200px"><div class="day-num">'+dd.getDate()+'</div>';
     evts.forEach(function(ev){
-      html+='<div class="event-card '+priClass(ev.pri)+'" onclick="openDetail('+ev.id+')" title="'+esc(ev.nome)+'"><span class="ev-dot"></span><span class="ev-name">'+esc(ev.nome)+'</span></div>';
+      var isNd=ev.noDate||false;
+      var st=isNd?'border:1px dashed #C8CEDC;':'';
+      html+='<div class="event-card '+statusClass(ev)+'" onclick="openDetail('+ev.id+')" title="'+esc(ev.nome)+'" style="'+st+'">';
+      html+='<span class="ev-dot"></span><span class="ev-name">'+(isNd?'📅 ':'')+esc(ev.nome)+(ev.nat?' ⭐':'')+'</span>';
+      if(ev.area)html+='<span class="ev-tag">'+esc(ev.area)+'</span>';
+      html+='</div>';
     });
     html+='</div>';
   }
@@ -1025,14 +1038,12 @@ function openDetail(id){
   detailId=id;
   document.getElementById('confirmDel').className='confirm-strip';
   document.getElementById('detailTitle').textContent=ev.nome;
-  document.getElementById('detailSubtitle').textContent=(ev.proj||'Sem projeto')+' • '+(ev.area||'—');
+  document.getElementById('detailSubtitle').textContent=(ev.cat||'Sem tipo')+' • '+(ev.area||'—')+(ev.nat?' ⭐':'');
   document.getElementById('d-area').textContent=ev.area||'—';
   document.getElementById('d-publico').textContent=ev.publico||'—';
   document.getElementById('d-cat').textContent=ev.cat||'—';
-  document.getElementById('d-local').textContent=ev.local||'—';
-  var data=fmtDate(ev.ini);
-  if(ev.fim&&ev.fim!==ev.ini)data+=' → '+fmtDate(ev.fim);
-  if(ev.hi)data+=' | '+ev.hi+(ev.hf?' – '+ev.hf:'');
+  var data=ev.noDate?'A definir — '+( ev.mes||'—'):fmtDate(ev.ini);
+  if(!ev.noDate&&ev.fim&&ev.fim!==ev.ini)data+=' → '+fmtDate(ev.fim);
   document.getElementById('d-data').textContent=data;
   var statusColors={'Confirmado':'color:#2B3A8C;background:#EEEDFE','TBD':'color:#8892A4;background:#F0F2F7','Em andamento':'color:#1A8F5E;background:#E6F5EF','A iniciar':'color:#B86A00;background:#FFF4E0'};
   var sc=statusColors[ev.status||'']||'color:#666;background:#f0f0f0';
@@ -1040,7 +1051,7 @@ function openDetail(id){
   document.getElementById('d-nat').textContent=ev.nat?'⭐ Sim':'Não';
   document.getElementById('d-mes').textContent=(ev.mes||'—')+(ev.sem?' · '+ev.sem:'');
   document.getElementById('d-demanda').textContent=ev.demanda||'—';
-  document.getElementById('d-desc').textContent=ev.desc||'';
+  document.getElementById('d-desc').textContent=ev.desc||'—';
   document.getElementById('detailOverlay').className='overlay open';
 }
 function closeDetailModal(){document.getElementById('detailOverlay').className='overlay';detailId=null}
@@ -1161,6 +1172,33 @@ function saveEvent(){
 }
 
 function showToast(msg){var t=document.getElementById('toast');t.textContent=msg;t.className='toast show';setTimeout(function(){t.className='toast'},3000)}
+
+function openDayPopup(e){
+  e.stopPropagation();
+  var dayStr=e.currentTarget.getAttribute('data-day')||e.target.getAttribute('data-day');
+  if(!dayStr)return;
+  var evts=eventsForDay(dayStr);
+  var parts=dayStr.split('-');
+  document.getElementById('dayPopupTitle').textContent=parts[2]+'/'+parts[1]+'/'+parts[0]+' — '+evts.length+' eventos';
+  var html='';
+  evts.forEach(function(ev){
+    var isNd=ev.noDate||false;
+    var st=isNd?'border:1px dashed #C8CEDC;':'';
+    html+='<div class="event-card '+statusClass(ev)+'" onclick="openDetail('+ev.id+');closeDayPopup()" style="'+st+';margin-bottom:5px;cursor:pointer;padding:6px 8px">';
+    html+='<span class="ev-dot" style="flex-shrink:0;margin-top:4px"></span>';
+    html+='<div style="flex:1;min-width:0">';
+    html+='<div style="font-size:12px;font-weight:600;white-space:normal;line-height:1.4">'+(isNd?'📅 ':'')+esc(ev.nome)+(ev.nat?' ⭐':'')+'</div>';
+    html+='<div style="font-size:10px;color:var(--gray-500);margin-top:2px">'+esc(ev.area||'')+(ev.status?' · '+esc(ev.status):'')+'</div>';
+    html+='</div></div>';
+  });
+  document.getElementById('dayPopupList').innerHTML=html;
+  document.getElementById('dayPopup').className='day-popup open';
+}
+function closeDayPopup(){document.getElementById('dayPopup').className='day-popup';}
+document.addEventListener('click',function(e){
+  var dp=document.getElementById('dayPopup');
+  if(dp&&dp.classList.contains('open')&&!dp.contains(e.target)&&!e.target.classList.contains('more-events'))closeDayPopup();
+});
 
 // Init — tenta carregar eventos salvos do GitHub, senão usa os eventos padrão
 loadEventsFromGitHub(function(){renderCalendar()});
