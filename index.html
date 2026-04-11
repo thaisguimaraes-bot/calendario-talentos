@@ -529,24 +529,37 @@ function ghHeaders(){
 }
 
 function loadEventsFromGitHub(cb){
-  var url='https://api.github.com/repos/'+GH_USER+'/'+GH_REPO+'/contents/'+GH_FILE;
-  fetch(url+'?t='+Date.now(),{headers:ghHeaders(),cache:'no-store'})
-    .then(function(r){return r.json()})
+  const url = `https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/${GH_FILE}`;
+
+  fetch(url + '?ref=main&t=' + Date.now(), {
+    headers: ghHeaders(),
+    cache: 'no-store'
+  })
+    .then(function(r){ return r.json(); })
     .then(function(data){
       if(data.content){
-        ghFileSha=data.sha;
-        var decoded=JSON.parse(decodeURIComponent(escape(atob(data.content.replace(/\n/g,'')))));
-        var loaded=Array.isArray(decoded)?decoded:(decoded.events||decoded);
-        // Only use GitHub data if it has events (not empty)
-        if(loaded&&loaded.length>0){
-          events=loaded;
-          nid=Math.max.apply(null,events.map(function(e){return e.id||0}))+1;
+        ghFileSha = data.sha;
+
+        var decoded = JSON.parse(
+          decodeURIComponent(
+            escape(atob(data.content.replace(/\n/g,'')))
+          )
+        );
+
+        var loaded = Array.isArray(decoded) ? decoded : (decoded.events || decoded);
+
+        if(loaded && loaded.length > 0){
+          events = loaded;
+          nid = Math.max.apply(null, events.map(function(e){ return e.id || 0 })) + 1;
         }
-        // else: keep hardcoded seed events
       }
-      if(cb)cb();
+
+      if(cb) cb();
     })
-    .catch(function(){if(cb)cb()});
+    .catch(function(e){
+      console.error("Erro ao carregar do GitHub:", e);
+      if(cb) cb();
+    });
 }
 
 async function saveEventsToGitHub(msg, attempt = 1){
