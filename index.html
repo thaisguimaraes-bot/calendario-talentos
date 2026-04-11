@@ -128,31 +128,7 @@ html,body{font-family:var(--font);background:var(--gray-50);color:var(--gray-900
 .day-popup-close:hover{background:var(--gray-100)}
 .day-popup-list{display:flex;flex-direction:column;gap:5px;max-height:320px;overflow-y:auto}
 
-/* ── COPILOT PANEL ── */
-.copilot-panel{width:0;overflow:hidden;transition:width .25s cubic-bezier(.4,0,.2,1);border-left:1px solid var(--gray-200);background:var(--white);display:flex;flex-direction:column;flex-shrink:0}
-.copilot-panel.open{width:320px}
-.copilot-header{padding:16px;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;gap:10px;flex-shrink:0}
-.copilot-icon{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#6C63FF,#2B3A8C);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.copilot-title{font-size:13px;font-weight:700;color:var(--gray-900)}
-.copilot-subtitle{font-size:11px;color:var(--gray-500)}
-.copilot-close{margin-left:auto;width:28px;height:28px;border:none;background:var(--gray-100);border-radius:var(--radius-sm);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--gray-500)}
-.copilot-close:hover{background:var(--gray-200)}
-.copilot-msgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
-.cmsg{max-width:88%;font-size:12px;line-height:1.55;padding:9px 12px;border-radius:12px}
-.cmsg-ai{background:var(--gray-100);color:var(--gray-900);align-self:flex-start;border-bottom-left-radius:3px}
-.cmsg-user{background:var(--brand);color:var(--white);align-self:flex-end;border-bottom-right-radius:3px;font-weight:500}
-.cloading{display:flex;gap:5px;padding:10px 14px;background:var(--gray-100);border-radius:12px;align-self:flex-start;border-bottom-left-radius:3px}
-.cdot{width:6px;height:6px;border-radius:50%;background:var(--gray-300);animation:cblink 1.2s infinite}
-.cdot:nth-child(2){animation-delay:.2s}.cdot:nth-child(3){animation-delay:.4s}
-@keyframes cblink{0%,80%,100%{opacity:.2}40%{opacity:1}}
-.copilot-sugg{padding:0 16px 10px;display:flex;flex-direction:column;gap:4px}
-.csugg-btn{font-size:11px;padding:7px 10px;border:1.5px solid var(--gray-200);border-radius:var(--radius-sm);background:var(--white);color:var(--gray-700);cursor:pointer;text-align:left;transition:all .15s}
-.csugg-btn:hover{border-color:var(--brand);color:var(--brand);background:var(--brand-light)}
-.copilot-input-area{padding:12px 16px;border-top:1px solid var(--gray-200);display:flex;gap:8px}
-.copilot-inp{flex:1;font-size:12px;padding:8px 12px;border:1.5px solid var(--gray-200);border-radius:var(--radius-md);background:var(--white);color:var(--gray-900);resize:none;outline:none;font-family:var(--font)}
-.copilot-inp:focus{border-color:var(--brand)}
-.csend{width:34px;height:34px;background:var(--brand);border:none;border-radius:var(--radius-md);cursor:pointer;display:flex;align-items:center;justify-content:center;align-self:flex-end;flex-shrink:0;transition:background .15s}
-.csend:hover{background:var(--brand-mid)}
+
 
 /* ── OVERLAY ── */
 .overlay{display:none;position:fixed;inset:0;background:rgba(26,31,54,.5);z-index:200;backdrop-filter:blur(2px);overflow-y:auto;padding:40px 20px}
@@ -226,10 +202,7 @@ html,body{font-family:var(--font);background:var(--gray-50);color:var(--gray-900
     <div class="header-subtitle">Planejamento e acompanhamento das iniciativas das gerências</div>
   </div>
   <div class="header-right">
-    <button class="hbtn hbtn-outline" onclick="toggleCopilot()">
-      <svg width="15" height="15" viewBox="0 0 20 20" fill="none"><path d="M10 2a8 8 0 100 16A8 8 0 0010 2zm0 3a1.5 1.5 0 110 3 1.5 1.5 0 010-3zm0 10c-2 0-3.8-1-4.9-2.5.1-1.6 3.3-2.5 4.9-2.5 1.6 0 4.8.9 4.9 2.5C13.8 14 12 15 10 15z" fill="currentColor"/></svg>
-      Agente Copilot
-    </button>
+
     <button class="hbtn hbtn-primary" onclick="openAddModal()">
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
       Adicionar Evento
@@ -359,36 +332,6 @@ html,body{font-family:var(--font);background:var(--gray-50);color:var(--gray-900
     </div>
   </div>
 
-  <!-- COPILOT PANEL -->
-  <div class="copilot-panel" id="copilotPanel">
-    <div class="copilot-header">
-      <div class="copilot-icon">
-        <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M10 2a8 8 0 100 16A8 8 0 0010 2zm0 3a1.5 1.5 0 110 3 1.5 1.5 0 010-3zm0 10c-2 0-3.8-1-4.9-2.5.1-1.6 3.3-2.5 4.9-2.5 1.6 0 4.8.9 4.9 2.5C13.8 14 12 15 10 15z" fill="white"/></svg>
-      </div>
-      <div>
-        <div class="copilot-title">Agente Copilot</div>
-        <div class="copilot-subtitle">Assistente de planejamento GT</div>
-      </div>
-      <button class="copilot-close" onclick="toggleCopilot()">
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-      </button>
-    </div>
-    <div class="copilot-msgs" id="copilotMsgs">
-      <div class="cmsg cmsg-ai">Olá! Sou o Agente Copilot da Diretoria GT. Posso ajudar com resumos de eventos, detectar conflitos, sugerir insights e muito mais. Como posso ajudar?</div>
-    </div>
-    <div class="copilot-sugg" id="copilotSugg">
-      <button class="csugg-btn" onclick="copilotSugg(this)">📅 Quais eventos temos esta semana?</button>
-      <button class="csugg-btn" onclick="copilotSugg(this)">⚠️ Algum conflito no calendário?</button>
-      <button class="csugg-btn" onclick="copilotSugg(this)">📊 Resumo do mês atual</button>
-      <button class="csugg-btn" onclick="copilotSugg(this)">🔴 Eventos de alta prioridade</button>
-    </div>
-    <div class="copilot-input-area">
-      <textarea class="copilot-inp" id="copilotInp" placeholder="Pergunte sobre os eventos..." rows="2" onkeydown="copilotKey(event)"></textarea>
-      <button class="csend" onclick="copilotSend()">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="white"><path d="M2 2l12 6-12 6V9.5l8-1.5-8-1.5V2z"/></svg>
-      </button>
-    </div>
-  </div>
 </div>
 
 <!-- TBD / SEM DATA PANEL -->
@@ -563,13 +506,13 @@ html,body{font-family:var(--font);background:var(--gray-50);color:var(--gray-900
 
 <script>
 var MONTHS=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
-var curM=3,curY=2026,nid=300,editId=null,detailId=null,copilotOpen=false,selectedPriority='';
+var curM=3,curY=2026,nid=300,editId=null,detailId=null,selectedPriority='';
 
 // ── GITHUB PERSISTENCE ──────────────────────────────────────────────────────
 var GH_USER='thaisguimaraes-bot';
 var GH_REPO='calendario-talentos';
 var GH_FILE='events.json';
-var GH_TOKEN='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'; // Cole seu token aqui: 'ghp_...'
+var GH_TOKEN=''; // Cole seu novo token aqui
 var ghFileSha=null;
 
 function ghHeaders(){
@@ -600,7 +543,7 @@ function loadEventsFromGitHub(cb){
 }
 
 function saveEventsToGitHub(msg){
-  if(!GH_TOKEN){showToast(msg||'Evento salvo (sessão apenas — configure o token para persistir).');renderCalendar();return;}
+  if(!GH_TOKEN){showToast('Evento salvo (sessão apenas — configure o token para persistir).');renderCalendar();return;}
   showToast('Salvando...');
   var url='https://api.github.com/repos/'+GH_USER+'/'+GH_REPO+'/contents/'+GH_FILE;
   var body={message:'Atualiza eventos: '+(new Date().toLocaleString('pt-BR')),content:btoa(unescape(encodeURIComponent(JSON.stringify({events:events},null,2))))};
@@ -1009,51 +952,11 @@ function eventsForDay2(y,m){
 }
 
 // COPILOT
-function toggleCopilot(){
-  copilotOpen=!copilotOpen;
-  document.getElementById('copilotPanel').className='copilot-panel'+(copilotOpen?' open':'');
-}
-function copilotKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();copilotSend()}}
-function copilotSugg(btn){
-  document.getElementById('copilotInp').value=btn.textContent.replace(/^[^\s]+\s/,'');
-  document.getElementById('copilotSugg').style.display='none';
-  copilotSend();
-}
-function copilotSend(){
-  var inp=document.getElementById('copilotInp'),txt=inp.value.trim();if(!txt)return;inp.value='';
-  var msgs=document.getElementById('copilotMsgs');
-  msgs.innerHTML+='<div class="cmsg cmsg-user">'+esc(txt)+'</div>';
-  msgs.innerHTML+='<div class="cloading" id="cld"><div class="cdot"></div><div class="cdot"></div><div class="cdot"></div></div>';
-  msgs.scrollTop=msgs.scrollHeight;
-  setTimeout(function(){
-    var l=document.getElementById('cld');if(l)l.remove();
-    msgs.innerHTML+='<div class="cmsg cmsg-ai">'+aiResp(txt.toLowerCase())+'</div>';
-    msgs.scrollTop=msgs.scrollHeight;
-  },900);
-}
-function aiResp(q){
-  var today=todayStr();
-  if(q.includes('semana')||q.includes('hoje')){
-    var et=events.filter(function(e){return e.ini<=today&&(e.fim||e.ini)>=today});
-    if(!et.length)return 'Não encontrei eventos para hoje no calendário.';
-    return 'Encontrei <strong>'+et.length+'</strong> evento(s) para hoje/esta semana: '+et.slice(0,3).map(function(e){return e.nome}).join(', ')+(et.length>3?'...':'')+'.';
-  }
-  if(q.includes('conflito')){
-    return 'Analisei o calendário e não identifiquei conflitos críticos entre as áreas no mês atual. Os eventos estão bem distribuídos. ✓';
-  }
-  if(q.includes('resumo')||q.includes('mês')){
-    var mes=events.filter(function(e){return e.ini.startsWith(curY+'-'+p2(curM+1))});
-    var altas=mes.filter(function(e){return e.pri==='Alta'}).length;
-    return 'Em <strong>'+MONTHS[curM]+'</strong> temos <strong>'+mes.length+' eventos</strong> planejados, sendo <strong>'+altas+'</strong> de alta prioridade.';
-  }
-  if(q.includes('alta prioridade')||q.includes('alta')){
-    var alt=events.filter(function(e){return e.pri==='Alta'&&e.ini.startsWith(curY+'-'+p2(curM+1))});
-    if(!alt.length)return 'Não há eventos de alta prioridade no mês atual.';
-    return 'Eventos de alta prioridade em '+MONTHS[curM]+':<br>'+alt.map(function(e){return '• '+e.nome+' ('+fmtDate(e.ini)+')'}).join('<br>');
-  }
-  var mes2=events.filter(function(e){return e.ini.startsWith(curY+'-'+p2(curM+1))});
-  return 'Em '+MONTHS[curM]+' temos <strong>'+mes2.length+' eventos</strong>. Posso ajudar com resumos, conflitos, prioridades ou qualquer dúvida sobre o calendário!';
-}
+
+
+
+
+
 
 // DETAIL
 function openDetail(id){
@@ -1225,164 +1128,6 @@ document.addEventListener('click',function(e){
 
 // Init — tenta carregar eventos salvos do GitHub, senão usa os eventos padrão
 loadEventsFromGitHub(function(){renderCalendar()});
-
-/* ======================================
-COPILOT LENDO EVENTOS DO CALENDÁRIO
-====================================== */
-
-function responderCopilot(pergunta){
-
-  const q = pergunta.toLowerCase();
-
-  if(q.includes("eventos")){
-
-    if(!events || events.length===0){
-      return "Nenhum evento encontrado.";
-    }
-
-    let lista = events
-      .slice(0,10)
-      .map(e => `• ${e.nome} (${e.ini})`)
-      .join("<br>");
-
-    return `<b>Eventos cadastrados:</b><br><br>${lista}`;
-  }
-
-
-  if(q.includes("alta")){
-
-    let lista = events
-      .filter(e => e.pri==="Alta")
-      .map(e => `• ${e.nome} (${e.ini})`)
-      .join("<br>");
-
-    if(!lista) return "Não encontrei eventos de alta prioridade.";
-
-    return `<b>Eventos de alta prioridade:</b><br><br>${lista}`;
-  }
-
-
-  if(q.includes("nat")){
-
-    let lista = events
-      .filter(e => e.nat===true)
-      .map(e => `• ${e.nome} (${e.ini})`)
-      .join("<br>");
-
-    if(!lista) return "Nenhum evento com presença da Nat.";
-
-    return `<b>Eventos com presença da Nat:</b><br><br>${lista}`;
-  }
-
-
-  if(q.includes("mes") || q.includes("mês")){
-
-    const hoje = new Date();
-    const mesAtual = hoje.getMonth();
-
-    let lista = events
-      .filter(e => new Date(e.ini).getMonth()===mesAtual)
-      .map(e => `• ${e.nome} (${e.ini})`)
-      .join("<br>");
-
-    if(!lista) return "Não encontrei eventos para este mês.";
-
-    return `<b>Eventos deste mês:</b><br><br>${lista}`;
-  }
-
-  return `
-Posso ajudar com:
-
-• eventos  
-• eventos deste mês  
-• eventos de alta prioridade  
-• eventos com presença da Nat
-`;
-}
-
-
-
-/* ======================================
-ENVIO DE PERGUNTA
-====================================== */
-
-function copilotSend(){
-
-  const inp=document.getElementById("copilotInp");
-
-  let pergunta=inp.value.trim();
-
-  if(!pergunta) return;
-
-  addCopilotMsg(pergunta,"user");
-
-  inp.value="";
-
-  setTimeout(()=>{
-
-    let resp=responderCopilot(pergunta);
-
-    addCopilotMsg(resp,"ai");
-
-  },400);
-}
-
-
-
-/* ======================================
-ENTER PARA ENVIAR
-====================================== */
-
-function copilotKey(e){
-
-  if(e.key==="Enter" && !e.shiftKey){
-
-    e.preventDefault();
-
-    copilotSend();
-
-  }
-
-}
-
-
-
-/* ======================================
-ADICIONAR MENSAGEM
-====================================== */
-
-function addCopilotMsg(txt,tipo){
-
-  const msgs=document.getElementById("copilotMsgs");
-
-  const div=document.createElement("div");
-
-  div.className="cmsg "+(tipo==="user"?"cmsg-user":"cmsg-ai");
-
-  div.innerHTML=txt;
-
-  msgs.appendChild(div);
-
-  msgs.scrollTop=msgs.scrollHeight;
-
-}
-
-
-
-/* ======================================
-BOTÕES DE SUGESTÃO
-====================================== */
-
-function copilotSugg(btn){
-
-  const pergunta=btn.innerText;
-
-  document.getElementById("copilotInp").value=pergunta;
-
-  copilotSend();
-
-}
-  
 </script>
 </body>
 </html>
