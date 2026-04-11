@@ -542,29 +542,92 @@ function loadEventsFromGitHub(cb){
     .catch(function(){if(cb)cb()});
 }
 
-function saveEventsToGitHub(msg){
-  if(!GH_TOKEN){showToast('Evento salvo (sessão apenas — configure o token para persistir).');renderCalendar();return;}
-  showToast('Salvando...');
-  var url='https://api.github.com/repos/'+GH_USER+'/'+GH_REPO+'/contents/'+GH_FILE;
-  var body={message:'Atualiza eventos: '+(new Date().toLocaleString('pt-BR')),content:btoa(unescape(encodeURIComponent(JSON.stringify({events:events},null,2))))};
-  if(ghFileSha)body.sha=ghFileSha;
-  fetch(url,{method:'PUT',headers:ghHeaders(),body:JSON.stringify(body)})
-    .then(function(r){return r.json()})
-    .then(function(data){
-      if(data.content){
-        ghFileSha=data.content.sha;
-        showToast(msg||'Salvo no GitHub com sucesso! ✓');
-      } else {
-        var errMsg=data.message||JSON.stringify(data);
-        showToast('Erro GitHub: '+errMsg);
-        console.error('GitHub save error:',data);
+async function saveEventsToGitHub(msg, attempt = 1){
+
+  const MAX_RETRIES = 3;
+
+  if(!GH_TOKEN){
+    showToast('Sem token — não salva no GitHub');
+    return;
+  }
+
+  try{
+
+    if(attempt === 1){
+      showToast('Salvando...');
+    } else {
+      showToast(`Conflito... tentando novamente (${attempt})`);
+    }
+
+    const sha = await getFileSha();
+
+    const content = toBase64(
+      JSON.stringify({ events: events }, null, 2)
+    );
+
+    const res = await fetch(
+      `https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/${GH_FILE}`,
+      {
+        method: 'PUT',
+        headers: ghHeaders(),
+        body: JSON.stringify({
+          message: `Atualiza eventos - ${new Date().toISOString()}`,
+          content: content,
+          sha: sha
+        })
       }
+    );
+
+    const data = await res.json();
+
+    if(data.content){
+      showToast('Salvo no GitHub! 🚀');
       renderCalendar();
-    })
-    .catch(function(e){showToast('Erro ao salvar: '+e.message);renderCalendar();});
+      return;
+    }
+
+    if(res.status === 409 && attempt < MAX_RETRIES){
+      await new Promise(r => setTimeout(r, 500 * attempt));
+      return saveEventsToGitHub(msg, attempt + 1);
+    }
+
+    throw new Error(data.message || 'Erro desconhecido');
+
+  } catch(e){
+
+    console.error('Erro ao salvar:', e);
+
+    if(attempt < MAX_RETRIES){
+      await new Promise(r => setTimeout(r, 500 * attempt));
+      return saveEventsToGitHub(msg, attempt + 1);
+    }
+
+    showToast('Erro ao salvar: ' + e.message);
+  }
 }
 // ────────────────────────────────────────────────────────────────────────────
 
+  function toBase64(str){
+  return btoa(
+    new TextEncoder().encode(str)
+      .reduce((data, byte) => data + String.fromCharCode(byte), '')
+  );
+}
+
+async function getFileSha(){
+  const res = await fetch(`https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/${GH_FILE}`, {
+    headers: ghHeaders(),
+    cache: "no-store"
+  });
+
+  const data = await res.json();
+
+  if(!data.sha){
+    throw new Error("Erro ao obter SHA");
+  }
+
+  return data.sha;
+}
 var events=[
   {id:1,nome:"BBB",proj:"",area:"CIE",publico:"Todos",cat:"Evento",ini:"2026-01-12",fim:"2026-01-12",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
   {id:2,nome:"Cora\u00e7\u00e3o Acelorado (NN 19h)",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-01-12",fim:"2026-01-12",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
