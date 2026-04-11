@@ -551,11 +551,17 @@ function saveEventsToGitHub(msg){
   fetch(url,{method:'PUT',headers:ghHeaders(),body:JSON.stringify(body)})
     .then(function(r){return r.json()})
     .then(function(data){
-      if(data.content)ghFileSha=data.content.sha;
-      showToast(msg||'Salvo no GitHub com sucesso! ✓');
+      if(data.content){
+        ghFileSha=data.content.sha;
+        showToast(msg||'Salvo no GitHub com sucesso! ✓');
+      } else {
+        var errMsg=data.message||JSON.stringify(data);
+        showToast('Erro GitHub: '+errMsg);
+        console.error('GitHub save error:',data);
+      }
       renderCalendar();
     })
-    .catch(function(){showToast('Erro ao salvar. Verifique o token.');renderCalendar()});
+    .catch(function(e){showToast('Erro ao salvar: '+e.message);renderCalendar();});
 }
 // ────────────────────────────────────────────────────────────────────────────
 
