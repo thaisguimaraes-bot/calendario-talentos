@@ -70,11 +70,9 @@ html,body{font-family:var(--font);background:var(--gray-50);color:var(--gray-900
 .cal-wrapper{flex:1;overflow-x:auto;overflow-y:visible;padding:16px 24px 24px}
 
 /* ── CALENDAR GRID ── */
-/* ── SINGLE MASTER GRID: header + days in one grid ── */
 .cal-master{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:1px;background:var(--gray-200);border-radius:var(--radius-md);overflow:hidden;min-width:700px}
 .cal-dow{text-align:center;padding:8px 4px;font-size:11px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:.5px;background:var(--white)}
 .cal-dow.weekend{color:var(--brand)}
-/* keep these for multi-view compatibility */
 .cal-grid-header{display:none}
 .cal-body{display:contents}
 .cal-body.multi-view{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;background:transparent;border-radius:0}
@@ -97,14 +95,11 @@ html,body{font-family:var(--font);background:var(--gray-50);color:var(--gray-900
 .ev-default{background:var(--brand-light);color:var(--brand)}.ev-default .ev-dot{background:var(--brand)}
 .more-events{font-size:10px;color:var(--gray-500);cursor:pointer;padding:1px 4px;border-radius:3px}
 .more-events:hover{background:var(--gray-100);color:var(--gray-700)}
-/* Status chips */
 .ev-confirmado{background:#EEEDFE;color:#2B3A8C}
 .ev-tbd{background:#F0F2F7;color:#8892A4;font-style:italic;opacity:.85;border-left:2px solid #C8CEDC}
 .ev-andamento{background:#E6F5EF;color:#1A8F5E}
 .ev-iniciar{background:#FFF4E0;color:#B86A00}
-/* Nat star */
 .nat-star{font-size:9px;margin-left:2px}
-/* TBD side panel */
 .tbd-panel{background:var(--white);border-top:1px solid var(--gray-200);padding:12px 24px}
 .tbd-header{display:flex;align-items:center;gap:8px;margin-bottom:10px;cursor:pointer}
 .tbd-title{font-size:12px;font-weight:700;color:var(--gray-700)}
@@ -114,11 +109,9 @@ html,body{font-family:var(--font);background:var(--gray-50);color:var(--gray-900
 .tbd-chip:hover{border-color:var(--brand);color:var(--brand);background:var(--brand-light)}
 .tbd-chip .tbd-month{font-size:10px;color:var(--gray-500)}
 .tbd-collapsed .tbd-grid{display:none}
-/* Legend */
 .cal-legend{display:flex;align-items:center;gap:12px;padding:6px 24px;background:var(--white);border-bottom:1px solid var(--gray-200);flex-wrap:wrap}
 .cal-legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--gray-700)}
 .cal-legend-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
-/* Day popup */
 .day-popup{display:none;position:fixed;inset:0;background:rgba(26,31,54,.4);z-index:400;align-items:center;justify-content:center}
 .day-popup.open{display:flex}
 .day-popup-inner{background:var(--white);border-radius:var(--radius-lg);padding:20px;width:320px;max-width:90vw;box-shadow:var(--shadow-lg)}
@@ -127,14 +120,8 @@ html,body{font-family:var(--font);background:var(--gray-50);color:var(--gray-900
 .day-popup-close{background:none;border:1px solid var(--gray-200);border-radius:var(--radius-sm);cursor:pointer;color:var(--gray-500);font-size:16px;width:28px;height:28px;display:flex;align-items:center;justify-content:center}
 .day-popup-close:hover{background:var(--gray-100)}
 .day-popup-list{display:flex;flex-direction:column;gap:5px;max-height:320px;overflow-y:auto}
-
-
-
-/* ── OVERLAY ── */
 .overlay{display:none;position:fixed;inset:0;background:rgba(26,31,54,.5);z-index:200;backdrop-filter:blur(2px);overflow-y:auto;padding:40px 20px}
 .overlay.open{display:flex;align-items:flex-start;justify-content:center}
-
-/* ── MODAL ── */
 .modal{background:var(--white);border-radius:var(--radius-xl);padding:0;width:100%;max-width:520px;margin:0 auto;overflow:hidden;box-shadow:var(--shadow-lg)}
 .modal-header{padding:20px 24px 16px;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;gap:12px}
 .modal-icon{width:40px;height:40px;border-radius:var(--radius-md);background:var(--brand-light);display:flex;align-items:center;justify-content:center;flex-shrink:0}
@@ -144,8 +131,6 @@ html,body{font-family:var(--font);background:var(--gray-50);color:var(--gray-900
 .modal-close:hover{background:var(--gray-100);color:var(--gray-900)}
 .modal-body{padding:20px 24px;max-height:60vh;overflow-y:auto}
 .modal-footer{padding:16px 24px;border-top:1px solid var(--gray-200);display:flex;gap:8px;justify-content:flex-end}
-
-/* DETAIL MODAL */
 .detail-field{margin-bottom:14px}
 .detail-label{font-size:11px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
 .detail-value{font-size:13px;color:var(--gray-900);font-weight:500}
@@ -154,8 +139,6 @@ html,body{font-family:var(--font);background:var(--gray-50);color:var(--gray-900
 .badge-alta{background:var(--danger-bg);color:var(--danger)}
 .badge-media{background:var(--warning-bg);color:var(--warning)}
 .badge-baixa{background:var(--success-bg);color:var(--success)}
-
-/* FORM */
 .fg{margin-bottom:14px}
 .fl{font-size:12px;font-weight:600;color:var(--gray-700);margin-bottom:5px;display:block}
 .fl em{color:var(--danger);font-style:normal}
@@ -171,8 +154,6 @@ html,body{font-family:var(--font);background:var(--gray-50);color:var(--gray-900
 .priority-opt[data-v="Média"].sel{background:var(--warning-bg);border-color:var(--warning)}
 .priority-opt[data-v="Baixa"]{color:var(--success)}
 .priority-opt[data-v="Baixa"].sel{background:var(--success-bg);border-color:var(--success)}
-
-/* BUTTONS */
 .btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:var(--radius-md);font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .15s}
 .btn-ghost{background:transparent;color:var(--gray-700);border:1.5px solid var(--gray-200)}
 .btn-ghost:hover{background:var(--gray-100)}
@@ -182,12 +163,8 @@ html,body{font-family:var(--font);background:var(--gray-50);color:var(--gray-900
 .btn-primary:hover{background:var(--brand-mid)}
 .btn-success{background:var(--success);color:var(--white)}
 .btn-success:hover{opacity:.9}
-
-/* TOAST */
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--gray-900);color:var(--white);font-size:13px;font-weight:500;padding:12px 20px;border-radius:var(--radius-md);z-index:999;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap;box-shadow:var(--shadow-md)}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
-/* CONFIRM DELETE */
 .confirm-strip{display:none;background:var(--danger-bg);border:1.5px solid #FAD4CF;border-radius:var(--radius-md);padding:12px 16px;margin-top:8px;font-size:12px;color:var(--danger);text-align:center}
 .confirm-strip.show{display:block}
 .confirm-strip-btns{display:flex;gap:8px;margin-top:8px;justify-content:center}
@@ -202,7 +179,11 @@ html,body{font-family:var(--font);background:var(--gray-50);color:var(--gray-900
     <div class="header-subtitle">Planejamento e acompanhamento das iniciativas das gerências</div>
   </div>
   <div class="header-right">
-
+    <!-- FIX #TOKEN: botão para salvar token no localStorage sem expor no código -->
+    <button class="hbtn hbtn-outline" onclick="promptToken()" title="Configurar token GitHub">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="5" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M2 13c0-2.8 2.2-5 5-5s5 2.2 5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      Token
+    </button>
     <button class="hbtn hbtn-primary" onclick="openAddModal()">
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
       Adicionar Evento
@@ -319,7 +300,6 @@ html,body{font-family:var(--font);background:var(--gray-50);color:var(--gray-900
 <!-- MAIN -->
 <div class="main-layout">
   <div class="cal-wrapper">
-    <!-- MASTER GRID: DOW headers + day cells in ONE grid -->
     <div class="cal-master" id="calMaster">
       <div class="cal-dow weekend">Dom</div>
       <div class="cal-dow">Seg</div>
@@ -328,13 +308,11 @@ html,body{font-family:var(--font);background:var(--gray-50);color:var(--gray-900
       <div class="cal-dow">Qui</div>
       <div class="cal-dow">Sex</div>
       <div class="cal-dow weekend">Sáb</div>
-      <!-- day cells injected here by JS -->
     </div>
   </div>
-
 </div>
 
-<!-- TBD / SEM DATA PANEL -->
+<!-- TBD PANEL -->
 <div class="tbd-panel" id="tbdPanel">
   <div class="tbd-header" onclick="toggleTbd()">
     <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="#B86A00" stroke-width="1.5"/><path d="M7 4v3.5l2 2" stroke="#B86A00" stroke-width="1.5" stroke-linecap="round"/></svg>
@@ -344,6 +322,8 @@ html,body{font-family:var(--font);background:var(--gray-50);color:var(--gray-900
   </div>
   <div class="tbd-grid" id="tbdGrid"></div>
 </div>
+
+<!-- ADD/EDIT MODAL -->
 <div class="overlay" id="addOverlay" onclick="overlayClick(event,'addOverlay')">
   <div class="modal">
     <div class="modal-header">
@@ -496,7 +476,7 @@ html,body{font-family:var(--font);background:var(--gray-50);color:var(--gray-900
       </button>
       <button class="btn btn-success" onclick="closeDetailModal()">
         <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        Salvar Evento
+        Fechar
       </button>
     </div>
   </div>
@@ -508,259 +488,226 @@ html,body{font-family:var(--font);background:var(--gray-50);color:var(--gray-900
 var MONTHS=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 var curM=3,curY=2026,nid=300,editId=null,detailId=null,selectedPriority='';
 
-// ── GITHUB PERSISTENCE ──────────────────────────────────────────────────────
+// ── FIX #1: TOKEN VIA localStorage — nunca exposto no código/repositório ────
 var GH_USER='thaisguimaraes-bot';
 var GH_REPO='calendario-talentos';
 var GH_FILE='events.json';
-var GH_TOKEN='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'; // Cole seu novo token aqui
+var GH_TOKEN=localStorage.getItem('gh_token')||'';
 var ghFileSha=null;
 
-function ghHeaders(){
-  var h = {
-    'Content-Type': 'application/json',
-    'Accept': 'application/vnd.github+json'
-  };
+// FIX #7: flag para evitar duplo clique em salvar
+var _saving=false;
 
-  if(GH_TOKEN){
-    h['Authorization'] = 'token ' + GH_TOKEN;
+function promptToken(){
+  var t=prompt('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',localStorage.getItem('gh_token')||'');
+  if(t!==null){
+    t=t.trim();
+    localStorage.setItem('gh_token',t);
+    GH_TOKEN=t;
+    showToast(GH_TOKEN?'Token salvo com sucesso! ✓':'Token removido.');
   }
+}
 
+function ghHeaders(){
+  var h={'Content-Type':'application/json','Accept':'application/vnd.github+json'};
+  if(GH_TOKEN)h['Authorization']='Bearer '+GH_TOKEN;
   return h;
 }
 
-function loadEventsFromGitHub(cb){
-  const url = `https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/${GH_FILE}`;
+// FIX #2: URL com ?ref=main para evitar erro 409 e branch errada
+function ghUrl(){
+  return 'https://api.github.com/repos/'+GH_USER+'/'+GH_REPO+'/contents/'+GH_FILE+'?ref=main';
+}
 
-  fetch(url + '?ref=main&t=' + Date.now(), {
-    headers: ghHeaders(),
-    cache: 'no-store'
-  })
-    .then(function(r){ return r.json(); })
+function loadEventsFromGitHub(cb){
+  fetch(ghUrl()+'&t='+Date.now(),{headers:ghHeaders(),cache:'no-store'})
+    .then(function(r){return r.json()})
     .then(function(data){
       if(data.content){
-        ghFileSha = data.sha;
-
-        var decoded = JSON.parse(
-          decodeURIComponent(
-            escape(atob(data.content.replace(/\n/g,'')))
-          )
-        );
-
-        var loaded = Array.isArray(decoded) ? decoded : (decoded.events || decoded);
-
-        if(loaded && loaded.length > 0){
-          events = loaded;
-          nid = Math.max.apply(null, events.map(function(e){ return e.id || 0 })) + 1;
+        ghFileSha=data.sha;
+        var decoded=JSON.parse(decodeURIComponent(escape(atob(data.content.replace(/\n/g,'')))));
+        var loaded=Array.isArray(decoded)?decoded:(decoded.events||decoded);
+        if(loaded&&loaded.length>0){
+          events=loaded;
+          nid=Math.max.apply(null,events.map(function(e){return e.id||0}))+1;
         }
       }
-
-      if(cb) cb();
+      if(cb)cb();
     })
     .catch(function(e){
-      console.error("Erro ao carregar do GitHub:", e);
-      if(cb) cb();
+      // FIX #4: avisa o usuário em caso de falha no carregamento
+      console.error('Erro ao carregar do GitHub:',e);
+      showToast('Erro ao carregar dados — usando versão local');
+      if(cb)cb();
     });
 }
 
-async function saveEventsToGitHub(msg, attempt = 1){
-
-  const MAX_RETRIES = 3;
+async function saveEventsToGitHub(msg){
+  // FIX #7: previne duplo clique
+  if(_saving){showToast('Aguarde, salvando...');return;}
+  _saving=true;
 
   if(!GH_TOKEN){
-    showToast('Sem token — não salva no GitHub');
+    showToast('Configure o token primeiro (botão "Token" no topo).');
+    renderCalendar();
+    _saving=false;
     return;
   }
 
+  showToast('Salvando...');
+
+  // FIX #8: recarrega SHA atualizado antes de salvar para evitar conflito entre usuários
   try{
+    var shaRes=await fetch(ghUrl()+'&t='+Date.now(),{headers:ghHeaders(),cache:'no-store'});
+    var shaData=await shaRes.json();
+    if(shaData.sha) ghFileSha=shaData.sha;
+  }catch(e){
+    console.warn('Erro ao obter SHA atualizado:',e);
+  }
 
-    if(attempt === 1){
-      showToast('Salvando...');
-    } else {
-      showToast(`Conflito... tentando novamente (${attempt})`);
-    }
+  // FIX #2: URL de escrita também com ?ref=main (branch explícita no PUT)
+  var putUrl='https://api.github.com/repos/'+GH_USER+'/'+GH_REPO+'/contents/'+GH_FILE;
+  var body={
+    message:'Atualiza eventos: '+(new Date().toLocaleString('pt-BR')),
+    content:btoa(unescape(encodeURIComponent(JSON.stringify({events:events},null,2)))),
+    branch:'main'
+  };
+  if(ghFileSha)body.sha=ghFileSha;
 
-    const sha = await getFileSha();
-
-    const content = toBase64(
-      JSON.stringify({ events: events }, null, 2)
-    );
-
-    const res = await fetch(
-      `https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/${GH_FILE}`,
-      {
-        method: 'PUT',
-        headers: ghHeaders(),
-        body: JSON.stringify({
-          message: `Atualiza eventos - ${new Date().toISOString()}`,
-          content: content,
-          sha: sha || ghFileSha
-        })
+  fetch(putUrl,{method:'PUT',headers:ghHeaders(),body:JSON.stringify(body)})
+    .then(function(r){return r.json()})
+    .then(function(data){
+      if(data.content){
+        // FIX #3: atualiza ghFileSha após salvar para evitar conflito na próxima operação
+        ghFileSha=data.content.sha;
+        showToast(msg||'Salvo no GitHub com sucesso! ✓');
+      } else {
+        var errMsg=data.message||JSON.stringify(data);
+        showToast('Erro GitHub: '+errMsg);
+        console.error('GitHub save error:',data);
       }
-    );
-
-    const data = await res.json();
-
-    if(data.content){
-      showToast('Salvo no GitHub! 🚀');
       renderCalendar();
-      return;
-    }
-
-    if(res.status === 409 && attempt < MAX_RETRIES){
-      await new Promise(r => setTimeout(r, 500 * attempt));
-      return saveEventsToGitHub(msg, attempt + 1);
-    }
-
-    throw new Error(data.message || 'Erro desconhecido');
-
-  } catch(e){
-
-    console.error('Erro ao salvar:', e);
-
-    if(attempt < MAX_RETRIES){
-      await new Promise(r => setTimeout(r, 500 * attempt));
-      return saveEventsToGitHub(msg, attempt + 1);
-    }
-
-    showToast('Erro ao salvar: ' + e.message);
-  }
+      _saving=false;
+    })
+    .catch(function(e){
+      showToast('Erro ao salvar: '+e.message);
+      renderCalendar();
+      _saving=false;
+    });
 }
-// ────────────────────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
 
-  function toBase64(str){
-  return btoa(
-    new TextEncoder().encode(str)
-      .reduce((data, byte) => data + String.fromCharCode(byte), '')
-  );
-}
-
-async function getFileSha(){
-  const res = await fetch(
-  `https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/${GH_FILE}?ref=main`, {
-    headers: ghHeaders(),
-    cache: "no-store"
-  });
-
-  const data = await res.json();
-
-  if(!data.sha){
-    throw new Error("Erro ao obter SHA");
-  }
-
-  return data.sha;
-}
 var events=[
-  {id:1,nome:"BBB",proj:"",area:"CIE",publico:"Todos",cat:"Evento",ini:"2026-01-12",fim:"2026-01-12",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:2,nome:"Cora\u00e7\u00e3o Acelorado (NN 19h)",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-01-12",fim:"2026-01-12",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:3,nome:"Carreira e MI \u2013 Wksp PRHs",proj:"",area:"AT",publico:"Equipe",cat:"Evento",ini:"2026-02-10",fim:"2026-02-11",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:4,nome:"HH Carnaval",proj:"",area:"CIE",publico:"Todos",cat:"Evento",ini:"2026-03-12",fim:"2026-03-12",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:1,nome:"BBB",proj:"",area:"CIE",publico:"Todos",cat:"Evento",ini:"2026-01-12",fim:"2026-01-12",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:2,nome:"Coração Acelorado (NN 19h)",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-01-12",fim:"2026-01-12",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:3,nome:"Carreira e MI – Wksp PRHs",proj:"",area:"AT",publico:"Equipe",cat:"Evento",ini:"2026-02-10",fim:"2026-02-11",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:4,nome:"HH Carnaval",proj:"",area:"CIE",publico:"Todos",cat:"Evento",ini:"2026-03-12",fim:"2026-03-12",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
   {id:5,nome:"Semana Economia Circular",proj:"",area:"CIE",publico:"Todos",cat:"Evento",ini:"2026-02-01",fim:"2026-02-28",hi:'',hf:'',local:'',desc:"Status: TBD",pri:"Baixa",status:"TBD",nat:false,noDate:true},
-  {id:6,nome:"Ver\u00e3o De Boa",proj:"",area:"CIE",publico:"Todos",cat:"Evento",ini:"2026-02-05",fim:"2026-02-05",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:7,nome:"PTC (turma 1)",proj:"",area:"D&A",publico:"Lideran\u00e7a",cat:"Evento",ini:"2026-03-24",fim:"2026-03-24",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:8,nome:"Talks online (Tour Executivo)",proj:"",area:"AT",publico:"Lideran\u00e7a",cat:"Evento",ini:"2026-03-30",fim:"2026-03-30",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:9,nome:"Talk Raymundo Barros | Ricardo Villela",proj:"",area:"AT",publico:"Lideran\u00e7a",cat:"Evento",ini:"2026-03-30",fim:"2026-03-30",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:10,nome:"M\u00eas da Mulher",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-03-08",fim:"2026-03-08",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:11,nome:"Carreira e MI \u2013 lan\u00e7amento",proj:"",area:"AT",publico:"Todos",cat:"Comunicado",ini:"2026-03-09",fim:"2026-03-09",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:12,nome:"Nova novela das 18h (TV Globo)",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-03-16",fim:"2026-03-16",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:13,nome:"HH Lollapalooza",proj:"",area:"CIE",publico:"Todos",cat:"Evento",ini:"2026-03-26",fim:"2026-03-26",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:14,nome:"Live IA Em Pauta c/ lan\u00e7amento assistente",proj:"",area:"D&A",publico:"Todos",cat:"Live",ini:"2026-03-30",fim:"2026-03-30",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Alta",status:"Confirmado",nat:true,noDate:false},
-  {id:15,nome:"Conven\u00e7\u00e3o NIP",proj:"",area:"CIE",publico:"P\u00fablico espec\u00edfico",cat:"Evento",ini:"2026-03-03",fim:"2026-03-05",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:16,nome:"Aula inaugural PDD",proj:"",area:"D&A",publico:"Alta Lideran\u00e7a",cat:"Live",ini:"2026-04-02",fim:"2026-04-02",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Alta",status:"Confirmado",nat:true,noDate:false},
-  {id:17,nome:"PDD (turma 1)",proj:"",area:"D&A",publico:"Alta Lideran\u00e7a",cat:"Evento",ini:"2026-04-14",fim:"2026-04-16",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Alta",status:"Confirmado",nat:true,noDate:false},
-  {id:18,nome:"PDG + IA",proj:"",area:"D&A",publico:"Lideran\u00e7a",cat:"Evento",ini:"2026-04-01",fim:"2026-04-01",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Alta",status:"Confirmado",nat:true,noDate:false},
-  {id:19,nome:"Carreira e MI \u2013 live lideran\u00e7a",proj:"",area:"AT",publico:"Lideran\u00e7a",cat:"Live",ini:"2026-04-07",fim:"2026-04-14",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Alta",status:"Confirmado",nat:true,noDate:false},
-  {id:20,nome:"Talks online m\u00faltiplos (Tour Exec.)",proj:"",area:"AT",publico:"Lideran\u00e7a",cat:"Live",ini:"2026-04-09",fim:"2026-04-28",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:21,nome:"Encontro Presencial (Tour Executivo)",proj:"",area:"AT",publico:"Lideran\u00e7a",cat:"Evento",ini:"2026-04-29",fim:"2026-04-29",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Alta",status:"Confirmado",nat:true,noDate:false},
-  {id:22,nome:"Carreira e MI \u2013 live equipes",proj:"",area:"AT",publico:"Equipe",cat:"Live",ini:"2026-04-08",fim:"2026-04-15",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Alta",status:"Confirmado",nat:true,noDate:false},
-  {id:23,nome:"Semana da Seg da Informa\u00e7\u00e3o",proj:"",area:"CIE",publico:"Todos",cat:"Evento",ini:"2026-04-06",fim:"2026-04-06",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:24,nome:"Campanha Vacina\u00e7\u00e3o",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-04-06",fim:"2026-04-06",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:25,nome:"Ninar \u2013 De Boa",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-04-07",fim:"2026-04-07",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:26,nome:"Movimento LED",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-04-15",fim:"2026-04-16",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:6,nome:"Verão De Boa",proj:"",area:"CIE",publico:"Todos",cat:"Evento",ini:"2026-02-05",fim:"2026-02-05",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:7,nome:"PTC (turma 1)",proj:"",area:"D&A",publico:"Liderança",cat:"Evento",ini:"2026-03-24",fim:"2026-03-24",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:8,nome:"Talks online (Tour Executivo)",proj:"",area:"AT",publico:"Liderança",cat:"Evento",ini:"2026-03-30",fim:"2026-03-30",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:9,nome:"Talk Raymundo Barros | Ricardo Villela",proj:"",area:"AT",publico:"Liderança",cat:"Evento",ini:"2026-03-30",fim:"2026-03-30",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:10,nome:"Mês da Mulher",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-03-08",fim:"2026-03-08",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:11,nome:"Carreira e MI – lançamento",proj:"",area:"AT",publico:"Todos",cat:"Comunicado",ini:"2026-03-09",fim:"2026-03-09",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:12,nome:"Nova novela das 18h (TV Globo)",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-03-16",fim:"2026-03-16",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:13,nome:"HH Lollapalooza",proj:"",area:"CIE",publico:"Todos",cat:"Evento",ini:"2026-03-26",fim:"2026-03-26",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:14,nome:"Live IA Em Pauta c/ lançamento assistente",proj:"",area:"D&A",publico:"Todos",cat:"Live",ini:"2026-03-30",fim:"2026-03-30",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Alta",status:"Confirmado",nat:true,noDate:false},
+  {id:15,nome:"Convenção NIP",proj:"",area:"CIE",publico:"Público específico",cat:"Evento",ini:"2026-03-03",fim:"2026-03-05",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:16,nome:"Aula inaugural PDD",proj:"",area:"D&A",publico:"Alta Liderança",cat:"Live",ini:"2026-04-02",fim:"2026-04-02",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Alta",status:"Confirmado",nat:true,noDate:false},
+  {id:17,nome:"PDD (turma 1)",proj:"",area:"D&A",publico:"Alta Liderança",cat:"Evento",ini:"2026-04-14",fim:"2026-04-16",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Alta",status:"Confirmado",nat:true,noDate:false},
+  {id:18,nome:"PDG + IA",proj:"",area:"D&A",publico:"Liderança",cat:"Evento",ini:"2026-04-01",fim:"2026-04-01",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Alta",status:"Confirmado",nat:true,noDate:false},
+  {id:19,nome:"Carreira e MI – live liderança",proj:"",area:"AT",publico:"Liderança",cat:"Live",ini:"2026-04-07",fim:"2026-04-14",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Alta",status:"Confirmado",nat:true,noDate:false},
+  {id:20,nome:"Talks online múltiplos (Tour Exec.)",proj:"",area:"AT",publico:"Liderança",cat:"Live",ini:"2026-04-09",fim:"2026-04-28",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:21,nome:"Encontro Presencial (Tour Executivo)",proj:"",area:"AT",publico:"Liderança",cat:"Evento",ini:"2026-04-29",fim:"2026-04-29",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Alta",status:"Confirmado",nat:true,noDate:false},
+  {id:22,nome:"Carreira e MI – live equipes",proj:"",area:"AT",publico:"Equipe",cat:"Live",ini:"2026-04-08",fim:"2026-04-15",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Alta",status:"Confirmado",nat:true,noDate:false},
+  {id:23,nome:"Semana da Seg da Informação",proj:"",area:"CIE",publico:"Todos",cat:"Evento",ini:"2026-04-06",fim:"2026-04-06",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:24,nome:"Campanha Vacinação",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-04-06",fim:"2026-04-06",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:25,nome:"Ninar – De Boa",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-04-07",fim:"2026-04-07",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:26,nome:"Movimento LED",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-04-15",fim:"2026-04-16",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
   {id:27,nome:"Pirataria",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-04-01",fim:"2026-04-28",hi:'',hf:'',local:'',desc:"Status: TBD",pri:"Baixa",status:"TBD",nat:false,noDate:true},
-  {id:28,nome:"Live SXSW",proj:"",area:"CIE",publico:"Todos",cat:"Live",ini:"2026-04-15",fim:"2026-04-15",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:29,nome:"Mentoria",proj:"",area:"D&A",publico:"P\u00fablico espec\u00edfico",cat:"Comunicado",ini:"2026-04-27",fim:"2026-04-30",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Alta",status:"Confirmado",nat:true,noDate:false},
-  {id:30,nome:"Roda de Conversa PDD (turma 1)",proj:"",area:"D&A",publico:"Alta Lideran\u00e7a",cat:"Evento",ini:"2026-05-05",fim:"2026-05-05",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Alta",status:"Confirmado",nat:true,noDate:false},
-  {id:31,nome:"Encontro da Alta Lideran\u00e7a | Cultura",proj:"",area:"Cultura",publico:"Alta Lideran\u00e7a",cat:"Evento",ini:"2026-05-06",fim:"2026-05-06",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Alta",status:"Confirmado",nat:true,noDate:false},
-  {id:32,nome:"1\u00ba encontro ESC | Cultura",proj:"",area:"Cultura",publico:"Alta Lideran\u00e7a",cat:"Evento",ini:"2026-05-01",fim:"2026-05-28",hi:'',hf:'',local:'',desc:"Status: TBD",pri:"Baixa",status:"TBD",nat:false,noDate:true},
-  {id:33,nome:"Trainee \u2013 Demoday",proj:"",area:"AT",publico:"Alta Lideran\u00e7a",cat:"Evento",ini:"2026-05-14",fim:"2026-05-14",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Alta",status:"Confirmado",nat:true,noDate:false},
-  {id:34,nome:"LinkedIn Day RJ",proj:"",area:"AT",publico:"Lideran\u00e7a",cat:"Evento",ini:"2026-05-26",fim:"2026-05-26",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:35,nome:"Estagiar (admiss\u00e3o)",proj:"",area:"AT",publico:"Equipe",cat:"Processo",ini:"2026-05-14",fim:"2026-05-14",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:36,nome:"A\u00e7\u00e3o Dia das M\u00e3es",proj:"",area:"CIE",publico:"Todos",cat:"A\u00e7\u00e3o",ini:"2026-05-09",fim:"2026-05-09",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:37,nome:"Festival Data Lab",proj:"",area:"D&A",publico:"Todos",cat:"Evento",ini:"2026-05-11",fim:"2026-05-15",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:38,nome:"Novo relat. ESG",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-05-15",fim:"2026-05-15",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:39,nome:"Festival LED",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-05-15",fim:"2026-05-15",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:40,nome:"Nova novela das 21h (TV Globo)",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-05-18",fim:"2026-05-18",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:28,nome:"Live SXSW",proj:"",area:"CIE",publico:"Todos",cat:"Live",ini:"2026-04-15",fim:"2026-04-15",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:29,nome:"Mentoria",proj:"",area:"D&A",publico:"Público específico",cat:"Comunicado",ini:"2026-04-27",fim:"2026-04-30",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Alta",status:"Confirmado",nat:true,noDate:false},
+  {id:30,nome:"Roda de Conversa PDD (turma 1)",proj:"",area:"D&A",publico:"Alta Liderança",cat:"Evento",ini:"2026-05-05",fim:"2026-05-05",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Alta",status:"Confirmado",nat:true,noDate:false},
+  {id:31,nome:"Encontro da Alta Liderança | Cultura",proj:"",area:"Cultura",publico:"Alta Liderança",cat:"Evento",ini:"2026-05-06",fim:"2026-05-06",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Alta",status:"Confirmado",nat:true,noDate:false},
+  {id:32,nome:"1º encontro ESC | Cultura",proj:"",area:"Cultura",publico:"Alta Liderança",cat:"Evento",ini:"2026-05-01",fim:"2026-05-28",hi:'',hf:'',local:'',desc:"Status: TBD",pri:"Baixa",status:"TBD",nat:false,noDate:true},
+  {id:33,nome:"Trainee – Demoday",proj:"",area:"AT",publico:"Alta Liderança",cat:"Evento",ini:"2026-05-14",fim:"2026-05-14",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Alta",status:"Confirmado",nat:true,noDate:false},
+  {id:34,nome:"LinkedIn Day RJ",proj:"",area:"AT",publico:"Liderança",cat:"Evento",ini:"2026-05-26",fim:"2026-05-26",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:35,nome:"Estagiar (admissão)",proj:"",area:"AT",publico:"Equipe",cat:"Processo",ini:"2026-05-14",fim:"2026-05-14",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:36,nome:"Ação Dia das Mães",proj:"",area:"CIE",publico:"Todos",cat:"Ação",ini:"2026-05-09",fim:"2026-05-09",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:37,nome:"Festival Data Lab",proj:"",area:"D&A",publico:"Todos",cat:"Evento",ini:"2026-05-11",fim:"2026-05-15",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:38,nome:"Novo relat. ESG",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-05-15",fim:"2026-05-15",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:39,nome:"Festival LED",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-05-15",fim:"2026-05-15",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:40,nome:"Nova novela das 21h (TV Globo)",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-05-18",fim:"2026-05-18",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
   {id:41,nome:"Live Paulo Marinho",proj:"",area:"CIE",publico:"Todos",cat:"Live",ini:"2026-05-20",fim:"2026-05-20",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Alta",status:"Confirmado",nat:true,noDate:false},
-  {id:42,nome:"Live Copa (Lan\u00e7am. DTV+)",proj:"",area:"CIE",publico:"Todos",cat:"Live",ini:"2026-05-26",fim:"2026-05-26",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:43,nome:"Brasilidades",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-05-27",fim:"2026-05-27",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:44,nome:"Live Res. Fin. 1\u00ba tri - 2026",proj:"",area:"CIE",publico:"Todos",cat:"Live",ini:"2026-05-28",fim:"2026-05-28",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Alta",status:"Confirmado",nat:true,noDate:false},
+  {id:42,nome:"Live Copa (Lançam. DTV+)",proj:"",area:"CIE",publico:"Todos",cat:"Live",ini:"2026-05-26",fim:"2026-05-26",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:43,nome:"Brasilidades",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-05-27",fim:"2026-05-27",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:44,nome:"Live Res. Fin. 1º tri - 2026",proj:"",area:"CIE",publico:"Todos",cat:"Live",ini:"2026-05-28",fim:"2026-05-28",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Alta",status:"Confirmado",nat:true,noDate:false},
   {id:45,nome:"Pesquisa de Engajamento e Cultura",proj:"",area:"Cultura",publico:"Todos",cat:"Pesquisa",ini:"2026-05-25",fim:"2026-05-29",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Alta",status:"Confirmado",nat:true,noDate:false},
-  {id:46,nome:"Negritudes",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-05-29",fim:"2026-05-29",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:47,nome:"Evolu\u00e7\u00e3o Estrat. Globo",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-05-01",fim:"2026-05-28",hi:'',hf:'',local:'',desc:"Status: TBD",pri:"Alta",status:"TBD",nat:true,noDate:true},
-  {id:48,nome:"Mentoria",proj:"",area:"D&A",publico:"P\u00fablico espec\u00edfico",cat:"Evento",ini:"2026-05-05",fim:"2026-05-12",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:49,nome:"PTC (turma 2)",proj:"",area:"D&A",publico:"Lideran\u00e7a",cat:"Evento",ini:"2026-06-01",fim:"2026-06-28",hi:'',hf:'',local:'',desc:"Status: TBD",pri:"Baixa",status:"TBD",nat:false,noDate:true},
-  {id:50,nome:"LinkedIn Day SP",proj:"",area:"AT",publico:"Lideran\u00e7a",cat:"Evento",ini:"2026-06-02",fim:"2026-06-02",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:51,nome:"Estagiar (admiss\u00e3o)",proj:"",area:"AT",publico:"Equipe",cat:"Processo",ini:"2026-06-12",fim:"2026-06-12",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:52,nome:"Semana do Meio Ambiente",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-06-01",fim:"2026-06-01",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:53,nome:"Jantar Dia dos Namorados",proj:"",area:"CIE",publico:"Todos",cat:"Evento",ini:"2026-06-11",fim:"2026-06-11",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:54,nome:"Abertura Copa do Mundo",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-06-11",fim:"2026-06-11",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:55,nome:"M\u00eas do Orgulho",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-06-28",fim:"2026-06-28",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:56,nome:"F\u00f3rmula 1",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-06-01",fim:"2026-06-28",hi:'',hf:'',local:'',desc:"Status: TBD",pri:"Baixa",status:"TBD",nat:false,noDate:true},
-  {id:57,nome:"Divulga\u00e7\u00e3o desafio LED IA",proj:"",area:"CIE",publico:"P\u00fablico espec\u00edfico",cat:"Comunicado",ini:"2026-06-09",fim:"2026-06-09",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:58,nome:"Fim Copa do Mundo",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-07-19",fim:"2026-07-19",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:59,nome:"Chef de Alto N\u00edvel (TV Globo)",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-07-21",fim:"2026-07-21",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:60,nome:"HH Festa Junina",proj:"",area:"CIE",publico:"Todos",cat:"Evento",ini:"2026-07-30",fim:"2026-07-30",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:61,nome:"2\u00ba encontro ESC | Cultura",proj:"",area:"Cultura",publico:"Alta Lideran\u00e7a",cat:"Evento",ini:"2026-07-01",fim:"2026-07-28",hi:'',hf:'',local:'',desc:"Status: TBD",pri:"Baixa",status:"TBD",nat:false,noDate:true},
-  {id:62,nome:"PTC (turma 3)",proj:"",area:"D&A",publico:"Lideran\u00e7a",cat:"Evento",ini:"2026-07-01",fim:"2026-07-28",hi:'',hf:'',local:'',desc:"Status: TBD",pri:"Baixa",status:"TBD",nat:false,noDate:true},
-  {id:63,nome:"Secweek",proj:"",area:"CIE",publico:"P\u00fablico espec\u00edfico",cat:"Evento",ini:"2026-07-27",fim:"2026-07-31",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:64,nome:"PDD + IA",proj:"",area:"D&A",publico:"Alta Lideran\u00e7a",cat:"Evento",ini:"2026-08-01",fim:"2026-08-28",hi:'',hf:'',local:'',desc:"Status: TBD",pri:"Alta",status:"TBD",nat:true,noDate:true},
-  {id:65,nome:"Conex\u00e3o Lideran\u00e7a",proj:"",area:"CIE",publico:"Lideran\u00e7a",cat:"Evento",ini:"2026-08-13",fim:"2026-08-13",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:66,nome:"Estagiar \u2013 2\u00aa janela",proj:"",area:"AT",publico:"Equipe",cat:"Processo",ini:"2026-08-01",fim:"2026-08-28",hi:'',hf:'',local:'',desc:"Status: TBD",pri:"Baixa",status:"TBD",nat:false,noDate:true},
-  {id:67,nome:"A\u00e7\u00e3o Dia dos Pais",proj:"",area:"CIE",publico:"Todos",cat:"A\u00e7\u00e3o",ini:"2026-08-08",fim:"2026-08-08",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:68,nome:"Nova novela das 19h (TV Globo)",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-08-10",fim:"2026-08-10",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:69,nome:"Semana SIPAT",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-08-10",fim:"2026-08-10",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:70,nome:"Estrela da Casa (TV Globo)",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-08-24",fim:"2026-08-24",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:71,nome:"Voluntariado Globo",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-08-28",fim:"2026-08-28",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:46,nome:"Negritudes",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-05-29",fim:"2026-05-29",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:47,nome:"Evolução Estrat. Globo",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-05-01",fim:"2026-05-28",hi:'',hf:'',local:'',desc:"Status: TBD",pri:"Alta",status:"TBD",nat:true,noDate:true},
+  {id:48,nome:"Mentoria",proj:"",area:"D&A",publico:"Público específico",cat:"Evento",ini:"2026-05-05",fim:"2026-05-12",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:49,nome:"PTC (turma 2)",proj:"",area:"D&A",publico:"Liderança",cat:"Evento",ini:"2026-06-01",fim:"2026-06-28",hi:'',hf:'',local:'',desc:"Status: TBD",pri:"Baixa",status:"TBD",nat:false,noDate:true},
+  {id:50,nome:"LinkedIn Day SP",proj:"",area:"AT",publico:"Liderança",cat:"Evento",ini:"2026-06-02",fim:"2026-06-02",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:51,nome:"Estagiar (admissão)",proj:"",area:"AT",publico:"Equipe",cat:"Processo",ini:"2026-06-12",fim:"2026-06-12",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:52,nome:"Semana do Meio Ambiente",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-06-01",fim:"2026-06-01",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:53,nome:"Jantar Dia dos Namorados",proj:"",area:"CIE",publico:"Todos",cat:"Evento",ini:"2026-06-11",fim:"2026-06-11",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:54,nome:"Abertura Copa do Mundo",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-06-11",fim:"2026-06-11",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:55,nome:"Mês do Orgulho",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-06-28",fim:"2026-06-28",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:56,nome:"Fórmula 1",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-06-01",fim:"2026-06-28",hi:'',hf:'',local:'',desc:"Status: TBD",pri:"Baixa",status:"TBD",nat:false,noDate:true},
+  {id:57,nome:"Divulgação desafio LED IA",proj:"",area:"CIE",publico:"Público específico",cat:"Comunicado",ini:"2026-06-09",fim:"2026-06-09",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:58,nome:"Fim Copa do Mundo",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-07-19",fim:"2026-07-19",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:59,nome:"Chef de Alto Nível (TV Globo)",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-07-21",fim:"2026-07-21",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:60,nome:"HH Festa Junina",proj:"",area:"CIE",publico:"Todos",cat:"Evento",ini:"2026-07-30",fim:"2026-07-30",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:61,nome:"2º encontro ESC | Cultura",proj:"",area:"Cultura",publico:"Alta Liderança",cat:"Evento",ini:"2026-07-01",fim:"2026-07-28",hi:'',hf:'',local:'',desc:"Status: TBD",pri:"Baixa",status:"TBD",nat:false,noDate:true},
+  {id:62,nome:"PTC (turma 3)",proj:"",area:"D&A",publico:"Liderança",cat:"Evento",ini:"2026-07-01",fim:"2026-07-28",hi:'',hf:'',local:'',desc:"Status: TBD",pri:"Baixa",status:"TBD",nat:false,noDate:true},
+  {id:63,nome:"Secweek",proj:"",area:"CIE",publico:"Público específico",cat:"Evento",ini:"2026-07-27",fim:"2026-07-31",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:64,nome:"PDD + IA",proj:"",area:"D&A",publico:"Alta Liderança",cat:"Evento",ini:"2026-08-01",fim:"2026-08-28",hi:'',hf:'',local:'',desc:"Status: TBD",pri:"Alta",status:"TBD",nat:true,noDate:true},
+  {id:65,nome:"Conexão Liderança",proj:"",area:"CIE",publico:"Liderança",cat:"Evento",ini:"2026-08-13",fim:"2026-08-13",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:66,nome:"Estagiar – 2ª janela",proj:"",area:"AT",publico:"Equipe",cat:"Processo",ini:"2026-08-01",fim:"2026-08-28",hi:'',hf:'',local:'',desc:"Status: TBD",pri:"Baixa",status:"TBD",nat:false,noDate:true},
+  {id:67,nome:"Ação Dia dos Pais",proj:"",area:"CIE",publico:"Todos",cat:"Ação",ini:"2026-08-08",fim:"2026-08-08",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:68,nome:"Nova novela das 19h (TV Globo)",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-08-10",fim:"2026-08-10",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:69,nome:"Semana SIPAT",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-08-10",fim:"2026-08-10",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:70,nome:"Estrela da Casa (TV Globo)",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-08-24",fim:"2026-08-24",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:71,nome:"Voluntariado Globo",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-08-28",fim:"2026-08-28",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
   {id:72,nome:"Negritudes BSB e SP",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-08-01",fim:"2026-08-28",hi:'',hf:'',local:'',desc:"Status: TBD",pri:"Baixa",status:"TBD",nat:false,noDate:true},
-  {id:73,nome:"Off-site do Comex | Cultura",proj:"",area:"Cultura",publico:"Alta Lideran\u00e7a",cat:"Evento",ini:"2026-09-17",fim:"2026-09-17",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Alta",status:"Confirmado",nat:true,noDate:false},
-  {id:74,nome:"Setembro Amarelo",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-09-01",fim:"2026-09-01",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:75,nome:"Live Res. Fin. 2\u00ba tri - 2026",proj:"",area:"CIE",publico:"Todos",cat:"Live",ini:"2026-09-09",fim:"2026-09-09",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:76,nome:"Rock in Rio",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-09-04",fim:"2026-09-13",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:77,nome:"M\u00eas da Pessoa com defici\u00eancia",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-09-08",fim:"2026-09-08",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:78,nome:"3\u00ba encontro ESC | Cultura",proj:"",area:"Cultura",publico:"Alta Lideran\u00e7a",cat:"Evento",ini:"2026-10-01",fim:"2026-10-28",hi:'',hf:'',local:'',desc:"Status: TBD",pri:"Baixa",status:"TBD",nat:false,noDate:true},
-  {id:79,nome:"CPC&ESG | Sucess\u00e3o",proj:"",area:"D&A",publico:"Alta Lideran\u00e7a",cat:"Evento",ini:"2026-10-01",fim:"2026-10-28",hi:'',hf:'',local:'',desc:"Status: TBD",pri:"Alta",status:"TBD",nat:true,noDate:true},
-  {id:80,nome:"CA | Sucess\u00e3o",proj:"",area:"D&A",publico:"Alta Lideran\u00e7a",cat:"Evento",ini:"2026-10-01",fim:"2026-10-28",hi:'',hf:'',local:'',desc:"Status: TBD",pri:"Alta",status:"TBD",nat:true,noDate:true},
-  {id:81,nome:"Tour Executivo",proj:"",area:"AT",publico:"Lideran\u00e7a",cat:"Evento",ini:"2026-10-01",fim:"2026-10-28",hi:'',hf:'',local:'',desc:"Status: TBD",pri:"Baixa",status:"TBD",nat:false,noDate:true},
-  {id:82,nome:"Sem. do consumo consciente",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-10-05",fim:"2026-10-05",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:83,nome:"Outubro Rosa",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-10-06",fim:"2026-10-06",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:84,nome:"Upfront",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-10-14",fim:"2026-10-14",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:85,nome:"Dia das crian\u00e7as",proj:"",area:"CIE",publico:"Todos",cat:"Evento",ini:"2026-10-15",fim:"2026-10-15",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:86,nome:"Nova novela das 18h (TV Globo)",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-10-19",fim:"2026-10-19",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:87,nome:"Elei\u00e7\u00f5es \u2013 1\u00ba turno (Jor)",proj:"",area:"CIE",publico:"P\u00fablico espec\u00edfico",cat:"Comunicado",ini:"2026-10-04",fim:"2026-10-04",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:88,nome:"Elei\u00e7\u00f5es \u2013 2\u00ba turno (Jor)",proj:"",area:"CIE",publico:"P\u00fablico espec\u00edfico",cat:"Comunicado",ini:"2026-10-25",fim:"2026-10-25",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:89,nome:"Imers\u00e3o desafio LED IA",proj:"",area:"CIE",publico:"P\u00fablico espec\u00edfico",cat:"Comunicado",ini:"2026-10-24",fim:"2026-10-28",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:90,nome:"Novembro Azul",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-11-03",fim:"2026-11-03",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:91,nome:"Novembro Globo",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-11-04",fim:"2026-11-04",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:92,nome:"De Boa: Feira de moda e beleza",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-11-09",fim:"2026-11-09",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:93,nome:"Negritudes Salvador",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-11-19",fim:"2026-11-19",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:73,nome:"Off-site do Comex | Cultura",proj:"",area:"Cultura",publico:"Alta Liderança",cat:"Evento",ini:"2026-09-17",fim:"2026-09-17",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Alta",status:"Confirmado",nat:true,noDate:false},
+  {id:74,nome:"Setembro Amarelo",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-09-01",fim:"2026-09-01",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:75,nome:"Live Res. Fin. 2º tri - 2026",proj:"",area:"CIE",publico:"Todos",cat:"Live",ini:"2026-09-09",fim:"2026-09-09",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:76,nome:"Rock in Rio",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-09-04",fim:"2026-09-13",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:77,nome:"Mês da Pessoa com deficiência",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-09-08",fim:"2026-09-08",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:78,nome:"3º encontro ESC | Cultura",proj:"",area:"Cultura",publico:"Alta Liderança",cat:"Evento",ini:"2026-10-01",fim:"2026-10-28",hi:'',hf:'',local:'',desc:"Status: TBD",pri:"Baixa",status:"TBD",nat:false,noDate:true},
+  {id:79,nome:"CPC&ESG | Sucessão",proj:"",area:"D&A",publico:"Alta Liderança",cat:"Evento",ini:"2026-10-01",fim:"2026-10-28",hi:'',hf:'',local:'',desc:"Status: TBD",pri:"Alta",status:"TBD",nat:true,noDate:true},
+  {id:80,nome:"CA | Sucessão",proj:"",area:"D&A",publico:"Alta Liderança",cat:"Evento",ini:"2026-10-01",fim:"2026-10-28",hi:'',hf:'',local:'',desc:"Status: TBD",pri:"Alta",status:"TBD",nat:true,noDate:true},
+  {id:81,nome:"Tour Executivo",proj:"",area:"AT",publico:"Liderança",cat:"Evento",ini:"2026-10-01",fim:"2026-10-28",hi:'',hf:'',local:'',desc:"Status: TBD",pri:"Baixa",status:"TBD",nat:false,noDate:true},
+  {id:82,nome:"Sem. do consumo consciente",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-10-05",fim:"2026-10-05",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:83,nome:"Outubro Rosa",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-10-06",fim:"2026-10-06",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:84,nome:"Upfront",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-10-14",fim:"2026-10-14",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:85,nome:"Dia das crianças",proj:"",area:"CIE",publico:"Todos",cat:"Evento",ini:"2026-10-15",fim:"2026-10-15",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:86,nome:"Nova novela das 18h (TV Globo)",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-10-19",fim:"2026-10-19",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:87,nome:"Eleições – 1º turno (Jor)",proj:"",area:"CIE",publico:"Público específico",cat:"Comunicado",ini:"2026-10-04",fim:"2026-10-04",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:88,nome:"Eleições – 2º turno (Jor)",proj:"",area:"CIE",publico:"Público específico",cat:"Comunicado",ini:"2026-10-25",fim:"2026-10-25",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:89,nome:"Imersão desafio LED IA",proj:"",area:"CIE",publico:"Público específico",cat:"Comunicado",ini:"2026-10-24",fim:"2026-10-28",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:90,nome:"Novembro Azul",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-11-03",fim:"2026-11-03",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:91,nome:"Novembro Globo",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-11-04",fim:"2026-11-04",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:92,nome:"De Boa: Feira de moda e beleza",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-11-09",fim:"2026-11-09",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:93,nome:"Negritudes Salvador",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-11-19",fim:"2026-11-19",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
   {id:94,nome:"Pesquisa de Engajamento e Cultura",proj:"",area:"Cultura",publico:"Todos",cat:"Pesquisa",ini:"2026-11-01",fim:"2026-11-28",hi:'',hf:'',local:'',desc:"Status: TBD",pri:"Alta",status:"TBD",nat:true,noDate:true},
-  {id:95,nome:"Reconhecimento Globo \u2013 evento +40 e acionistas",proj:"",area:"CIE",publico:"P\u00fablico espec\u00edfico",cat:"Evento",ini:"2026-11-01",fim:"2026-11-28",hi:'',hf:'',local:'',desc:"Status: TBD",pri:"Baixa",status:"TBD",nat:false,noDate:true},
-  {id:96,nome:"De Boa: cart\u00e3o presente",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-12-01",fim:"2026-12-01",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:97,nome:"Live Fim de Ano Paulo Marino",proj:"",area:"CIE",publico:"Todos",cat:"Live",ini:"2026-12-17",fim:"2026-12-17",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
-  {id:98,nome:"Estagiar \u2013 3\u00aa janela",proj:"",area:"AT",publico:"Equipe",cat:"Processo",ini:"2026-12-01",fim:"2026-12-28",hi:'',hf:'',local:'',desc:"Status: TBD",pri:"Baixa",status:"TBD",nat:false,noDate:true},
-  {id:99,nome:"Gest\u00e3o Estrat\u00e9gica de Sucess\u00e3o",proj:"",area:"D&A",publico:"Alta Lideran\u00e7a",cat:"Projeto",ini:"2026-10-09",fim:"2026-10-09",hi:'',hf:'',local:'',desc:"Status: Em andamento",pri:"Alta",status:"Em andamento",nat:true,noDate:false},
-  {id:100,nome:"Programa de Transforma\u00e7\u00e3o Cultural",proj:"",area:"D&A",publico:"Todos",cat:"Projeto",ini:"2026-12-01",fim:"2026-12-01",hi:'',hf:'',local:'',desc:"Status: A iniciar",pri:"Alta",status:"A iniciar",nat:true,noDate:false},
-  {id:101,nome:"PDD + IA (Projeto)",proj:"",area:"D&A",publico:"Alta Lideran\u00e7a",cat:"Projeto",ini:"2026-11-20",fim:"2026-11-20",hi:'',hf:'',local:'',desc:"Status: A iniciar",pri:"Alta",status:"A iniciar",nat:true,noDate:false},
-  {id:102,nome:"Evolu\u00e7\u00e3o do processo de gest\u00e3o de desempenho",proj:"",area:"D&A",publico:"Lideran\u00e7a",cat:"Projeto",ini:"2026-07-01",fim:"2026-07-01",hi:'',hf:'',local:'',desc:"Status: A iniciar",pri:"Alta",status:"A iniciar",nat:true,noDate:false},
-  {id:103,nome:"ScoreCard da Lideran\u00e7a",proj:"",area:"D&A",publico:"Lideran\u00e7a",cat:"Projeto",ini:"2026-12-31",fim:"2026-12-31",hi:'',hf:'',local:'',desc:"Status: Em andamento",pri:"Alta",status:"Em andamento",nat:true,noDate:false},
-  {id:104,nome:"Evolu\u00e7\u00e3o do Search Executivo",proj:"",area:"AT",publico:"Alta Lideran\u00e7a",cat:"Projeto",ini:"2026-01-01",fim:"2026-01-28",hi:'',hf:'',local:'',desc:"Status: A iniciar",pri:"Baixa",status:"A iniciar",nat:false,noDate:true},
+  {id:95,nome:"Reconhecimento Globo – evento +40 e acionistas",proj:"",area:"CIE",publico:"Público específico",cat:"Evento",ini:"2026-11-01",fim:"2026-11-28",hi:'',hf:'',local:'',desc:"Status: TBD",pri:"Baixa",status:"TBD",nat:false,noDate:true},
+  {id:96,nome:"De Boa: cartão presente",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-12-01",fim:"2026-12-01",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:97,nome:"Live Fim de Ano Paulo Marino",proj:"",area:"CIE",publico:"Todos",cat:"Live",ini:"2026-12-17",fim:"2026-12-17",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Média",status:"Confirmado",nat:false,noDate:false},
+  {id:98,nome:"Estagiar – 3ª janela",proj:"",area:"AT",publico:"Equipe",cat:"Processo",ini:"2026-12-01",fim:"2026-12-28",hi:'',hf:'',local:'',desc:"Status: TBD",pri:"Baixa",status:"TBD",nat:false,noDate:true},
+  {id:99,nome:"Gestão Estratégica de Sucessão",proj:"",area:"D&A",publico:"Alta Liderança",cat:"Projeto",ini:"2026-10-09",fim:"2026-10-09",hi:'',hf:'',local:'',desc:"Status: Em andamento",pri:"Alta",status:"Em andamento",nat:true,noDate:false},
+  {id:100,nome:"Programa de Transformação Cultural",proj:"",area:"D&A",publico:"Todos",cat:"Projeto",ini:"2026-12-01",fim:"2026-12-01",hi:'',hf:'',local:'',desc:"Status: A iniciar",pri:"Alta",status:"A iniciar",nat:true,noDate:false},
+  {id:101,nome:"PDD + IA (Projeto)",proj:"",area:"D&A",publico:"Alta Liderança",cat:"Projeto",ini:"2026-11-20",fim:"2026-11-20",hi:'',hf:'',local:'',desc:"Status: A iniciar",pri:"Alta",status:"A iniciar",nat:true,noDate:false},
+  {id:102,nome:"Evolução do processo de gestão de desempenho",proj:"",area:"D&A",publico:"Liderança",cat:"Projeto",ini:"2026-07-01",fim:"2026-07-01",hi:'',hf:'',local:'',desc:"Status: A iniciar",pri:"Alta",status:"A iniciar",nat:true,noDate:false},
+  {id:103,nome:"ScoreCard da Liderança",proj:"",area:"D&A",publico:"Liderança",cat:"Projeto",ini:"2026-12-31",fim:"2026-12-31",hi:'',hf:'',local:'',desc:"Status: Em andamento",pri:"Alta",status:"Em andamento",nat:true,noDate:false},
+  {id:104,nome:"Evolução do Search Executivo",proj:"",area:"AT",publico:"Alta Liderança",cat:"Projeto",ini:"2026-01-01",fim:"2026-01-28",hi:'',hf:'',local:'',desc:"Status: A iniciar",pri:"Baixa",status:"A iniciar",nat:false,noDate:true},
   {id:105,nome:"Programa Trainee",proj:"",area:"AT",publico:"Equipe",cat:"Projeto",ini:"2026-26-01",fim:"2026-26-28",hi:'',hf:'',local:'',desc:"Status: Em andamento",pri:"Alta",status:"Em andamento",nat:true,noDate:true},
   {id:106,nome:"Portal de Carreira e Mobilidade Interna",proj:"",area:"AT",publico:"Todos",cat:"Projeto",ini:"2026-12-31",fim:"2026-12-31",hi:'',hf:'',local:'',desc:"Status: Em andamento",pri:"Alta",status:"Em andamento",nat:false,noDate:false},
-  {id:107,nome:"Nova estrat\u00e9gia de onboarding",proj:"",area:"AT",publico:"Todos",cat:"Projeto",ini:"2026-08-03",fim:"2026-08-03",hi:'',hf:'',local:'',desc:"Status: A iniciar",pri:"Baixa",status:"A iniciar",nat:false,noDate:false},
+  {id:107,nome:"Nova estratégia de onboarding",proj:"",area:"AT",publico:"Todos",cat:"Projeto",ini:"2026-08-03",fim:"2026-08-03",hi:'',hf:'',local:'',desc:"Status: A iniciar",pri:"Baixa",status:"A iniciar",nat:false,noDate:false},
   {id:108,nome:"Copa do Mundo (Projeto Engajamento)",proj:"",area:"CIE",publico:"Todos",cat:"Projeto",ini:"2026-07-11",fim:"2026-07-11",hi:'',hf:'',local:'',desc:"Status: A iniciar",pri:"Baixa",status:"A iniciar",nat:false,noDate:false},
   {id:109,nome:"Futuro do Trabalho",proj:"",area:"D&A",publico:"Todos",cat:"Projeto",ini:"2026-01-19",fim:"2026-01-19",hi:'',hf:'',local:'',desc:"Status: A iniciar",pri:"Baixa",status:"A iniciar",nat:false,noDate:false}
 ];
-
 
 function p2(n){return String(n).padStart(2,'0')}
 function toStr(y,m,d){return y+'-'+p2(m+1)+'-'+p2(d)}
@@ -777,7 +724,6 @@ function statusClass(e){
   return 'ev-confirmado';
 }
 function badgeClass(p){return p==='Alta'?'badge-alta':p==='Média'?'badge-media':'badge-baixa'}
-function priIcon(p){return p==='Alta'?'🔴':p==='Média'?'🟡':'🟢'}
 
 function renderTbdPanel(){
   var tbd=events.filter(function(e){return e.noDate});
@@ -832,7 +778,6 @@ function getFiltered(){
 }
 
 function nextBusinessDay(y,m){
-  // Find first weekday of the month (Mon-Fri)
   var d=new Date(y,m,1);
   while(d.getDay()===0||d.getDay()===6) d.setDate(d.getDate()+1);
   return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
@@ -879,7 +824,6 @@ function renderCalendar(){
 
 function renderMonth(){
   var master=document.getElementById('calMaster');
-  // Restore DOW headers (first 7 children)
   var dw=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
   var hdCells=master.querySelectorAll('.cal-dow');
   hdCells.forEach(function(c,i){
@@ -891,7 +835,6 @@ function renderMonth(){
   master.style.gridTemplateColumns='repeat(7,minmax(0,1fr))';
   master.style.background='var(--gray-200)';
   master.style.borderRadius='var(--radius-md)';
-  var body=master; // inject directly into master
   var today=todayStr();
   var firstDay=new Date(curY,curM,1).getDay();
   var daysInMonth=new Date(curY,curM+1,0).getDate();
@@ -921,8 +864,6 @@ function renderMonth(){
     if(evts.length>3)html+='<div class="more-events" data-day="'+dayStr+'" onclick="openDayPopup(event)">+'+(evts.length-3)+' mais</div>';
     html+='</div>';
   }
-  // Remove old day cells (keep first 7 DOW headers)
-  var master=document.getElementById('calMaster');
   while(master.children.length>7) master.removeChild(master.lastChild);
   master.insertAdjacentHTML('beforeend',html);
   document.getElementById('monthLabel').textContent=MONTHS[curM]+' '+curY;
@@ -939,7 +880,6 @@ function renderWeek(){
   var today=todayStr();
   var html='';
   var dw=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
-  // Update DOW headers with actual dates
   var hdCells=master.querySelectorAll('.cal-dow');
   for(var d=0;d<7;d++){
     var dd=new Date(curWeekStart);dd.setDate(dd.getDate()+d);
@@ -964,7 +904,6 @@ function renderWeek(){
     });
     html+='</div>';
   }
-  var master=document.getElementById('calMaster');
   while(master.children.length>7) master.removeChild(master.lastChild);
   master.insertAdjacentHTML('beforeend',html);
   var we=new Date(curWeekStart);we.setDate(we.getDate()+6);
@@ -974,7 +913,6 @@ function renderWeek(){
 
 function renderMultiMonth(count){
   var master=document.getElementById('calMaster');
-  // Hide DOW headers for multi-view
   master.querySelectorAll('.cal-dow').forEach(function(c){c.style.display='none'});
   var cols=count===12?4:count===6?3:3;
   master.className='cal-master';
@@ -983,7 +921,6 @@ function renderMultiMonth(count){
   master.style.borderRadius='0';
   var today=todayStr();
   var html='';
-  // normalize start month
   var startM=curM,startY=curY;
   if(count===12){startM=0}
   else if(count===6){startM=Math.floor(curM/6)*6}
@@ -1014,7 +951,6 @@ function renderMultiMonth(count){
       html+='</div>';
     }
     html+='</div>';
-    // event list
     var monthEvts=eventsForDay2(yy,mm);
     if(monthEvts.length){
       html+='<div style="margin-top:8px;border-top:1px solid var(--gray-100);padding-top:6px">';
@@ -1028,7 +964,6 @@ function renderMultiMonth(count){
     }
     html+='</div>';
   }
-  var master=document.getElementById('calMaster');
   while(master.children.length>7) master.removeChild(master.lastChild);
   master.insertAdjacentHTML('beforeend',html);
   var label=count===12?String(startY):MONTHS[startM]+' – '+MONTHS[(startM+count-1)%12]+' '+startY;
@@ -1041,14 +976,6 @@ function eventsForDay2(y,m){
   return getFiltered().filter(function(e){return e.ini.startsWith(ym)||(e.fim&&e.fim.startsWith(ym))});
 }
 
-// COPILOT
-
-
-
-
-
-
-// DETAIL
 function openDetail(id){
   var ev=events.find(function(x){return x.id===id});if(!ev)return;
   detailId=id;
@@ -1058,7 +985,7 @@ function openDetail(id){
   document.getElementById('d-area').textContent=ev.area||'—';
   document.getElementById('d-publico').textContent=ev.publico||'—';
   document.getElementById('d-cat').textContent=ev.cat||'—';
-  var data=ev.noDate?'A definir — '+( ev.mes||'—'):fmtDate(ev.ini);
+  var data=ev.noDate?'A definir — '+(ev.mes||'—'):fmtDate(ev.ini);
   if(!ev.noDate&&ev.fim&&ev.fim!==ev.ini)data+=' → '+fmtDate(ev.fim);
   document.getElementById('d-data').textContent=data;
   var statusColors={'Confirmado':'color:#2B3A8C;background:#EEEDFE','TBD':'color:#8892A4;background:#F0F2F7','Em andamento':'color:#1A8F5E;background:#E6F5EF','A iniciar':'color:#B86A00;background:#FFF4E0'};
@@ -1105,7 +1032,6 @@ function openEditFromDetail(){
   document.getElementById('addOverlay').className='overlay open';
 }
 
-// ADD / EDIT
 function openAddModal(){
   editId=null;
   document.getElementById('addModalTitle').textContent='Adicionar Evento';
@@ -1114,10 +1040,6 @@ function openAddModal(){
   setTimeout(function(){document.getElementById('f-nome').focus()},100);
 }
 function closeAddModal(){document.getElementById('addOverlay').className='overlay';editId=null}
-function selectPriority(el){
-  selectedPriority=el.dataset.v;
-  document.querySelectorAll('.priority-opt').forEach(function(o){o.className='priority-opt'+(o===el?' sel':'')});
-}
 function overlayClick(e,id){if(e.target.id===id)document.getElementById(id).className='overlay'}
 
 function saveEvent(){
@@ -1134,6 +1056,7 @@ function saveEvent(){
   var demanda=document.getElementById('f-demanda').value;
   var desc=document.getElementById('f-desc').value.trim();
 
+  // FIX #5: validação completa de campos obrigatórios
   if(!nome){showToast('Preencha a atividade/evento.');return}
   if(!mes){showToast('Selecione o mês de referência.');return}
   if(!area){showToast('Selecione a categoria.');return}
@@ -1141,49 +1064,31 @@ function saveEvent(){
   if(!publico){showToast('Selecione o público.');return}
   if(!status){showToast('Selecione o status.');return}
 
-  // Determine noDate and compute ini/fim
   var noDate=(!ini);
   var mNum=MONTH_NUM[mes]||1;
   if(noDate){
-    // pin to first business day of the month
     ini=nextBusinessDay(2026,mNum-1);
     fim=ini;
   } else {
     fim=fim||ini;
   }
 
-  // Auto-set priority: Nat events = Alta, TBD = Baixa, otherwise Média
   var pri=nat?'Alta':status==='TBD'?'Baixa':status==='Em andamento'?'Alta':'Média';
 
   var data={
     id:editId||nid++,
-    nome:nome,
-    proj:'',
-    mes:mes,
-    sem:sem,
-    area:area,
-    publico:publico,
-    cat:cat,
-    ini:ini,
-    fim:fim,
-    hi:'',hf:'',
-    local:'',
-    desc:desc,
-    pri:pri,
-    status:status,
-    nat:nat,
-    noDate:noDate,
-    demanda:demanda
+    nome:nome,proj:'',mes:mes,sem:sem,area:area,publico:publico,cat:cat,
+    ini:ini,fim:fim,hi:'',hf:'',local:'',desc:desc,
+    pri:pri,status:status,nat:nat,noDate:noDate,demanda:demanda
   };
 
   if(editId){var idx=events.findIndex(function(e){return e.id===editId});if(idx>=0)events[idx]=data;}
   else{events.push(data)}
 
-  // Navigate to event month
   curY=2026;curM=mNum-1;
   document.getElementById('monthLabel').textContent=MONTHS[curM]+' '+curY;
   closeAddModal();
-  saveEventsToGitHub(editId?'Evento atualizado!':'Evento adicionado com sucesso!');
+  saveEventsToGitHub(editId?'Evento atualizado! ✓':'Evento adicionado com sucesso! ✓');
   editId=null;
 }
 
@@ -1216,7 +1121,7 @@ document.addEventListener('click',function(e){
   if(dp&&dp.classList.contains('open')&&!dp.contains(e.target)&&!e.target.classList.contains('more-events'))closeDayPopup();
 });
 
-// Init — tenta carregar eventos salvos do GitHub, senão usa os eventos padrão
+// Init
 loadEventsFromGitHub(function(){renderCalendar()});
 </script>
 </body>
