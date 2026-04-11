@@ -93,6 +93,23 @@ html,body{font-family:var(--font);background:var(--gray-50);color:var(--gray-900
 .ev-default{background:var(--brand-light);color:var(--brand)}.ev-default .ev-dot{background:var(--brand)}
 .more-events{font-size:10px;color:var(--gray-500);cursor:pointer;padding:1px 4px;border-radius:3px}
 .more-events:hover{background:var(--gray-100);color:var(--gray-700)}
+/* Status chips */
+.ev-confirmado{background:#EEEDFE;color:#2B3A8C}
+.ev-tbd{background:#F0F2F7;color:#8892A4;font-style:italic;opacity:.85;border-left:2px solid #C8CEDC}
+.ev-andamento{background:#E6F5EF;color:#1A8F5E}
+.ev-iniciar{background:#FFF4E0;color:#B86A00}
+/* Nat star */
+.nat-star{font-size:9px;margin-left:2px}
+/* TBD side panel */
+.tbd-panel{background:var(--white);border-top:1px solid var(--gray-200);padding:12px 24px}
+.tbd-header{display:flex;align-items:center;gap:8px;margin-bottom:10px;cursor:pointer}
+.tbd-title{font-size:12px;font-weight:700;color:var(--gray-700)}
+.tbd-count{background:var(--warning-bg);color:var(--warning);font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px}
+.tbd-grid{display:flex;flex-wrap:wrap;gap:6px}
+.tbd-chip{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1.5px solid var(--gray-200);background:var(--gray-50);color:var(--gray-700);transition:all .15s}
+.tbd-chip:hover{border-color:var(--brand);color:var(--brand);background:var(--brand-light)}
+.tbd-chip .tbd-month{font-size:10px;color:var(--gray-500)}
+.tbd-collapsed .tbd-grid{display:none}
 
 /* ── COPILOT PANEL ── */
 .copilot-panel{width:0;overflow:hidden;transition:width .25s cubic-bezier(.4,0,.2,1);border-left:1px solid var(--gray-200);background:var(--white);display:flex;flex-direction:column;flex-shrink:0}
@@ -217,25 +234,64 @@ html,body{font-family:var(--font);background:var(--gray-50);color:var(--gray-900
   </div>
   <div class="filter-divider"></div>
   <div class="filter-group">
-    <span class="filter-label">Área</span>
+    <span class="filter-label">Categoria</span>
     <select class="filter-select" id="filterArea" onchange="renderCalendar()">
       <option value="">Todas</option>
-      <option value="Cultura">Cultura</option>
-      <option value="D&A">D&amp;A</option>
-      <option value="CIE">CIE</option>
       <option value="AT">AT</option>
+      <option value="CIE">CIE</option>
+      <option value="Cultura">Cultura</option>
+      <option value="Cultura e CIE">Cultura e CIE</option>
+      <option value="D&A">D&amp;A</option>
+      <option value="Sucessão">Sucessão</option>
     </select>
   </div>
   <div class="filter-group">
-    <span class="filter-label">Prioridade</span>
-    <select class="filter-select" id="filterPri" onchange="renderCalendar()">
-      <option value="">Todas</option>
-      <option value="Alta">Alta</option>
-      <option value="Média">Média</option>
-      <option value="Baixa">Baixa</option>
+    <span class="filter-label">Público</span>
+    <select class="filter-select" id="filterPublico" onchange="renderCalendar()">
+      <option value="">Todos</option>
+      <option value="Alta Liderança">Alta Liderança</option>
+      <option value="Equipe">Equipe</option>
+      <option value="Liderança">Liderança</option>
+      <option value="Público específico">Público específico</option>
+      <option value="Todos">Todos</option>
+    </select>
+  </div>
+  <div class="filter-group">
+    <span class="filter-label">Tipo</span>
+    <select class="filter-select" id="filterTipo" onchange="renderCalendar()">
+      <option value="">Todos</option>
+      <option value="Ação">Ação</option>
+      <option value="Comunicado">Comunicado</option>
+      <option value="Evento">Evento</option>
+      <option value="Live">Live</option>
+      <option value="Pesquisa">Pesquisa</option>
+      <option value="Processo">Processo</option>
+      <option value="Projeto">Projeto</option>
+    </select>
+  </div>
+  <div class="filter-group">
+    <span class="filter-label">Status</span>
+    <select class="filter-select" id="filterStatus" onchange="renderCalendar()">
+      <option value="">Todos</option>
+      <option value="Confirmado">Confirmado</option>
+      <option value="Em andamento">Em andamento</option>
+      <option value="A iniciar">A iniciar</option>
+      <option value="TBD">TBD</option>
+    </select>
+  </div>
+  <div class="filter-group">
+    <span class="filter-label">Presença Nat</span>
+    <select class="filter-select" id="filterNat" onchange="renderCalendar()">
+      <option value="">Todos</option>
+      <option value="sim">⭐ Sim</option>
+      <option value="nao">Não</option>
     </select>
   </div>
   <div class="filter-right">
+    <button class="hbtn hbtn-outline" id="clearFiltersBtn" onclick="clearFilters()" style="display:none;font-size:12px;padding:6px 12px">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      Limpar filtros
+    </button>
     <div class="month-nav">
       <button class="nav-btn" onclick="changeMonth(-1)">
         <svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M6 1L1 6l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -296,7 +352,16 @@ html,body{font-family:var(--font);background:var(--gray-50);color:var(--gray-900
   </div>
 </div>
 
-<!-- ADD/EDIT MODAL -->
+<!-- TBD / SEM DATA PANEL -->
+<div class="tbd-panel" id="tbdPanel">
+  <div class="tbd-header" onclick="toggleTbd()">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="#B86A00" stroke-width="1.5"/><path d="M7 4v3.5l2 2" stroke="#B86A00" stroke-width="1.5" stroke-linecap="round"/></svg>
+    <span class="tbd-title">Eventos sem data definida</span>
+    <span class="tbd-count" id="tbdCount">0</span>
+    <svg id="tbdArrow" width="12" height="12" viewBox="0 0 12 12" fill="none" style="margin-left:auto;transition:transform .2s"><path d="M2 4l4 4 4-4" stroke="#8892A4" stroke-width="1.5" stroke-linecap="round"/></svg>
+  </div>
+  <div class="tbd-grid" id="tbdGrid"></div>
+</div>
 <div class="overlay" id="addOverlay" onclick="overlayClick(event,'addOverlay')">
   <div class="modal">
     <div class="modal-header">
@@ -310,37 +375,87 @@ html,body{font-family:var(--font);background:var(--gray-50);color:var(--gray-900
       <button class="modal-close" onclick="closeAddModal()">&#215;</button>
     </div>
     <div class="modal-body">
-      <div class="fg"><label class="fl">Nome da ação <em>*</em></label><input type="text" class="fi" id="f-nome" placeholder="Ex: Workshop de Liderança"></div>
+      <div class="fg"><label class="fl">Atividade / Evento <em>*</em></label><input type="text" class="fi" id="f-nome" placeholder="Ex: Workshop de Liderança"></div>
       <div class="frow">
-        <div class="fg"><label class="fl">Projeto</label><input type="text" class="fi" id="f-proj" placeholder="Ex: PDD, Trainee..."></div>
-        <div class="fg"><label class="fl">Área responsável <em>*</em></label>
-          <select class="fs" id="f-area"><option value="">Selecione</option><option>Cultura</option><option>D&A</option><option>CIE</option><option>AT</option></select>
+        <div class="fg">
+          <label class="fl">Mês de referência <em>*</em></label>
+          <select class="fs" id="f-mes">
+            <option value="">Selecione</option>
+            <option>Janeiro</option><option>Fevereiro</option><option>Março</option>
+            <option>Abril</option><option>Maio</option><option>Junho</option>
+            <option>Julho</option><option>Agosto</option><option>Setembro</option>
+            <option>Outubro</option><option>Novembro</option><option>Dezembro</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label class="fl">Semestre</label>
+          <select class="fs" id="f-sem">
+            <option value="">Selecione</option>
+            <option>1º Sem</option>
+            <option>2º Sem</option>
+          </select>
         </div>
       </div>
       <div class="frow">
-        <div class="fg"><label class="fl">Público</label><input type="text" class="fi" id="f-publico" placeholder="Ex: Líderes, Equipe..."></div>
-        <div class="fg"><label class="fl">Categoria</label>
-          <select class="fs" id="f-cat"><option value="">Selecione</option><option>Treinamento</option><option>Evento</option><option>Reunião</option><option>Workshop</option><option>Campanha</option><option>Outro</option></select>
-        </div>
-      </div>
-      <div class="frow">
-        <div class="fg"><label class="fl">Data início <em>*</em></label><input type="date" class="fi" id="f-ini"></div>
-        <div class="fg"><label class="fl">Hora início</label><input type="time" class="fi" id="f-hi"></div>
-      </div>
-      <div class="frow">
+        <div class="fg"><label class="fl">Data início</label><input type="date" class="fi" id="f-ini"></div>
         <div class="fg"><label class="fl">Data fim</label><input type="date" class="fi" id="f-fim"></div>
-        <div class="fg"><label class="fl">Hora fim</label><input type="time" class="fi" id="f-hf"></div>
       </div>
-      <div class="fg"><label class="fl">Local</label><input type="text" class="fi" id="f-local" placeholder="Ex: Presencial, Online, Híbrido..."></div>
-      <div class="fg"><label class="fl">Descrição</label><textarea class="fta fi" id="f-desc" rows="3" placeholder="Descreva o objetivo e informações adicionais..."></textarea></div>
-      <div class="fg">
-        <label class="fl">Prioridade <em>*</em></label>
-        <div class="priority-selector" id="prioritySelector">
-          <div class="priority-opt" data-v="Alta" onclick="selectPriority(this)">🔴 Alta</div>
-          <div class="priority-opt" data-v="Média" onclick="selectPriority(this)">🟡 Média</div>
-          <div class="priority-opt" data-v="Baixa" onclick="selectPriority(this)">🟢 Baixa</div>
+      <div class="frow">
+        <div class="fg">
+          <label class="fl">Tipo <em>*</em></label>
+          <select class="fs" id="f-cat">
+            <option value="">Selecione</option>
+            <option>Ação</option><option>Comunicado</option><option>Evento</option>
+            <option>Live</option><option>Pesquisa</option><option>Processo</option><option>Projeto</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label class="fl">Público <em>*</em></label>
+          <select class="fs" id="f-publico">
+            <option value="">Selecione</option>
+            <option>Alta Liderança</option><option>Equipe</option>
+            <option>Liderança</option><option>Público específico</option><option>Todos</option>
+          </select>
         </div>
       </div>
+      <div class="frow">
+        <div class="fg">
+          <label class="fl">Categoria <em>*</em></label>
+          <select class="fs" id="f-area">
+            <option value="">Selecione</option>
+            <option>AT</option><option>CIE</option><option>Cultura</option>
+            <option>Cultura e CIE</option><option>D&A</option><option>Sucessão</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label class="fl">Presença Nat</label>
+          <select class="fs" id="f-nat">
+            <option value="Não">Não</option>
+            <option value="Sim">⭐ Sim</option>
+          </select>
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fg">
+          <label class="fl">Status <em>*</em></label>
+          <select class="fs" id="f-status">
+            <option value="">Selecione</option>
+            <option>Confirmado</option>
+            <option>Em andamento</option>
+            <option>A iniciar</option>
+            <option>TBD</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label class="fl">Tipo de Demanda</label>
+          <select class="fs" id="f-demanda">
+            <option value="">Selecione</option>
+            <option>Prioritário</option>
+            <option>Não Prioritário</option>
+          </select>
+        </div>
+      </div>
+      <div class="fg"><label class="fl">Descrição / Observações</label><textarea class="fta fi" id="f-desc" rows="2" placeholder="Informações adicionais..."></textarea></div>
     </div>
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="closeAddModal()">Cancelar</button>
@@ -367,12 +482,14 @@ html,body{font-family:var(--font);background:var(--gray-50);color:var(--gray-900
     </div>
     <div class="modal-body">
       <div class="detail-grid">
-        <div class="detail-field"><div class="detail-label">Área responsável</div><div class="detail-value" id="d-area">—</div></div>
+        <div class="detail-field"><div class="detail-label">Categoria</div><div class="detail-value" id="d-area">—</div></div>
         <div class="detail-field"><div class="detail-label">Público</div><div class="detail-value" id="d-publico">—</div></div>
-        <div class="detail-field"><div class="detail-label">Categoria</div><div class="detail-value" id="d-cat">—</div></div>
-        <div class="detail-field"><div class="detail-label">Local</div><div class="detail-value" id="d-local">—</div></div>
-        <div class="detail-field"><div class="detail-label">Data e Horário</div><div class="detail-value" id="d-data">—</div></div>
-        <div class="detail-field"><div class="detail-label">Prioridade</div><div id="d-pri">—</div></div>
+        <div class="detail-field"><div class="detail-label">Tipo</div><div class="detail-value" id="d-cat">—</div></div>
+        <div class="detail-field"><div class="detail-label">Status</div><div id="d-status">—</div></div>
+        <div class="detail-field"><div class="detail-label">Data</div><div class="detail-value" id="d-data">—</div></div>
+        <div class="detail-field"><div class="detail-label">Mês / Semestre</div><div class="detail-value" id="d-mes">—</div></div>
+        <div class="detail-field"><div class="detail-label">Presença Nat</div><div class="detail-value" id="d-nat">—</div></div>
+        <div class="detail-field"><div class="detail-label">Tipo de Demanda</div><div class="detail-value" id="d-demanda">—</div></div>
       </div>
       <div class="detail-field" id="d-desc-wrap" style="margin-top:4px">
         <div class="detail-label">Descrição</div>
@@ -413,7 +530,7 @@ var curM=3,curY=2026,nid=300,editId=null,detailId=null,copilotOpen=false,selecte
 var GH_USER='thaisguimaraes-bot';
 var GH_REPO='calendario-talentos';
 var GH_FILE='events.json';
-var GH_TOKEN='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'; // Cole seu token aqui: 'ghp_...'
+var GH_TOKEN='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'; //  'ghp_...'
 var ghFileSha=null;
 
 function ghHeaders(){
@@ -456,27 +573,117 @@ function saveEventsToGitHub(msg){
 // ────────────────────────────────────────────────────────────────────────────
 
 var events=[
-  {id:1,nome:'Aula inaugural PDD',proj:'PDD',area:'D&A',publico:'Alta Liderança',cat:'Treinamento',ini:'2026-04-02',fim:'2026-04-02',hi:'09:00',hf:'12:00',local:'Presencial',desc:'Aula inaugural do programa de desenvolvimento de diretores.',pri:'Alta'},
-  {id:2,nome:'PDD Turma 1',proj:'PDD',area:'D&A',publico:'Alta Liderança',cat:'Treinamento',ini:'2026-04-14',fim:'2026-04-16',hi:'08:00',hf:'18:00',local:'Presencial',desc:'Módulo 1 do PDD com turma de diretores.',pri:'Alta'},
-  {id:3,nome:'PDG + IA',proj:'PDG',area:'D&A',publico:'Liderança',cat:'Workshop',ini:'2026-04-01',fim:'2026-04-01',hi:'14:00',hf:'17:00',local:'Online',desc:'Workshop de gestão com foco em IA aplicada.',pri:'Média'},
-  {id:4,nome:'Carreira e MI – live liderança',proj:'Carreira e MI',area:'D&A',publico:'Liderança',cat:'Evento',ini:'2026-04-07',fim:'2026-04-14',hi:'',hf:'',local:'Online',desc:'Live de carreira e mercado interno para líderes.',pri:'Média'},
-  {id:5,nome:'Encontro Presencial Tour Executivo',proj:'Tour Executivo',area:'CIE',publico:'Liderança',cat:'Reunião',ini:'2026-04-29',fim:'2026-04-29',hi:'09:00',hf:'18:00',local:'Presencial',desc:'Encontro presencial com tour executivo.',pri:'Alta'},
-  {id:6,nome:'Carreira e MI – live equipes',proj:'Carreira e MI',area:'D&A',publico:'Equipe',cat:'Evento',ini:'2026-04-08',fim:'2026-04-15',hi:'',hf:'',local:'Online',desc:'Live de carreira para equipes.',pri:'Média'},
-  {id:7,nome:'Semana da Seg. da Informação',proj:'',area:'CIE',publico:'Todos',cat:'Campanha',ini:'2026-04-06',fim:'2026-04-06',hi:'',hf:'',local:'',desc:'Campanha de conscientização sobre segurança da informação.',pri:'Média'},
-  {id:8,nome:'Campanha Vacinação',proj:'',area:'Cultura',publico:'Todos',cat:'Campanha',ini:'2026-04-06',fim:'2026-04-06',hi:'09:00',hf:'17:00',local:'Presencial',desc:'Campanha de vacinação para colaboradores.',pri:'Baixa'},
-  {id:9,nome:'Ninar – De Boa',proj:'',area:'AT',publico:'Todos',cat:'Evento',ini:'2026-04-07',fim:'2026-04-07',hi:'19:00',hf:'22:00',local:'Presencial',desc:'Evento cultural Ninar De Boa.',pri:'Baixa'},
-  {id:10,nome:'Movimento LED',proj:'LED',area:'Cultura',publico:'Todos',cat:'Evento',ini:'2026-04-15',fim:'2026-04-16',hi:'',hf:'',local:'',desc:'Evento de cultura e diversidade.',pri:'Média'},
-  {id:11,nome:'Mentoria',proj:'',area:'D&A',publico:'N/A',cat:'Reunião',ini:'2026-04-27',fim:'2026-04-30',hi:'',hf:'',local:'',desc:'Sessões de mentoria.',pri:'Média'},
-  {id:12,nome:'Roda de Conversa PDD',proj:'PDD',area:'D&A',publico:'Alta Liderança',cat:'Reunião',ini:'2026-05-05',fim:'2026-05-05',hi:'10:00',hf:'12:00',local:'Presencial',desc:'Roda de conversa turma 1 do PDD.',pri:'Alta'},
-  {id:13,nome:'Trainee – Demoday',proj:'Trainee',area:'D&A',publico:'Alta Liderança',cat:'Evento',ini:'2026-05-14',fim:'2026-05-14',hi:'14:00',hf:'18:00',local:'Presencial',desc:'Apresentação final dos trainees.',pri:'Alta'},
-  {id:14,nome:'LinkedIn Day RJ',proj:'LinkedIn Day',area:'Cultura',publico:'Liderança',cat:'Evento',ini:'2026-05-26',fim:'2026-05-26',hi:'09:00',hf:'18:00',local:'Presencial',desc:'Evento LinkedIn Day no Rio de Janeiro.',pri:'Média'},
-  {id:15,nome:'Festival Data Lab',proj:'Data Lab',area:'AT',publico:'Todos',cat:'Evento',ini:'2026-05-11',fim:'2026-05-15',hi:'',hf:'',local:'',desc:'Festival de dados e inovação.',pri:'Média'},
-  {id:16,nome:'Ação Dia das Mães',proj:'',area:'Cultura',publico:'Todos',cat:'Campanha',ini:'2026-05-09',fim:'2026-05-09',hi:'',hf:'',local:'',desc:'Ação especial Dia das Mães.',pri:'Baixa'},
-  {id:17,nome:'Abertura Copa do Mundo',proj:'Copa',area:'AT',publico:'Todos',cat:'Evento',ini:'2026-06-11',fim:'2026-06-11',hi:'',hf:'',local:'',desc:'Evento de abertura Copa do Mundo.',pri:'Alta'},
-  {id:18,nome:'Mês do Orgulho',proj:'',area:'Cultura',publico:'Todos',cat:'Campanha',ini:'2026-06-28',fim:'2026-06-28',hi:'',hf:'',local:'',desc:'Campanha Mês do Orgulho.',pri:'Média'},
-  {id:19,nome:'Semana do Meio Ambiente',proj:'',area:'Cultura',publico:'Todos',cat:'Campanha',ini:'2026-06-01',fim:'2026-06-01',hi:'',hf:'',local:'',desc:'Semana do Meio Ambiente.',pri:'Baixa'},
-  {id:20,nome:'Divulgação desafio LED IA',proj:'LED',area:'AT',publico:'N/A',cat:'Campanha',ini:'2026-06-09',fim:'2026-06-09',hi:'',hf:'',local:'',desc:'Divulgação do desafio LED IA.',pri:'Média'},
+  {id:1,nome:"BBB",proj:"",area:"CIE",publico:"Todos",cat:"Evento",ini:"2026-01-12",fim:"2026-01-12",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:2,nome:"Cora\u00e7\u00e3o Acelorado (NN 19h)",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-01-12",fim:"2026-01-12",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:3,nome:"Carreira e MI \u2013 Wksp PRHs",proj:"",area:"AT",publico:"Equipe",cat:"Evento",ini:"2026-02-10",fim:"2026-02-11",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:4,nome:"HH Carnaval",proj:"",area:"CIE",publico:"Todos",cat:"Evento",ini:"2026-03-12",fim:"2026-03-12",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:5,nome:"Semana Economia Circular",proj:"",area:"CIE",publico:"Todos",cat:"Evento",ini:"2026-02-01",fim:"2026-02-28",hi:'',hf:'',local:'',desc:"Status: TBD",pri:"Baixa",status:"TBD",nat:false,noDate:true},
+  {id:6,nome:"Ver\u00e3o De Boa",proj:"",area:"CIE",publico:"Todos",cat:"Evento",ini:"2026-02-05",fim:"2026-02-05",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:7,nome:"PTC (turma 1)",proj:"",area:"D&A",publico:"Lideran\u00e7a",cat:"Evento",ini:"2026-03-24",fim:"2026-03-24",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:8,nome:"Talks online (Tour Executivo)",proj:"",area:"AT",publico:"Lideran\u00e7a",cat:"Evento",ini:"2026-03-30",fim:"2026-03-30",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:9,nome:"Talk Raymundo Barros | Ricardo Villela",proj:"",area:"AT",publico:"Lideran\u00e7a",cat:"Evento",ini:"2026-03-30",fim:"2026-03-30",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:10,nome:"M\u00eas da Mulher",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-03-08",fim:"2026-03-08",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:11,nome:"Carreira e MI \u2013 lan\u00e7amento",proj:"",area:"AT",publico:"Todos",cat:"Comunicado",ini:"2026-03-09",fim:"2026-03-09",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:12,nome:"Nova novela das 18h (TV Globo)",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-03-16",fim:"2026-03-16",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:13,nome:"HH Lollapalooza",proj:"",area:"CIE",publico:"Todos",cat:"Evento",ini:"2026-03-26",fim:"2026-03-26",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:14,nome:"Live IA Em Pauta c/ lan\u00e7amento assistente",proj:"",area:"D&A",publico:"Todos",cat:"Live",ini:"2026-03-30",fim:"2026-03-30",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Alta",status:"Confirmado",nat:true,noDate:false},
+  {id:15,nome:"Conven\u00e7\u00e3o NIP",proj:"",area:"CIE",publico:"P\u00fablico espec\u00edfico",cat:"Evento",ini:"2026-03-03",fim:"2026-03-05",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:16,nome:"Aula inaugural PDD",proj:"",area:"D&A",publico:"Alta Lideran\u00e7a",cat:"Live",ini:"2026-04-02",fim:"2026-04-02",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Alta",status:"Confirmado",nat:true,noDate:false},
+  {id:17,nome:"PDD (turma 1)",proj:"",area:"D&A",publico:"Alta Lideran\u00e7a",cat:"Evento",ini:"2026-04-14",fim:"2026-04-16",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Alta",status:"Confirmado",nat:true,noDate:false},
+  {id:18,nome:"PDG + IA",proj:"",area:"D&A",publico:"Lideran\u00e7a",cat:"Evento",ini:"2026-04-01",fim:"2026-04-01",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Alta",status:"Confirmado",nat:true,noDate:false},
+  {id:19,nome:"Carreira e MI \u2013 live lideran\u00e7a",proj:"",area:"AT",publico:"Lideran\u00e7a",cat:"Live",ini:"2026-04-07",fim:"2026-04-14",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Alta",status:"Confirmado",nat:true,noDate:false},
+  {id:20,nome:"Talks online m\u00faltiplos (Tour Exec.)",proj:"",area:"AT",publico:"Lideran\u00e7a",cat:"Live",ini:"2026-04-09",fim:"2026-04-28",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:21,nome:"Encontro Presencial (Tour Executivo)",proj:"",area:"AT",publico:"Lideran\u00e7a",cat:"Evento",ini:"2026-04-29",fim:"2026-04-29",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Alta",status:"Confirmado",nat:true,noDate:false},
+  {id:22,nome:"Carreira e MI \u2013 live equipes",proj:"",area:"AT",publico:"Equipe",cat:"Live",ini:"2026-04-08",fim:"2026-04-15",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Alta",status:"Confirmado",nat:true,noDate:false},
+  {id:23,nome:"Semana da Seg da Informa\u00e7\u00e3o",proj:"",area:"CIE",publico:"Todos",cat:"Evento",ini:"2026-04-06",fim:"2026-04-06",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:24,nome:"Campanha Vacina\u00e7\u00e3o",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-04-06",fim:"2026-04-06",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:25,nome:"Ninar \u2013 De Boa",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-04-07",fim:"2026-04-07",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:26,nome:"Movimento LED",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-04-15",fim:"2026-04-16",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:27,nome:"Pirataria",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-04-01",fim:"2026-04-28",hi:'',hf:'',local:'',desc:"Status: TBD",pri:"Baixa",status:"TBD",nat:false,noDate:true},
+  {id:28,nome:"Live SXSW",proj:"",area:"CIE",publico:"Todos",cat:"Live",ini:"2026-04-15",fim:"2026-04-15",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:29,nome:"Mentoria",proj:"",area:"D&A",publico:"P\u00fablico espec\u00edfico",cat:"Comunicado",ini:"2026-04-27",fim:"2026-04-30",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Alta",status:"Confirmado",nat:true,noDate:false},
+  {id:30,nome:"Roda de Conversa PDD (turma 1)",proj:"",area:"D&A",publico:"Alta Lideran\u00e7a",cat:"Evento",ini:"2026-05-05",fim:"2026-05-05",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Alta",status:"Confirmado",nat:true,noDate:false},
+  {id:31,nome:"Encontro da Alta Lideran\u00e7a | Cultura",proj:"",area:"Cultura",publico:"Alta Lideran\u00e7a",cat:"Evento",ini:"2026-05-06",fim:"2026-05-06",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Alta",status:"Confirmado",nat:true,noDate:false},
+  {id:32,nome:"1\u00ba encontro ESC | Cultura",proj:"",area:"Cultura",publico:"Alta Lideran\u00e7a",cat:"Evento",ini:"2026-05-01",fim:"2026-05-28",hi:'',hf:'',local:'',desc:"Status: TBD",pri:"Baixa",status:"TBD",nat:false,noDate:true},
+  {id:33,nome:"Trainee \u2013 Demoday",proj:"",area:"AT",publico:"Alta Lideran\u00e7a",cat:"Evento",ini:"2026-05-14",fim:"2026-05-14",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Alta",status:"Confirmado",nat:true,noDate:false},
+  {id:34,nome:"LinkedIn Day RJ",proj:"",area:"AT",publico:"Lideran\u00e7a",cat:"Evento",ini:"2026-05-26",fim:"2026-05-26",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:35,nome:"Estagiar (admiss\u00e3o)",proj:"",area:"AT",publico:"Equipe",cat:"Processo",ini:"2026-05-14",fim:"2026-05-14",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:36,nome:"A\u00e7\u00e3o Dia das M\u00e3es",proj:"",area:"CIE",publico:"Todos",cat:"A\u00e7\u00e3o",ini:"2026-05-09",fim:"2026-05-09",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:37,nome:"Festival Data Lab",proj:"",area:"D&A",publico:"Todos",cat:"Evento",ini:"2026-05-11",fim:"2026-05-15",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:38,nome:"Novo relat. ESG",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-05-15",fim:"2026-05-15",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:39,nome:"Festival LED",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-05-15",fim:"2026-05-15",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:40,nome:"Nova novela das 21h (TV Globo)",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-05-18",fim:"2026-05-18",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:41,nome:"Live Paulo Marinho",proj:"",area:"CIE",publico:"Todos",cat:"Live",ini:"2026-05-20",fim:"2026-05-20",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Alta",status:"Confirmado",nat:true,noDate:false},
+  {id:42,nome:"Live Copa (Lan\u00e7am. DTV+)",proj:"",area:"CIE",publico:"Todos",cat:"Live",ini:"2026-05-26",fim:"2026-05-26",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:43,nome:"Brasilidades",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-05-27",fim:"2026-05-27",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:44,nome:"Live Res. Fin. 1\u00ba tri - 2026",proj:"",area:"CIE",publico:"Todos",cat:"Live",ini:"2026-05-28",fim:"2026-05-28",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Alta",status:"Confirmado",nat:true,noDate:false},
+  {id:45,nome:"Pesquisa de Engajamento e Cultura",proj:"",area:"Cultura",publico:"Todos",cat:"Pesquisa",ini:"2026-05-25",fim:"2026-05-29",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Alta",status:"Confirmado",nat:true,noDate:false},
+  {id:46,nome:"Negritudes",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-05-29",fim:"2026-05-29",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:47,nome:"Evolu\u00e7\u00e3o Estrat. Globo",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-05-01",fim:"2026-05-28",hi:'',hf:'',local:'',desc:"Status: TBD",pri:"Alta",status:"TBD",nat:true,noDate:true},
+  {id:48,nome:"Mentoria",proj:"",area:"D&A",publico:"P\u00fablico espec\u00edfico",cat:"Evento",ini:"2026-05-05",fim:"2026-05-12",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:49,nome:"PTC (turma 2)",proj:"",area:"D&A",publico:"Lideran\u00e7a",cat:"Evento",ini:"2026-06-01",fim:"2026-06-28",hi:'',hf:'',local:'',desc:"Status: TBD",pri:"Baixa",status:"TBD",nat:false,noDate:true},
+  {id:50,nome:"LinkedIn Day SP",proj:"",area:"AT",publico:"Lideran\u00e7a",cat:"Evento",ini:"2026-06-02",fim:"2026-06-02",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:51,nome:"Estagiar (admiss\u00e3o)",proj:"",area:"AT",publico:"Equipe",cat:"Processo",ini:"2026-06-12",fim:"2026-06-12",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:52,nome:"Semana do Meio Ambiente",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-06-01",fim:"2026-06-01",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:53,nome:"Jantar Dia dos Namorados",proj:"",area:"CIE",publico:"Todos",cat:"Evento",ini:"2026-06-11",fim:"2026-06-11",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:54,nome:"Abertura Copa do Mundo",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-06-11",fim:"2026-06-11",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:55,nome:"M\u00eas do Orgulho",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-06-28",fim:"2026-06-28",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:56,nome:"F\u00f3rmula 1",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-06-01",fim:"2026-06-28",hi:'',hf:'',local:'',desc:"Status: TBD",pri:"Baixa",status:"TBD",nat:false,noDate:true},
+  {id:57,nome:"Divulga\u00e7\u00e3o desafio LED IA",proj:"",area:"CIE",publico:"P\u00fablico espec\u00edfico",cat:"Comunicado",ini:"2026-06-09",fim:"2026-06-09",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:58,nome:"Fim Copa do Mundo",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-07-19",fim:"2026-07-19",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:59,nome:"Chef de Alto N\u00edvel (TV Globo)",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-07-21",fim:"2026-07-21",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:60,nome:"HH Festa Junina",proj:"",area:"CIE",publico:"Todos",cat:"Evento",ini:"2026-07-30",fim:"2026-07-30",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:61,nome:"2\u00ba encontro ESC | Cultura",proj:"",area:"Cultura",publico:"Alta Lideran\u00e7a",cat:"Evento",ini:"2026-07-01",fim:"2026-07-28",hi:'',hf:'',local:'',desc:"Status: TBD",pri:"Baixa",status:"TBD",nat:false,noDate:true},
+  {id:62,nome:"PTC (turma 3)",proj:"",area:"D&A",publico:"Lideran\u00e7a",cat:"Evento",ini:"2026-07-01",fim:"2026-07-28",hi:'',hf:'',local:'',desc:"Status: TBD",pri:"Baixa",status:"TBD",nat:false,noDate:true},
+  {id:63,nome:"Secweek",proj:"",area:"CIE",publico:"P\u00fablico espec\u00edfico",cat:"Evento",ini:"2026-07-27",fim:"2026-07-31",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:64,nome:"PDD + IA",proj:"",area:"D&A",publico:"Alta Lideran\u00e7a",cat:"Evento",ini:"2026-08-01",fim:"2026-08-28",hi:'',hf:'',local:'',desc:"Status: TBD",pri:"Alta",status:"TBD",nat:true,noDate:true},
+  {id:65,nome:"Conex\u00e3o Lideran\u00e7a",proj:"",area:"CIE",publico:"Lideran\u00e7a",cat:"Evento",ini:"2026-08-13",fim:"2026-08-13",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:66,nome:"Estagiar \u2013 2\u00aa janela",proj:"",area:"AT",publico:"Equipe",cat:"Processo",ini:"2026-08-01",fim:"2026-08-28",hi:'',hf:'',local:'',desc:"Status: TBD",pri:"Baixa",status:"TBD",nat:false,noDate:true},
+  {id:67,nome:"A\u00e7\u00e3o Dia dos Pais",proj:"",area:"CIE",publico:"Todos",cat:"A\u00e7\u00e3o",ini:"2026-08-08",fim:"2026-08-08",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:68,nome:"Nova novela das 19h (TV Globo)",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-08-10",fim:"2026-08-10",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:69,nome:"Semana SIPAT",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-08-10",fim:"2026-08-10",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:70,nome:"Estrela da Casa (TV Globo)",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-08-24",fim:"2026-08-24",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:71,nome:"Voluntariado Globo",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-08-28",fim:"2026-08-28",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:72,nome:"Negritudes BSB e SP",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-08-01",fim:"2026-08-28",hi:'',hf:'',local:'',desc:"Status: TBD",pri:"Baixa",status:"TBD",nat:false,noDate:true},
+  {id:73,nome:"Off-site do Comex | Cultura",proj:"",area:"Cultura",publico:"Alta Lideran\u00e7a",cat:"Evento",ini:"2026-09-17",fim:"2026-09-17",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"Alta",status:"Confirmado",nat:true,noDate:false},
+  {id:74,nome:"Setembro Amarelo",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-09-01",fim:"2026-09-01",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:75,nome:"Live Res. Fin. 2\u00ba tri - 2026",proj:"",area:"CIE",publico:"Todos",cat:"Live",ini:"2026-09-09",fim:"2026-09-09",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:76,nome:"Rock in Rio",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-09-04",fim:"2026-09-13",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:77,nome:"M\u00eas da Pessoa com defici\u00eancia",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-09-08",fim:"2026-09-08",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:78,nome:"3\u00ba encontro ESC | Cultura",proj:"",area:"Cultura",publico:"Alta Lideran\u00e7a",cat:"Evento",ini:"2026-10-01",fim:"2026-10-28",hi:'',hf:'',local:'',desc:"Status: TBD",pri:"Baixa",status:"TBD",nat:false,noDate:true},
+  {id:79,nome:"CPC&ESG | Sucess\u00e3o",proj:"",area:"D&A",publico:"Alta Lideran\u00e7a",cat:"Evento",ini:"2026-10-01",fim:"2026-10-28",hi:'',hf:'',local:'',desc:"Status: TBD",pri:"Alta",status:"TBD",nat:true,noDate:true},
+  {id:80,nome:"CA | Sucess\u00e3o",proj:"",area:"D&A",publico:"Alta Lideran\u00e7a",cat:"Evento",ini:"2026-10-01",fim:"2026-10-28",hi:'',hf:'',local:'',desc:"Status: TBD",pri:"Alta",status:"TBD",nat:true,noDate:true},
+  {id:81,nome:"Tour Executivo",proj:"",area:"AT",publico:"Lideran\u00e7a",cat:"Evento",ini:"2026-10-01",fim:"2026-10-28",hi:'',hf:'',local:'',desc:"Status: TBD",pri:"Baixa",status:"TBD",nat:false,noDate:true},
+  {id:82,nome:"Sem. do consumo consciente",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-10-05",fim:"2026-10-05",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:83,nome:"Outubro Rosa",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-10-06",fim:"2026-10-06",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:84,nome:"Upfront",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-10-14",fim:"2026-10-14",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:85,nome:"Dia das crian\u00e7as",proj:"",area:"CIE",publico:"Todos",cat:"Evento",ini:"2026-10-15",fim:"2026-10-15",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:86,nome:"Nova novela das 18h (TV Globo)",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-10-19",fim:"2026-10-19",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:87,nome:"Elei\u00e7\u00f5es \u2013 1\u00ba turno (Jor)",proj:"",area:"CIE",publico:"P\u00fablico espec\u00edfico",cat:"Comunicado",ini:"2026-10-04",fim:"2026-10-04",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:88,nome:"Elei\u00e7\u00f5es \u2013 2\u00ba turno (Jor)",proj:"",area:"CIE",publico:"P\u00fablico espec\u00edfico",cat:"Comunicado",ini:"2026-10-25",fim:"2026-10-25",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:89,nome:"Imers\u00e3o desafio LED IA",proj:"",area:"CIE",publico:"P\u00fablico espec\u00edfico",cat:"Comunicado",ini:"2026-10-24",fim:"2026-10-28",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:90,nome:"Novembro Azul",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-11-03",fim:"2026-11-03",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:91,nome:"Novembro Globo",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-11-04",fim:"2026-11-04",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:92,nome:"De Boa: Feira de moda e beleza",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-11-09",fim:"2026-11-09",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:93,nome:"Negritudes Salvador",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-11-19",fim:"2026-11-19",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:94,nome:"Pesquisa de Engajamento e Cultura",proj:"",area:"Cultura",publico:"Todos",cat:"Pesquisa",ini:"2026-11-01",fim:"2026-11-28",hi:'',hf:'',local:'',desc:"Status: TBD",pri:"Alta",status:"TBD",nat:true,noDate:true},
+  {id:95,nome:"Reconhecimento Globo \u2013 evento +40 e acionistas",proj:"",area:"CIE",publico:"P\u00fablico espec\u00edfico",cat:"Evento",ini:"2026-11-01",fim:"2026-11-28",hi:'',hf:'',local:'',desc:"Status: TBD",pri:"Baixa",status:"TBD",nat:false,noDate:true},
+  {id:96,nome:"De Boa: cart\u00e3o presente",proj:"",area:"CIE",publico:"Todos",cat:"Comunicado",ini:"2026-12-01",fim:"2026-12-01",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:97,nome:"Live Fim de Ano Paulo Marino",proj:"",area:"CIE",publico:"Todos",cat:"Live",ini:"2026-12-17",fim:"2026-12-17",hi:'',hf:'',local:'',desc:"Status: Confirmado",pri:"M\u00e9dia",status:"Confirmado",nat:false,noDate:false},
+  {id:98,nome:"Estagiar \u2013 3\u00aa janela",proj:"",area:"AT",publico:"Equipe",cat:"Processo",ini:"2026-12-01",fim:"2026-12-28",hi:'',hf:'',local:'',desc:"Status: TBD",pri:"Baixa",status:"TBD",nat:false,noDate:true},
+  {id:99,nome:"Gest\u00e3o Estrat\u00e9gica de Sucess\u00e3o",proj:"",area:"D&A",publico:"Alta Lideran\u00e7a",cat:"Projeto",ini:"2026-10-09",fim:"2026-10-09",hi:'',hf:'',local:'',desc:"Status: Em andamento",pri:"Alta",status:"Em andamento",nat:true,noDate:false},
+  {id:100,nome:"Programa de Transforma\u00e7\u00e3o Cultural",proj:"",area:"D&A",publico:"Todos",cat:"Projeto",ini:"2026-12-01",fim:"2026-12-01",hi:'',hf:'',local:'',desc:"Status: A iniciar",pri:"Alta",status:"A iniciar",nat:true,noDate:false},
+  {id:101,nome:"PDD + IA (Projeto)",proj:"",area:"D&A",publico:"Alta Lideran\u00e7a",cat:"Projeto",ini:"2026-11-20",fim:"2026-11-20",hi:'',hf:'',local:'',desc:"Status: A iniciar",pri:"Alta",status:"A iniciar",nat:true,noDate:false},
+  {id:102,nome:"Evolu\u00e7\u00e3o do processo de gest\u00e3o de desempenho",proj:"",area:"D&A",publico:"Lideran\u00e7a",cat:"Projeto",ini:"2026-07-01",fim:"2026-07-01",hi:'',hf:'',local:'',desc:"Status: A iniciar",pri:"Alta",status:"A iniciar",nat:true,noDate:false},
+  {id:103,nome:"ScoreCard da Lideran\u00e7a",proj:"",area:"D&A",publico:"Lideran\u00e7a",cat:"Projeto",ini:"2026-12-31",fim:"2026-12-31",hi:'',hf:'',local:'',desc:"Status: Em andamento",pri:"Alta",status:"Em andamento",nat:true,noDate:false},
+  {id:104,nome:"Evolu\u00e7\u00e3o do Search Executivo",proj:"",area:"AT",publico:"Alta Lideran\u00e7a",cat:"Projeto",ini:"2026-01-01",fim:"2026-01-28",hi:'',hf:'',local:'',desc:"Status: A iniciar",pri:"Baixa",status:"A iniciar",nat:false,noDate:true},
+  {id:105,nome:"Programa Trainee",proj:"",area:"AT",publico:"Equipe",cat:"Projeto",ini:"2026-26-01",fim:"2026-26-28",hi:'',hf:'',local:'',desc:"Status: Em andamento",pri:"Alta",status:"Em andamento",nat:true,noDate:true},
+  {id:106,nome:"Portal de Carreira e Mobilidade Interna",proj:"",area:"AT",publico:"Todos",cat:"Projeto",ini:"2026-12-31",fim:"2026-12-31",hi:'',hf:'',local:'',desc:"Status: Em andamento",pri:"Alta",status:"Em andamento",nat:false,noDate:false},
+  {id:107,nome:"Nova estrat\u00e9gia de onboarding",proj:"",area:"AT",publico:"Todos",cat:"Projeto",ini:"2026-08-03",fim:"2026-08-03",hi:'',hf:'',local:'',desc:"Status: A iniciar",pri:"Baixa",status:"A iniciar",nat:false,noDate:false},
+  {id:108,nome:"Copa do Mundo (Projeto Engajamento)",proj:"",area:"CIE",publico:"Todos",cat:"Projeto",ini:"2026-07-11",fim:"2026-07-11",hi:'',hf:'',local:'',desc:"Status: A iniciar",pri:"Baixa",status:"A iniciar",nat:false,noDate:false},
+  {id:109,nome:"Futuro do Trabalho",proj:"",area:"D&A",publico:"Todos",cat:"Projeto",ini:"2026-01-19",fim:"2026-01-19",hi:'',hf:'',local:'',desc:"Status: A iniciar",pri:"Baixa",status:"A iniciar",nat:false,noDate:false}
 ];
+
 
 function p2(n){return String(n).padStart(2,'0')}
 function toStr(y,m,d){return y+'-'+p2(m+1)+'-'+p2(d)}
@@ -484,21 +691,85 @@ function fmtDate(s){if(!s)return '—';var p=s.split('-');return p[2]+'/'+p[1]+'
 function todayStr(){var t=new Date();return toStr(t.getFullYear(),t.getMonth(),t.getDate())}
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 function priClass(p){return p==='Alta'?'ev-alta':p==='Média'?'ev-media':p==='Baixa'?'ev-baixa':'ev-default'}
+function statusClass(e){
+  if(e.noDate) return 'ev-tbd';
+  var s=e.status||'';
+  if(s==='TBD') return 'ev-tbd';
+  if(s==='Em andamento') return 'ev-andamento';
+  if(s==='A iniciar') return 'ev-iniciar';
+  return 'ev-confirmado';
+}
 function badgeClass(p){return p==='Alta'?'badge-alta':p==='Média'?'badge-media':'badge-baixa'}
 function priIcon(p){return p==='Alta'?'🔴':p==='Média'?'🟡':'🟢'}
 
+function renderTbdPanel(){
+  var tbd=events.filter(function(e){return e.noDate});
+  document.getElementById('tbdCount').textContent=tbd.length;
+  var MONTHS_SHORT=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+  var html='';
+  tbd.forEach(function(ev){
+    var mIdx=parseInt(ev.ini.split('-')[1])-1;
+    html+='<div class="tbd-chip" onclick="openDetail('+ev.id+')">';
+    html+=ev.nome;
+    html+='<span class="tbd-month">'+MONTHS_SHORT[mIdx]+'</span>';
+    if(ev.nat)html+='<span class="nat-star">⭐</span>';
+    html+='</div>';
+  });
+  document.getElementById('tbdGrid').innerHTML=html||'<span style="font-size:12px;color:var(--gray-500)">Nenhum evento sem data.</span>';
+}
+
+var tbdOpen=true;
+function toggleTbd(){
+  tbdOpen=!tbdOpen;
+  document.getElementById('tbdPanel').className='tbd-panel'+(tbdOpen?'':' tbd-collapsed');
+  document.getElementById('tbdArrow').style.transform=tbdOpen?'':'rotate(-90deg)';
+}
+
+function clearFilters(){
+  document.getElementById('filterArea').value='';
+  document.getElementById('filterPublico').value='';
+  document.getElementById('filterTipo').value='';
+  document.getElementById('filterStatus').value='';
+  document.getElementById('filterNat').value='';
+  document.getElementById('clearFiltersBtn').style.display='none';
+  renderCalendar();
+}
+
 function getFiltered(){
   var fa=document.getElementById('filterArea').value;
-  var fp=document.getElementById('filterPri').value;
+  var fpu=document.getElementById('filterPublico').value;
+  var ft=document.getElementById('filterTipo').value;
+  var fs=document.getElementById('filterStatus').value;
+  var fn=document.getElementById('filterNat').value;
+  var hasFilter=fa||fpu||ft||fs||fn;
+  document.getElementById('clearFiltersBtn').style.display=hasFilter?'inline-flex':'none';
   return events.filter(function(e){
     if(fa&&e.area!==fa)return false;
-    if(fp&&e.pri!==fp)return false;
+    if(fpu&&e.publico!==fpu)return false;
+    if(ft&&e.cat!==ft)return false;
+    if(fs&&(e.status||'')!==fs)return false;
+    if(fn==='sim'&&!e.nat)return false;
+    if(fn==='nao'&&e.nat)return false;
     return true;
   });
 }
 
+function nextBusinessDay(y,m){
+  // Find first weekday of the month (Mon-Fri)
+  var d=new Date(y,m,1);
+  while(d.getDay()===0||d.getDay()===6) d.setDate(d.getDate()+1);
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
+
 function eventsForDay(dayStr){
-  return getFiltered().filter(function(e){return dayStr>=e.ini&&dayStr<=(e.fim||e.ini)});
+  return getFiltered().filter(function(e){
+    if(e.noDate){
+      var parts=e.ini.split('-');
+      var nbd=nextBusinessDay(parseInt(parts[0]),parseInt(parts[1])-1);
+      return dayStr===nbd;
+    }
+    return dayStr>=e.ini&&dayStr<=(e.fim||e.ini);
+  });
 }
 
 function renderCalendar(){
@@ -524,8 +795,10 @@ function renderCalendar(){
     html+='<div class="'+cls+'">';
     html+='<div class="day-num">'+day+'</div>';
     evts.slice(0,3).forEach(function(ev){
-      html+='<div class="event-card '+priClass(ev.pri)+'" onclick="openDetail('+ev.id+')" title="'+esc(ev.nome)+'">';
-      html+='<span class="ev-dot"></span><span class="ev-name">'+esc(ev.nome)+'</span></div>';
+      var isNd=ev.noDate||false;
+      var extraStyle=isNd?'border:1px dashed #C8CEDC;':'';
+      html+='<div class="event-card '+statusClass(ev)+'" onclick="openDetail('+ev.id+')" title="'+esc(ev.nome)+'" style="'+extraStyle+'">';
+      html+='<span class="ev-dot"></span><span class="ev-name">'+(isNd?'📅 ':'')+esc(ev.nome)+(ev.nat?'<span class="nat-star">⭐</span>':'')+'</span></div>';
     });
     if(evts.length>3)html+='<div class="more-events">+'+( evts.length-3)+' mais</div>';
     html+='</div>';
@@ -597,6 +870,7 @@ function renderMonth(){
   }
   body.innerHTML=html;
   document.getElementById('monthLabel').textContent=MONTHS[curM]+' '+curY;
+  renderTbdPanel();
 }
 
 function renderWeek(){
@@ -630,6 +904,7 @@ function renderWeek(){
   body.innerHTML=html;
   var we=new Date(curWeekStart);we.setDate(we.getDate()+6);
   document.getElementById('monthLabel').textContent=fmtDate(curWeekStart.getFullYear()+'-'+p2(curWeekStart.getMonth()+1)+'-'+p2(curWeekStart.getDate()))+' – '+fmtDate(we.getFullYear()+'-'+p2(we.getMonth()+1)+'-'+p2(we.getDate()));
+  renderTbdPanel();
 }
 
 function renderMultiMonth(count){
@@ -689,6 +964,7 @@ function renderMultiMonth(count){
   body.innerHTML=html;
   var label=count===12?String(startY):MONTHS[startM]+' – '+MONTHS[(startM+count-1)%12]+' '+startY;
   document.getElementById('monthLabel').textContent=label;
+  renderTbdPanel();
 }
 
 function eventsForDay2(y,m){
@@ -758,8 +1034,13 @@ function openDetail(id){
   if(ev.fim&&ev.fim!==ev.ini)data+=' → '+fmtDate(ev.fim);
   if(ev.hi)data+=' | '+ev.hi+(ev.hf?' – '+ev.hf:'');
   document.getElementById('d-data').textContent=data;
-  document.getElementById('d-pri').innerHTML='<span class="priority-badge '+badgeClass(ev.pri)+'">'+priIcon(ev.pri)+' '+ev.pri+'</span>';
-  document.getElementById('d-desc').textContent=ev.desc||'Sem descrição.';
+  var statusColors={'Confirmado':'color:#2B3A8C;background:#EEEDFE','TBD':'color:#8892A4;background:#F0F2F7','Em andamento':'color:#1A8F5E;background:#E6F5EF','A iniciar':'color:#B86A00;background:#FFF4E0'};
+  var sc=statusColors[ev.status||'']||'color:#666;background:#f0f0f0';
+  document.getElementById('d-status').innerHTML='<span style="padding:3px 10px;border-radius:20px;font-size:12px;font-weight:700;'+sc+'">'+(ev.status||'—')+'</span>';
+  document.getElementById('d-nat').textContent=ev.nat?'⭐ Sim':'Não';
+  document.getElementById('d-mes').textContent=(ev.mes||'—')+(ev.sem?' · '+ev.sem:'');
+  document.getElementById('d-demanda').textContent=ev.demanda||'—';
+  document.getElementById('d-desc').textContent=ev.desc||'';
   document.getElementById('detailOverlay').className='overlay open';
 }
 function closeDetailModal(){document.getElementById('detailOverlay').className='overlay';detailId=null}
@@ -768,36 +1049,40 @@ function deleteEvent(){
   closeDetailModal();
   saveEventsToGitHub('Evento excluído com sucesso.');
 }
+var MONTH_NUM={Janeiro:1,Fevereiro:2,'Março':3,Abril:4,Maio:5,Junho:6,Julho:7,Agosto:8,Setembro:9,Outubro:10,Novembro:11,Dezembro:12};
+
+function formReset(){
+  ['f-nome','f-desc'].forEach(function(id){document.getElementById(id).value=''});
+  ['f-mes','f-sem','f-cat','f-publico','f-area','f-nat','f-status','f-demanda'].forEach(function(id){document.getElementById(id).value=''});
+  document.getElementById('f-ini').value='';
+  document.getElementById('f-fim').value='';
+}
+
 function openEditFromDetail(){
   var ev=events.find(function(x){return x.id===detailId});if(!ev)return;
   editId=detailId;
   closeDetailModal();
   document.getElementById('addModalTitle').textContent='Editar Evento';
   document.getElementById('f-nome').value=ev.nome||'';
-  document.getElementById('f-proj').value=ev.proj||'';
-  document.getElementById('f-area').value=ev.area||'';
-  document.getElementById('f-publico').value=ev.publico||'';
+  document.getElementById('f-mes').value=ev.mes||'';
+  document.getElementById('f-sem').value=ev.sem||'';
+  document.getElementById('f-ini').value=ev.noDate?'':ev.ini||'';
+  document.getElementById('f-fim').value=ev.noDate?'':ev.fim||'';
   document.getElementById('f-cat').value=ev.cat||'';
-  document.getElementById('f-ini').value=ev.ini||'';
-  document.getElementById('f-fim').value=ev.fim||'';
-  document.getElementById('f-hi').value=ev.hi||'';
-  document.getElementById('f-hf').value=ev.hf||'';
-  document.getElementById('f-local').value=ev.local||'';
+  document.getElementById('f-publico').value=ev.publico||'';
+  document.getElementById('f-area').value=ev.area||'';
+  document.getElementById('f-nat').value=ev.nat?'Sim':'Não';
+  document.getElementById('f-status').value=ev.status||'';
+  document.getElementById('f-demanda').value=ev.demanda||'';
   document.getElementById('f-desc').value=ev.desc||'';
-  selectedPriority=ev.pri||'';
-  document.querySelectorAll('.priority-opt').forEach(function(o){o.className='priority-opt'+(o.dataset.v===selectedPriority?' sel':'')});
   document.getElementById('addOverlay').className='overlay open';
 }
 
 // ADD / EDIT
 function openAddModal(){
-  editId=null;selectedPriority='';
+  editId=null;
   document.getElementById('addModalTitle').textContent='Adicionar Evento';
-  ['f-nome','f-proj','f-publico','f-local','f-desc','f-hi','f-hf'].forEach(function(id){document.getElementById(id).value=''});
-  document.getElementById('f-area').value='';document.getElementById('f-cat').value='';
-  var t=new Date().toISOString().split('T')[0];
-  document.getElementById('f-ini').value=t;document.getElementById('f-fim').value=t;
-  document.querySelectorAll('.priority-opt').forEach(function(o){o.className='priority-opt'});
+  formReset();
   document.getElementById('addOverlay').className='overlay open';
   setTimeout(function(){document.getElementById('f-nome').focus()},100);
 }
@@ -807,18 +1092,69 @@ function selectPriority(el){
   document.querySelectorAll('.priority-opt').forEach(function(o){o.className='priority-opt'+(o===el?' sel':'')});
 }
 function overlayClick(e,id){if(e.target.id===id)document.getElementById(id).className='overlay'}
+
 function saveEvent(){
   var nome=document.getElementById('f-nome').value.trim();
   var area=document.getElementById('f-area').value;
+  var mes=document.getElementById('f-mes').value;
+  var cat=document.getElementById('f-cat').value;
+  var publico=document.getElementById('f-publico').value;
+  var status=document.getElementById('f-status').value;
   var ini=document.getElementById('f-ini').value;
-  if(!nome){showToast('Preencha o nome da ação.');return}
-  if(!area){showToast('Selecione a área responsável.');return}
-  if(!ini){showToast('Informe a data início.');return}
-  if(!selectedPriority){showToast('Selecione a prioridade.');return}
-  var data={id:editId||nid++,nome:nome,proj:document.getElementById('f-proj').value.trim(),area:area,publico:document.getElementById('f-publico').value.trim(),cat:document.getElementById('f-cat').value,ini:ini,fim:document.getElementById('f-fim').value||ini,hi:document.getElementById('f-hi').value,hf:document.getElementById('f-hf').value,local:document.getElementById('f-local').value.trim(),desc:document.getElementById('f-desc').value.trim(),pri:selectedPriority};
+  var fim=document.getElementById('f-fim').value;
+  var nat=document.getElementById('f-nat').value==='Sim';
+  var sem=document.getElementById('f-sem').value;
+  var demanda=document.getElementById('f-demanda').value;
+  var desc=document.getElementById('f-desc').value.trim();
+
+  if(!nome){showToast('Preencha a atividade/evento.');return}
+  if(!mes){showToast('Selecione o mês de referência.');return}
+  if(!area){showToast('Selecione a categoria.');return}
+  if(!cat){showToast('Selecione o tipo.');return}
+  if(!publico){showToast('Selecione o público.');return}
+  if(!status){showToast('Selecione o status.');return}
+
+  // Determine noDate and compute ini/fim
+  var noDate=(!ini);
+  var mNum=MONTH_NUM[mes]||1;
+  if(noDate){
+    // pin to first business day of the month
+    ini=nextBusinessDay(2026,mNum-1);
+    fim=ini;
+  } else {
+    fim=fim||ini;
+  }
+
+  // Auto-set priority: Nat events = Alta, TBD = Baixa, otherwise Média
+  var pri=nat?'Alta':status==='TBD'?'Baixa':status==='Em andamento'?'Alta':'Média';
+
+  var data={
+    id:editId||nid++,
+    nome:nome,
+    proj:'',
+    mes:mes,
+    sem:sem,
+    area:area,
+    publico:publico,
+    cat:cat,
+    ini:ini,
+    fim:fim,
+    hi:'',hf:'',
+    local:'',
+    desc:desc,
+    pri:pri,
+    status:status,
+    nat:nat,
+    noDate:noDate,
+    demanda:demanda
+  };
+
   if(editId){var idx=events.findIndex(function(e){return e.id===editId});if(idx>=0)events[idx]=data;}
   else{events.push(data)}
-  var parts=ini.split('-');curY=parseInt(parts[0]);curM=parseInt(parts[1])-1;
+
+  // Navigate to event month
+  curY=2026;curM=mNum-1;
+  document.getElementById('monthLabel').textContent=MONTHS[curM]+' '+curY;
   closeAddModal();
   saveEventsToGitHub(editId?'Evento atualizado!':'Evento adicionado com sucesso!');
   editId=null;
