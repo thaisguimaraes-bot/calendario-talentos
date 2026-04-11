@@ -593,7 +593,7 @@ async function saveEventsToGitHub(msg, attempt = 1){
         body: JSON.stringify({
           message: `Atualiza eventos - ${new Date().toISOString()}`,
           content: content,
-          sha: sha
+          sha: sha || ghFileSha
         })
       }
     );
@@ -635,7 +635,8 @@ async function saveEventsToGitHub(msg, attempt = 1){
 }
 
 async function getFileSha(){
-  const res = await fetch(`https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/${GH_FILE}`, {
+  const res = await fetch(
+  `https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/${GH_FILE}?ref=main`, {
     headers: ghHeaders(),
     cache: "no-store"
   });
