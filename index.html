@@ -1225,6 +1225,164 @@ document.addEventListener('click',function(e){
 
 // Init — tenta carregar eventos salvos do GitHub, senão usa os eventos padrão
 loadEventsFromGitHub(function(){renderCalendar()});
+
+/* ======================================
+COPILOT LENDO EVENTOS DO CALENDÁRIO
+====================================== */
+
+function responderCopilot(pergunta){
+
+  const q = pergunta.toLowerCase();
+
+  if(q.includes("eventos")){
+
+    if(!events || events.length===0){
+      return "Nenhum evento encontrado.";
+    }
+
+    let lista = events
+      .slice(0,10)
+      .map(e => `• ${e.nome} (${e.ini})`)
+      .join("<br>");
+
+    return `<b>Eventos cadastrados:</b><br><br>${lista}`;
+  }
+
+
+  if(q.includes("alta")){
+
+    let lista = events
+      .filter(e => e.pri==="Alta")
+      .map(e => `• ${e.nome} (${e.ini})`)
+      .join("<br>");
+
+    if(!lista) return "Não encontrei eventos de alta prioridade.";
+
+    return `<b>Eventos de alta prioridade:</b><br><br>${lista}`;
+  }
+
+
+  if(q.includes("nat")){
+
+    let lista = events
+      .filter(e => e.nat===true)
+      .map(e => `• ${e.nome} (${e.ini})`)
+      .join("<br>");
+
+    if(!lista) return "Nenhum evento com presença da Nat.";
+
+    return `<b>Eventos com presença da Nat:</b><br><br>${lista}`;
+  }
+
+
+  if(q.includes("mes") || q.includes("mês")){
+
+    const hoje = new Date();
+    const mesAtual = hoje.getMonth();
+
+    let lista = events
+      .filter(e => new Date(e.ini).getMonth()===mesAtual)
+      .map(e => `• ${e.nome} (${e.ini})`)
+      .join("<br>");
+
+    if(!lista) return "Não encontrei eventos para este mês.";
+
+    return `<b>Eventos deste mês:</b><br><br>${lista}`;
+  }
+
+  return `
+Posso ajudar com:
+
+• eventos  
+• eventos deste mês  
+• eventos de alta prioridade  
+• eventos com presença da Nat
+`;
+}
+
+
+
+/* ======================================
+ENVIO DE PERGUNTA
+====================================== */
+
+function copilotSend(){
+
+  const inp=document.getElementById("copilotInp");
+
+  let pergunta=inp.value.trim();
+
+  if(!pergunta) return;
+
+  addCopilotMsg(pergunta,"user");
+
+  inp.value="";
+
+  setTimeout(()=>{
+
+    let resp=responderCopilot(pergunta);
+
+    addCopilotMsg(resp,"ai");
+
+  },400);
+}
+
+
+
+/* ======================================
+ENTER PARA ENVIAR
+====================================== */
+
+function copilotKey(e){
+
+  if(e.key==="Enter" && !e.shiftKey){
+
+    e.preventDefault();
+
+    copilotSend();
+
+  }
+
+}
+
+
+
+/* ======================================
+ADICIONAR MENSAGEM
+====================================== */
+
+function addCopilotMsg(txt,tipo){
+
+  const msgs=document.getElementById("copilotMsgs");
+
+  const div=document.createElement("div");
+
+  div.className="cmsg "+(tipo==="user"?"cmsg-user":"cmsg-ai");
+
+  div.innerHTML=txt;
+
+  msgs.appendChild(div);
+
+  msgs.scrollTop=msgs.scrollHeight;
+
+}
+
+
+
+/* ======================================
+BOTÕES DE SUGESTÃO
+====================================== */
+
+function copilotSugg(btn){
+
+  const pergunta=btn.innerText;
+
+  document.getElementById("copilotInp").value=pergunta;
+
+  copilotSend();
+
+}
+  
 </script>
 </body>
 </html>
