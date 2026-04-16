@@ -549,7 +549,25 @@ function loadEventsFromGitHub(cb){
     });
 }
 
-// Salva UM evento (upsert — não toca nos outros)
+// Sincroniza a tabela events (blob) para o agente Copilot
+function syncEventsBlob(){
+  var blob = events.map(function(e){
+    return {
+      id: e.id, nome: e.nome, proj: e.proj||'', area: e.area,
+      publico: e.publico, cat: e.cat, ini: e.ini, fim: e.fim,
+      hi: e.hi||'', hf: e.hf||'', local: e.local||'', desc: e.desc||'',
+      pri: e.pri, status: e.status, nat: e.nat, noDate: e.noDate,
+      demanda: e.demanda||'', mes: e.mes||'', sem: e.sem||''
+    };
+  });
+  fetch(SB_URL + '/rest/v1/events?id=eq.1', {
+    method: 'PATCH',
+    headers: Object.assign({}, sbHeaders(), { 'Prefer': 'return=minimal' }),
+    body: JSON.stringify({ data: blob })
+  }).catch(function(e){ console.error('Erro ao sincronizar blob:', e); });
+}
+
+// Salva UM evento na calendar_events E sincroniza o blob da events
 function saveEventsToGitHub(msg, evObj){
   if(_saving){ showToast('Aguarde...'); return; }
   _saving = true;
@@ -564,6 +582,7 @@ function saveEventsToGitHub(msg, evObj){
     _saving = false;
     if(r.ok){
       showToast(msg || 'Salvo! ✓');
+      syncEventsBlob(); // mantém agente atualizado
     } else {
       r.text().then(function(t){ showToast('Erro ao salvar: ' + t); });
     }
@@ -576,15 +595,19 @@ function saveEventsToGitHub(msg, evObj){
   });
 }
 
-// Deleta UM evento por id
+// Deleta UM evento da calendar_events E sincroniza o blob da events
 function deleteEventFromDB(id){
   fetch(SB_URL + '/rest/v1/calendar_events?id=eq.' + id, {
     method: 'DELETE',
     headers: sbHeaders()
   })
   .then(function(r){
-    if(r.ok){ showToast('Evento excluído. ✓'); }
-    else { r.text().then(function(t){ showToast('Erro ao excluir: ' + t); }); }
+    if(r.ok){
+      showToast('Evento excluído. ✓');
+      syncEventsBlob(); // mantém agente atualizado
+    } else {
+      r.text().then(function(t){ showToast('Erro ao excluir: ' + t); });
+    }
   })
   .catch(function(e){ showToast('Erro: ' + e.message); });
 }
