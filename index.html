@@ -449,6 +449,10 @@ html,body{font-family:var(--font);background:var(--gray-50);color:var(--gray-900
         <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 3h10M5 3V2h4v1M6 6v4M8 6v4M3 3l1 9h6l1-9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
         Excluir
       </button>
+      <button class="btn btn-ghost" onclick="duplicateEvent()">
+        <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><rect x="4" y="4" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.6"/><path d="M2 10V3a1 1 0 011-1h7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        Duplicar
+      </button>
       <button class="btn btn-ghost" onclick="openEditFromDetail()">
         <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M9.5 2.5l2 2-7 7H2.5v-2l7-7z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
         Editar
@@ -939,6 +943,26 @@ function openEditFromDetail(){
   document.getElementById('addOverlay').className='overlay open';
 }
 
+function duplicateEvent(){
+  var ev=events.find(function(x){return x.id===detailId});if(!ev)return;
+  editId=null;
+  closeDetailModal();
+  document.getElementById("addModalTitle").textContent="Duplicar Evento";
+  document.getElementById("f-nome").value=ev.nome||"";
+  document.getElementById("f-mes").value=ev.mes||"";
+  document.getElementById("f-sem").value=ev.sem||"";
+  document.getElementById("f-ini").value="";
+  document.getElementById("f-fim").value="";
+  document.getElementById("f-cat").value=ev.cat||"";
+  document.getElementById("f-publico").value=ev.publico||"";
+  document.getElementById("f-area").value=ev.area||"";
+  document.getElementById("f-nat").value=ev.nat?"Sim":"Não";
+  document.getElementById("f-status").value=ev.status||"";
+  document.getElementById("f-demanda").value=ev.demanda||"";
+  document.getElementById("f-desc").value=ev.desc||"";
+  document.getElementById("addOverlay").className="overlay open";
+  setTimeout(function(){document.getElementById("f-ini").focus()},100);
+}
 function openAddModal(){
   editId=null;
   document.getElementById('addModalTitle').textContent='Adicionar Evento';
