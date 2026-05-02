@@ -231,6 +231,7 @@ html,body{font-family:var(--font);background:var(--gray-50);color:var(--gray-900
     <select class="filter-select" id="filterNat" onchange="renderCalendar()">
       <option value="">Todos</option>
       <option value="sim">⭐ Sim</option>
+      <option value="aconfirmar"> A confirmar</option>
       <option value="nao">Não</option>
     </select>
   </div>
@@ -265,7 +266,8 @@ html,body{font-family:var(--font);background:var(--gray-50);color:var(--gray-900
   <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#E6F5EF;border:1.5px solid #1A8F5E"></div>Em andamento</div>
   <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#F0F2F7;border:1.5px dashed #C8CEDC"></div>TBD / Sem data</div>
   <span style="font-size:11px;font-weight:700;color:var(--gray-500);margin-left:8px">Nat:</span>
-  <div class="cal-legend-item">⭐ Presença da Nat confirmada</div>
+  <div class="cal-legend-item">⭐ Presença confirmada</div>
+  <div class="cal-legend-item"> A confirmar</div>
 </div>
 
 <div class="day-popup" id="dayPopup" onclick="if(event.target===this)closeDayPopup()">
@@ -371,6 +373,7 @@ html,body{font-family:var(--font);background:var(--gray-50);color:var(--gray-900
           <label class="fl">Presença Nat</label>
           <select class="fs" id="f-nat">
             <option value="Não">Não</option>
+            <option value="A confirmar"> A confirmar</option>
             <option value="Sim">⭐ Sim</option>
           </select>
         </div>
@@ -482,6 +485,32 @@ function sbHeaders(){
   };
 }
 
+// ── HELPERS DE PRESENÇA NAT ──────────────────────────────────────────────────
+// nat agora é string: "Sim" | "A confirmar" | "Não"
+function natLabel(nat){
+  if(nat==='Sim') return '⭐ Sim';
+  if(nat==='A confirmar') return ' A confirmar';
+  return 'Não';
+}
+function natIcon(nat){
+  if(nat==='Sim') return ' ⭐';
+  return '';
+}
+// Codifica nat para o banco (coluna boolean):
+// "Sim" → true | "A confirmar" → null | "Não" → false
+function natToDB(nat){
+  if(nat==='Sim') return true;
+  if(nat==='A confirmar') return null;
+  return false;
+}
+// Decodifica nat do banco para string
+function natFromDB(dbVal){
+  if(dbVal===true) return 'Sim';
+  if(dbVal===null || dbVal===undefined) return 'A confirmar';
+  return 'Não';
+}
+// ─────────────────────────────────────────────────────────────────────────────
+
 // Converte evento JS → linha do banco
 function evToRow(e){
   return {
@@ -499,7 +528,7 @@ function evToRow(e){
     descricao: e.desc||'',
     pri: e.pri||'',
     status: e.status||'',
-    nat: !!e.nat,
+    nat: natToDB(e.nat),
     no_date: !!e.noDate,
     demanda: e.demanda||'',
     mes: e.mes||'',
@@ -524,7 +553,7 @@ function rowToEv(r){
     desc: r.descricao||'',
     pri: r.pri||'',
     status: r.status||'',
-    nat: !!r.nat,
+    nat: natFromDB(r.nat),
     noDate: !!r.no_date,
     demanda: r.demanda||'',
     mes: r.mes||'',
@@ -583,7 +612,7 @@ function saveEventsToGitHub(msg, evObj){
     _saving = false;
     if(r.ok){
       showToast(msg || 'Salvo! ✓');
-      syncEventsBlob(); // mantém agente atualizado
+      syncEventsBlob();
     } else {
       r.text().then(function(t){ showToast('Erro ao salvar: ' + t); });
     }
@@ -605,7 +634,7 @@ function deleteEventFromDB(id){
   .then(function(r){
     if(r.ok){
       showToast('Evento excluído. ✓');
-      syncEventsBlob(); // mantém agente atualizado
+      syncEventsBlob();
     } else {
       r.text().then(function(t){ showToast('Erro ao excluir: ' + t); });
     }
@@ -639,7 +668,8 @@ function renderTbdPanel(){
     html+='<div class="tbd-chip" onclick="openDetail('+ev.id+')">';
     html+=esc(ev.nome);
     html+='<span class="tbd-month">'+MONTHS_SHORT[mIdx]+'</span>';
-    if(ev.nat)html+='<span class="nat-star">⭐</span>';
+    if(ev.nat==='Sim') html+='<span class="nat-star">⭐</span>';
+    else if(ev.nat==='A confirmar') html+='<span class="nat-star">❓</span>';
     html+='</div>';
   });
   document.getElementById('tbdGrid').innerHTML=html||'<span style="font-size:12px;color:var(--gray-500)">Nenhum evento sem data.</span>';
@@ -674,8 +704,9 @@ function getFiltered(){
     if(fpu&&e.publico!==fpu)return false;
     if(ft&&e.cat!==ft)return false;
     if(fs&&(e.status||'')!==fs)return false;
-    if(fn==='sim'&&!e.nat)return false;
-    if(fn==='nao'&&e.nat)return false;
+    if(fn==='sim'&&e.nat!=='Sim')return false;
+    if(fn==='aconfirmar'&&e.nat!=='A confirmar')return false;
+    if(fn==='nao'&&e.nat!=='Não')return false;
     if(fd&&(e.demanda||'')!==fd)return false;
     return true;
   });
@@ -761,7 +792,7 @@ function renderMonth(){
       var isNd=ev.noDate||false;
       var st=isNd?'border:1px dashed #C8CEDC;':'';
       html+='<div class="event-card '+statusClass(ev)+'" onclick="openDetail('+ev.id+')" title="'+esc(ev.nome)+'" style="'+st+'">';
-      html+='<span class="ev-dot"></span><span class="ev-name">'+(isNd?'📅 ':'')+esc(ev.nome)+(ev.nat?' ⭐':'')+'</span>';
+      html+='<span class="ev-dot"></span><span class="ev-name">'+(isNd?'📅 ':'')+esc(ev.nome)+natIcon(ev.nat)+'</span>';
       if(ev.area)html+='<span class="ev-tag">'+esc(ev.area)+'</span>';
       html+='</div>';
     });
@@ -801,7 +832,7 @@ function renderWeek(){
       var isNd=ev.noDate||false;
       var st=isNd?'border:1px dashed #C8CEDC;':'';
       html+='<div class="event-card '+statusClass(ev)+'" onclick="openDetail('+ev.id+')" title="'+esc(ev.nome)+'" style="'+st+'">';
-      html+='<span class="ev-dot"></span><span class="ev-name">'+(isNd?'📅 ':'')+esc(ev.nome)+(ev.nat?' ⭐':'')+'</span>';
+      html+='<span class="ev-dot"></span><span class="ev-name">'+(isNd?'📅 ':'')+esc(ev.nome)+natIcon(ev.nat)+'</span>';
       if(ev.area)html+='<span class="ev-tag">'+esc(ev.area)+'</span>';
       html+='</div>';
     });
@@ -883,7 +914,9 @@ function openDetail(id){
   detailId=id;
   document.getElementById('confirmDel').className='confirm-strip';
   document.getElementById('detailTitle').textContent=ev.nome;
-  document.getElementById('detailSubtitle').textContent=(ev.cat||'Sem tipo')+' • '+(ev.area||'—')+(ev.nat?' ⭐':'');
+  // Ícone Nat no subtítulo apenas se Sim ou A confirmar
+  var natSuffix = ev.nat==='Sim' ? ' ⭐' 
+  document.getElementById('detailSubtitle').textContent=(ev.cat||'Sem tipo')+' • '+(ev.area||'—')+natSuffix;
   document.getElementById('d-area').textContent=ev.area||'—';
   document.getElementById('d-publico').textContent=ev.publico||'—';
   document.getElementById('d-cat').textContent=ev.cat||'—';
@@ -893,7 +926,10 @@ function openDetail(id){
   var statusColors={'Confirmado':'color:#2B3A8C;background:#EEEDFE','TBD':'color:#8892A4;background:#F0F2F7','Em andamento':'color:#1A8F5E;background:#E6F5EF'};
   var sc=statusColors[ev.status||'']||'color:#666;background:#f0f0f0';
   document.getElementById('d-status').innerHTML='<span style="padding:3px 10px;border-radius:20px;font-size:12px;font-weight:700;'+sc+'">'+(ev.status||'—')+'</span>';
-  document.getElementById('d-nat').textContent=ev.nat?'⭐ Sim':'Não';
+  // Presença Nat com badge colorido
+  var natColors={'Sim':'color:#1A8F5E;background:#E6F5EF','A confirmar':'color:#B86A00;background:#FFF4E0','Não':'color:#8892A4;background:#F0F2F7'};
+  var nc=natColors[ev.nat]||natColors['Não'];
+  document.getElementById('d-nat').innerHTML='<span style="padding:3px 10px;border-radius:20px;font-size:12px;font-weight:700;'+nc+'">'+natLabel(ev.nat)+'</span>';
   document.getElementById('d-mes').textContent=(ev.mes||'—')+(ev.sem?' · '+ev.sem:'');
   document.getElementById('d-demanda').textContent=ev.demanda||'—';
   document.getElementById('d-desc').textContent=ev.desc||'—';
@@ -914,7 +950,8 @@ var MONTH_NUM={Janeiro:1,Fevereiro:2,'Março':3,Abril:4,Maio:5,Junho:6,Julho:7,A
 
 function formReset(){
   ['f-nome','f-desc'].forEach(function(id){document.getElementById(id).value=''});
-  ['f-mes','f-sem','f-cat','f-publico','f-area','f-nat','f-status','f-demanda'].forEach(function(id){document.getElementById(id).value=''});
+  ['f-mes','f-sem','f-cat','f-publico','f-area','f-status','f-demanda'].forEach(function(id){document.getElementById(id).value=''});
+  document.getElementById('f-nat').value='Não';
   document.getElementById('f-ini').value='';
   document.getElementById('f-fim').value='';
 }
@@ -932,7 +969,7 @@ function openEditFromDetail(){
   document.getElementById('f-cat').value=ev.cat||'';
   document.getElementById('f-publico').value=ev.publico||'';
   document.getElementById('f-area').value=ev.area||'';
-  document.getElementById('f-nat').value=ev.nat?'Sim':'Não';
+  document.getElementById('f-nat').value=ev.nat||'Não';
   document.getElementById('f-status').value=ev.status||'';
   document.getElementById('f-demanda').value=ev.demanda||'';
   document.getElementById('f-desc').value=ev.desc||'';
@@ -952,13 +989,14 @@ function duplicateEvent(){
   document.getElementById("f-cat").value=ev.cat||"";
   document.getElementById("f-publico").value=ev.publico||"";
   document.getElementById("f-area").value=ev.area||"";
-  document.getElementById("f-nat").value=ev.nat?"Sim":"Não";
+  document.getElementById("f-nat").value=ev.nat||"Não";
   document.getElementById("f-status").value=ev.status||"";
   document.getElementById("f-demanda").value=ev.demanda||"";
   document.getElementById("f-desc").value=ev.desc||"";
   document.getElementById("addOverlay").className="overlay open";
   setTimeout(function(){document.getElementById("f-ini").focus()},100);
 }
+
 function openAddModal(){
   editId=null;
   document.getElementById('addModalTitle').textContent='Adicionar Evento';
@@ -978,7 +1016,7 @@ function saveEvent(){
   var status=document.getElementById('f-status').value;
   var ini=document.getElementById('f-ini').value;
   var fim=document.getElementById('f-fim').value;
-  var nat=document.getElementById('f-nat').value==='Sim';
+  var nat=document.getElementById('f-nat').value; // "Sim" | "A confirmar" | "Não"
   var sem=document.getElementById('f-sem').value;
   var demanda=document.getElementById('f-demanda').value;
   var desc=document.getElementById('f-desc').value.trim();
@@ -999,7 +1037,7 @@ function saveEvent(){
     fim=fim||ini;
   }
 
-  var pri=nat?'Alta':status==='TBD'?'Baixa':status==='Em andamento'?'Alta':'Média';
+  var pri=nat==='Sim'?'Alta':status==='TBD'?'Baixa':status==='Em andamento'?'Alta':'Média';
 
   var data={
     id: editId||nid++,
@@ -1019,7 +1057,6 @@ function saveEvent(){
 
   curY=2026; curM=mNum-1;
   closeAddModal();
-  // Salva apenas esse evento no banco — não toca nos outros
   saveEventsToGitHub(editId?'Evento atualizado! ✓':'Evento adicionado! ✓', data);
   editId=null;
 }
@@ -1045,7 +1082,7 @@ function openDayPopup(e){
     html+='<div class="event-card '+statusClass(ev)+'" onclick="openDetail('+ev.id+');closeDayPopup()" style="'+st+';margin-bottom:5px;cursor:pointer;padding:6px 8px">';
     html+='<span class="ev-dot" style="flex-shrink:0;margin-top:4px"></span>';
     html+='<div style="flex:1;min-width:0">';
-    html+='<div style="font-size:12px;font-weight:600;white-space:normal;line-height:1.4">'+(isNd?'📅 ':'')+esc(ev.nome)+(ev.nat?' ⭐':'')+'</div>';
+    html+='<div style="font-size:12px;font-weight:600;white-space:normal;line-height:1.4">'+(isNd?'📅 ':'')+esc(ev.nome)+natIcon(ev.nat)+'</div>';
     html+='<div style="font-size:10px;color:var(--gray-500);margin-top:2px">'+esc(ev.area||'')+(ev.status?' · '+esc(ev.status):'')+'</div>';
     html+='</div></div>';
   });
