@@ -223,7 +223,6 @@ html,body{font-family:var(--font);background:var(--gray-50);color:var(--gray-900
       <option value="">Todos</option>
       <option value="Confirmado">Confirmado</option>
       <option value="Em andamento">Em andamento</option>
-      <option value="A iniciar">A iniciar</option>
       <option value="TBD">TBD</option>
     </select>
   </div>
@@ -264,7 +263,6 @@ html,body{font-family:var(--font);background:var(--gray-50);color:var(--gray-900
   <span style="font-size:11px;font-weight:700;color:var(--gray-500)">Status:</span>
   <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#EEEDFE;border:1.5px solid #2B3A8C"></div>Confirmado</div>
   <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#E6F5EF;border:1.5px solid #1A8F5E"></div>Em andamento</div>
-  <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#FFF4E0;border:1.5px solid #B86A00"></div>A iniciar</div>
   <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#F0F2F7;border:1.5px dashed #C8CEDC"></div>TBD / Sem data</div>
   <span style="font-size:11px;font-weight:700;color:var(--gray-500);margin-left:8px">Nat:</span>
   <div class="cal-legend-item">⭐ Presença da Nat confirmada</div>
@@ -384,7 +382,6 @@ html,body{font-family:var(--font);background:var(--gray-50);color:var(--gray-900
             <option value="">Selecione</option>
             <option>Confirmado</option>
             <option>Em andamento</option>
-            <option>A iniciar</option>
             <option>TBD</option>
           </select>
         </div>
@@ -629,7 +626,6 @@ function statusClass(e){
   var s=e.status||'';
   if(s==='TBD') return 'ev-tbd';
   if(s==='Em andamento') return 'ev-andamento';
-  if(s==='A iniciar') return 'ev-iniciar';
   return 'ev-confirmado';
 }
 
@@ -894,7 +890,7 @@ function openDetail(id){
   var data=ev.noDate?'A definir':fmtDate(ev.ini);
   if(!ev.noDate&&ev.fim&&ev.fim!==ev.ini)data+=' → '+fmtDate(ev.fim);
   document.getElementById('d-data').textContent=data;
-  var statusColors={'Confirmado':'color:#2B3A8C;background:#EEEDFE','TBD':'color:#8892A4;background:#F0F2F7','Em andamento':'color:#1A8F5E;background:#E6F5EF','A iniciar':'color:#B86A00;background:#FFF4E0'};
+  var statusColors={'Confirmado':'color:#2B3A8C;background:#EEEDFE','TBD':'color:#8892A4;background:#F0F2F7','Em andamento':'color:#1A8F5E;background:#E6F5EF'};
   var sc=statusColors[ev.status||'']||'color:#666;background:#f0f0f0';
   document.getElementById('d-status').innerHTML='<span style="padding:3px 10px;border-radius:20px;font-size:12px;font-weight:700;'+sc+'">'+(ev.status||'—')+'</span>';
   document.getElementById('d-nat').textContent=ev.nat?'⭐ Sim':'Não';
