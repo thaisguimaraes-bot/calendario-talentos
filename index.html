@@ -231,7 +231,7 @@ html,body{font-family:var(--font);background:var(--gray-50);color:var(--gray-900
     <select class="filter-select" id="filterNat" onchange="renderCalendar()">
       <option value="">Todos</option>
       <option value="sim">⭐ Sim</option>
-      <option value="aconfirmar"> A confirmar</option>
+      <option value="aconfirmar">A confirmar</option>
       <option value="nao">Não</option>
     </select>
   </div>
@@ -267,7 +267,7 @@ html,body{font-family:var(--font);background:var(--gray-50);color:var(--gray-900
   <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#F0F2F7;border:1.5px dashed #C8CEDC"></div>TBD / Sem data</div>
   <span style="font-size:11px;font-weight:700;color:var(--gray-500);margin-left:8px">Nat:</span>
   <div class="cal-legend-item">⭐ Presença confirmada</div>
-  <div class="cal-legend-item"> A confirmar</div>
+  <div class="cal-legend-item">A confirmar</div>
 </div>
 
 <div class="day-popup" id="dayPopup" onclick="if(event.target===this)closeDayPopup()">
@@ -373,7 +373,7 @@ html,body{font-family:var(--font);background:var(--gray-50);color:var(--gray-900
           <label class="fl">Presença Nat</label>
           <select class="fs" id="f-nat">
             <option value="Não">Não</option>
-            <option value="A confirmar"> A confirmar</option>
+            <option value="A confirmar">A confirmar</option>
             <option value="Sim">⭐ Sim</option>
           </select>
         </div>
@@ -489,11 +489,12 @@ function sbHeaders(){
 // nat agora é string: "Sim" | "A confirmar" | "Não"
 function natLabel(nat){
   if(nat==='Sim') return '⭐ Sim';
-  if(nat==='A confirmar') return ' A confirmar';
+  if(nat==='A confirmar') return 'A confirmar';
   return 'Não';
 }
 function natIcon(nat){
   if(nat==='Sim') return ' ⭐';
+
   return '';
 }
 // Codifica nat para o banco (coluna boolean):
@@ -669,7 +670,7 @@ function renderTbdPanel(){
     html+=esc(ev.nome);
     html+='<span class="tbd-month">'+MONTHS_SHORT[mIdx]+'</span>';
     if(ev.nat==='Sim') html+='<span class="nat-star">⭐</span>';
-    else if(ev.nat==='A confirmar') html+='<span class="nat-star">❓</span>';
+
     html+='</div>';
   });
   document.getElementById('tbdGrid').innerHTML=html||'<span style="font-size:12px;color:var(--gray-500)">Nenhum evento sem data.</span>';
@@ -915,7 +916,7 @@ function openDetail(id){
   document.getElementById('confirmDel').className='confirm-strip';
   document.getElementById('detailTitle').textContent=ev.nome;
   // Ícone Nat no subtítulo apenas se Sim ou A confirmar
-  var natSuffix = ev.nat==='Sim' ? ' ⭐' 
+  var natSuffix = ev.nat==='Sim' ? ' ⭐' : '';
   document.getElementById('detailSubtitle').textContent=(ev.cat||'Sem tipo')+' • '+(ev.area||'—')+natSuffix;
   document.getElementById('d-area').textContent=ev.area||'—';
   document.getElementById('d-publico').textContent=ev.publico||'—';
